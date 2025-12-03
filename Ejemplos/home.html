@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BE INN - Encuentra tu espacio perfecto</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-top">
+                <!-- Logo -->
+                <div class="logo-container">
+                    <img src="image/logo.png" alt="BE INN" class="logo">
+                </div>
+
+                <!-- Navigation Tabs -->
+                <div class="header-nav">
+                    <div class="nav-tabs">
+                        <button class="nav-tab active">
+                            <i class="fas fa-home"></i>
+                            <span>Alojamientos</span>
+                        </button>
+                        <button class="nav-tab">
+                            <i class="fas fa-star"></i>
+                            <span>Experiencias</span>
+                            <span class="nav-badge">NUEVO</span>
+                        </button>
+                        <button class="nav-tab">
+                            <i class="fas fa-laptop"></i>
+                            <span>Servicios</span>
+                            <span class="nav-badge">NUEVO</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Menu -->
+                <div class="header-right">
+                    <button class="become-host-btn">Conviértete en Outer</button>
+                    <button class="language-btn">
+                        <i class="fas fa-globe"></i>
+                    </button>
+                    <button class="user-menu-btn" id="loginBtn">
+                        <i class="fas fa-bars"></i>
+                        <i class="fas fa-user-circle"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-bar-container">
+                <div class="search-bar">
+                    <div class="search-bar-field">
+                        <label>Destino</label>
+                        <input type="text" placeholder="Buscar destinos">
+                    </div>
+                    <div class="search-bar-field">
+                        <label>Llegada</label>
+                        <input type="text" placeholder="Agregar fechas">
+                    </div>
+                    <div class="search-bar-field">
+                        <label>Salida</label>
+                        <input type="text" placeholder="Agregar fechas">
+                    </div>
+                    <div class="search-bar-field with-button">
+                        <label>Huéspedes</label>
+                        <input type="text" placeholder="¿Cuántos?">
+                        <button class="search-btn">
+                            <i class="fas fa-search"></i>
+                            <span>Buscar</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search Suggestion Banner -->
+    <div class="search-suggestion-banner">
+        <div class="suggestion-content">
+            <div class="suggestion-image">
+                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=60&h=60&fit=crop" alt="Cancún">
+            </div>
+            <div class="suggestion-text">
+                <span>Sigue buscando alojamientos en <strong>Cancún</strong></span>
+                <span class="suggestion-date">16-31 de ago</span>
+            </div>
+            <i class="fas fa-chevron-right"></i>
+        </div>
+    </div>
+
+    <!-- Category Filters -->
+    <section class="category-filters">
+        <div class="category-filter-item active" data-category="all">
+            <i class="fas fa-home"></i>
+            <span>Todos</span>
+        </div>
+        <div class="category-filter-item" data-category="oficinas">
+            <i class="fas fa-building"></i>
+            <span>Oficinas</span>
+        </div>
+        <div class="category-filter-item" data-category="apartamentos">
+            <i class="fas fa-door-open"></i>
+            <span>Apartamentos</span>
+        </div>
+        <div class="category-filter-item" data-category="casas">
+            <i class="fas fa-house"></i>
+            <span>Casas</span>
+        </div>
+        <div class="category-filter-item" data-category="villas">
+            <i class="fas fa-tree"></i>
+            <span>Villas</span>
+        </div>
+        <div class="category-filter-item" data-category="lofts">
+            <i class="fas fa-warehouse"></i>
+            <span>Lofts</span>
+        </div>
+        <div class="category-filter-item" data-category="estudios">
+            <i class="fas fa-bed"></i>
+            <span>Estudios</span>
+        </div>
+        <div class="category-filter-item" data-category="eventos">
+            <i class="fas fa-glass-cheers"></i>
+            <span>Eventos</span>
+        </div>
+        <div class="category-filter-item" data-category="estacionamientos">
+            <i class="fas fa-parking"></i>
+            <span>Estacionamientos</span>
+        </div>
+        <div class="category-filter-item" data-category="especiales">
+            <i class="fas fa-star"></i>
+            <span>Especiales</span>
+        </div>
+        <button class="filters-btn">
+            <i class="fas fa-sliders-h"></i>
+            <span>Filtros</span>
+        </button>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Location Section Header -->
+        <div class="location-header">
+            <h1>Quédate cerca de Isla Holbox</h1>
+            <button class="show-map-btn">
+                <i class="fas fa-map"></i>
+                <span>Mostrar mapa</span>
+            </button>
+        </div>
+
+        <!-- Spaces Grid -->
+        <div class="spaces-grid" id="spacesGrid">
+            <!-- Spaces will be loaded here by JavaScript -->
+        </div>
+
+        <!-- Continue Exploring Section -->
+        <section class="continue-exploring">
+            <h2>Disponible en fechas similares</h2>
+            <div class="exploring-grid">
+                <!-- Additional recommendations -->
+            </div>
+        </section>
+
+        <!-- Price Notice -->
+        <div class="price-notice">
+            <i class="fas fa-heart"></i>
+            <span>Los precios incluyen todas las tarifas</span>
+        </div>
+    </main>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Inicia sesión o regístrate</h2>
+                <span class="close">&times;</span>
+            </div>
+
+            <div class="social-login">
+                <button class="social-btn google-btn" onclick="signInWithGoogle()"></button>
+                <i class="fab fa-google"></i>
+                Continuar con Google
+                </button>
+                <button class="social-btn facebook-btn" onclick="signInWithFacebook()">
+                    <i class="fab fa-facebook-f"></i>
+                    Continuar con Facebook
+                </button>
+            </div>
+
+            <div class="divider">
+                <span>o</span>
+            </div>
+
+            <form class="login-form">
+                <input type="email" placeholder="Correo electrónico" required>
+                <input type="password" placeholder="Contraseña" required>
+                <button type="submit" class="btn-primary">Iniciar sesión</button>
+            </form>
+
+            <p class="signup-link">¿No tienes cuenta? <a href="#" onclick="showSignup()">Regístrate</a></p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Personal Assistant Section - REMOVED FOR NOW TO FOCUS ON CORE UI -->
+
+        <!-- Banner Section - REMOVED FOR NOW TO FOCUS ON CORE UI -->
+
+        <!-- Categories Section - REPLACED BY ICON FILTERS -->
+
+        <!-- Featured Spaces Section -->
+        <section class="featured-section">
+            <!-- Title will be dynamic based on filters -->
+            <div class="spaces-grid">
+                <!-- Space cards will be generated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Available This Weekend Section - CAN BE RE-ADDED LATER -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-main">
+                <div class="footer-section">
+                    <h4>Soporte</h4>
+                    <ul>
+                        <li><a href="#">Centro de ayuda</a></li>
+                        <li><a href="#">Opciones de cancelación</a></li>
+                        <li><a href="#">Información de seguridad</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Comunidad</h4>
+                    <ul>
+                        <li><a href="#">Pon tu espacio en BE INN</a></li>
+                        <li><a href="#">Centro de la comunidad</a></li>
+                        <li><a href="#">Foro</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Outers</h4>
+                    <ul>
+                        <li><a href="#">Recursos para Outers</a></li>
+                        <li><a href="#">Ser Outer responsable</a></li>
+                        <li><a href="#">Explora cómo ofrecer espacios</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>BE INN</h4>
+                    <ul>
+                        <li><a href="#">Sala de prensa</a></li>
+                        <li><a href="#">Nuevas funciones</a></li>
+                        <li><a href="#">Carreras</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-left">
+                    <span>&copy; 2025 BE INN, Inc.</span>
+                    <a href="#">Privacidad</a>
+                    <a href="#">Términos</a>
+                    <a href="#">Mapa del sitio</a>
+                </div>
+                <div class="footer-bottom-right">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: 'YOUR_FACEBOOK_APP_ID',
+                cookie: true,
+                xfbml: true,
+                version: 'v18.0'
+            });
+        };
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/es_ES/sdk.js';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+</body>
+
+</html>

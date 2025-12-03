@@ -400,20 +400,20 @@ namespace BEINN.Controllers
                     Correo = "invitado@cre.gob.mx",
                     Clave = "consulta_publica"
                 };
-                
+
                 // Registrar acceso
                 RegistrarAcceso(usuarioInvitado.Correo, "Acceso como Consulta Pública");
-                
+
                 // Procesar login como invitado (sin recursión)
                 return ProcesarLoginInvitado(usuarioInvitado);
             }
 
             if (tipoAcceso == "social")
             {
-                
+
                 // Registrar acceso
                 RegistrarAcceso(oUsuario.Correo, "Acceso como Consulta Pública");
-                
+
                 // Procesar login como invitado (sin recursión)
                 return ProcesarLoginInvitado(oUsuario);
             }
@@ -797,7 +797,7 @@ namespace BEINN.Controllers
         public async Task<IActionResult> ForgotPassword(string Correo)
         {
             var user = await _repositorioAcceso.GetUserByEmail(Correo);
-            var logo = "https://cdn.sassoapps.com/img_snier/login/logo_snier.png";
+            var logo = "https://cdn.sassoapps.com/be-inn/iconos/logobeeinn.png";
 
             if (user == null)
             {
@@ -968,7 +968,7 @@ namespace BEINN.Controllers
         public async Task<IActionResult> ResetPassword(string Token, string Clave, string ConfirmarClave)
         {
             var user = await _repositorioAcceso.GetUserByPasswordResetToken(Token);
-            var logo = "https://cdn.sassoapps.com/img_snier/login/logo_snier.png";
+            var logo = "https://cdn.sassoapps.com/be-inn/iconos/logobeeinn.png";
 
             if (user == null)
             {
@@ -1033,7 +1033,7 @@ namespace BEINN.Controllers
         [HttpPost]
         public async Task<IActionResult> ResetPasswordUser(string Clave, string ConfirmarClave, int IdUsuario)
         {
-            var logo = "https://cdn.sassoapps.com/img_snier/login/logo_snier.png";
+            var logo = "https://cdn.sassoapps.com/be-inn/iconos/logobeeinn.png";
 
             if (Clave != ConfirmarClave)
             {

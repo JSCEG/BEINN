@@ -89,7 +89,7 @@
     /* Usa el MIN del overlay */
     min-height: 120px;
     /* seguridad en móviles muy chicos */
-    background: linear-gradient(135deg, #8BC34A 0%, #0b8aae 100%);
+    background: linear-gradient(135deg, #FF7B00 0%, #0b8aae 100%);
 }
 
 .card-img img {
@@ -170,7 +170,7 @@
     top: 10px;
     right: 10px;
     font-size: 14px;
-    background: #8BC34A;
+    background: #FF7B00;
     border-radius: 100px;
     padding: 6px 8px;
     line-height: 1;

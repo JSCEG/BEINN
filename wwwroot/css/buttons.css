@@ -30,7 +30,7 @@
 
 .btn:focus {
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(139, 195, 74, 0.25);
+    box-shadow: 0 0 0 0.25rem rgba(255, 123, 0, 0.25);
     /* Sombra de foco con el color primario */
 }
 
@@ -101,8 +101,8 @@
 }
 
 .btn-success:hover {
-    background-image: linear-gradient(to right, #157347, #146c43);
-    border-color: #146c43;
+    background-image: linear-gradient(to right, #CC6200, #B35700);
+    border-color: #B35700;
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
 }
@@ -302,8 +302,8 @@
 }
 
 .dt-buttons .buttons-excel:hover {
-    background-image: linear-gradient(to right, #147a3a, #136e35) !important;
-    border-color: #136e35 !important;
+    background-image: linear-gradient(to right, #CC6200, #B35700) !important;
+    border-color: #B35700 !important;
 }
 
 /* --- Botón de PDF (Rojo) --- */

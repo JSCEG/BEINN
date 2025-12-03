@@ -1,5 +1,5 @@
 @{
-    ViewData["Title"] = "Acceso al Sistema Nacional de Información Energética";
+    ViewData["Title"] = "Acceso a BE-INN";
     Layout = null;
     var cdn = "https://cdn.sassoapps.com";
 }
@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
     <meta name="description"
-        content="Plataforma oficial para integrar, analizar y transparentar toda la información energética de México">
+        content="Plataforma inteligente para descubrir, publicar y gestionar espacios como oficinas, estacionamientos, lugares para eventos y espacios especiales, con soporte de IA y experiencia segura para Inners e invitados.">
 
     <!-- Bootstrap 5.3 + Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -103,7 +103,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <img src="@cdn/img_snier/login/logo_snier.png" alt="SNIER" class="navbar-logo">
+                <img src="@cdn/be-inn/iconos/logobeeinn.png" alt="SNIER" class="navbar-logo">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -138,25 +138,25 @@
                     <div class="hero-content" data-aos="fade-right" data-aos-duration="1000"
                         style="max-width: 600px; width: 100%;">
                         <div class="hero-title-container">
-                            <img src="@cdn/img_snier/login/logo_snier.png" alt="SNIER Logo" class="hero-logo"
+                            <img src="@cdn/be-inn/iconos/logobeeinn.png" alt="BE-INN Logo" class="hero-logo"
                                 data-aos="zoom-in" data-aos-delay="100">
                             <h1 class="hero-title text-white" data-aos="fade-up" data-aos-delay="200">
-                                Sistema Nacional de
-                                <span class="text-gradient">Información Energética</span>
+                                Descubre y publica
+                                <span class="text-gradient">espacios únicos</span>
                             </h1>
                         </div>
 
                         <p class="hero-description" data-aos="fade-up" data-aos-delay="400">
-                            Plataforma oficial para integrar, analizar y transparentar toda la información
-                            energética de México con tecnología de vanguardia
+                            Plataforma inteligente para conectar personas con oficinas, estacionamientos, lugares para eventos
+                            y espacios especiales, con soporte de IA y experiencia segura
                         </p>
 
                         <div class="hero-actions" data-aos="fade-up" data-aos-delay="600">
                             <a href="#registro" class="login-btn-primary">
-                                <i class="bi bi-play-circle"></i>Regístrate en el sistema
+                                <i class="bi bi-play-circle"></i>Regístrate ahora
                             </a>
                             <a href="#modulos" class="login-btn-outline">
-                                <i class="bi bi-grid-3x3-gap"></i>Ver módulos
+                                <i class="bi bi-grid-3x3-gap"></i>Explorar espacios
                             </a>
                         </div>
 
@@ -164,7 +164,7 @@
                         <div class="login-video-container mt-4" data-aos="fade-up" data-aos-duration="1000"
                             data-aos-delay="300">
                             <video class="login-video w-100 rounded shadow" controls autoplay muted loop
-                                poster="@cdn/img_snier/login/logo_snier.png" preload="auto">
+                                poster="@cdn/be-inn/iconos/logobeeinn.png" preload="auto">
                                 <source src="https://cdn.sassoapps.com/video/SNIER%202025.mp4" type="video/mp4">
                                 <p>Tu navegador no soporta videos HTML5.
                                     <a href="https://cdn.sassoapps.com/video/SNIER%202025.mp4">Descarga el video</a>.
@@ -173,7 +173,7 @@
                             <div class="login-video-description mt-2">
                                 <small class="text-shadow">
                                     <i class="bi bi-camera-video me-2"></i>
-                                    <strong>Sistema Nacional de Información Energética</strong>
+                                    <strong>BE-INN - Plataforma de Espacios</strong>
                                     <span class="mx-2">•</span>
                                     <em>Video Oficial 2025</em>
                                     <span class="mx-2">•</span>
@@ -189,19 +189,19 @@
                     data-aos="fade-left" data-aos-duration="1000" data-aos-delay="400">
                     <div class="row justify-content-center w-100">
                         <div class="col-lg-8 text-center mb-5" data-aos="fade-down">
-                            <h2 class="text-white mb-3">Accede al SNIER</h2>
-                            <p class="lead text-white-50">Plataforma oficial del Sistema Nacional de Información
-                                Energética</p>
+                            <h2 class="text-white mb-3">Accede a BE-INN</h2>
+                            <p class="lead text-white-50">Plataforma inteligente para descubrir, publicar y gestionar
+                                espacios únicos</p>
                         </div>
                     </div>
                     <div class="row justify-content-center w-100">
                         <div class="col-lg-10 col-xl-8" data-aos="fade-right">
                             <div class="login-card p-4 p-md-5 mb-4 mb-lg-0 w-100">
                                 <div class="text-center mb-4">
-                                    <img src="@cdn/img_snier/login/logo_snier.png" class="img-fluid mb-3"
-                                        style="max-width: 120px;" alt="SNIER Logo">
-                                    <h4 class="fw-bold text-primary">Accede al SNIER</h4>
-                                    <p class="text-muted">Selecciona tu tipo de acceso al sistema</p>
+                                    <img src="@cdn/be-inn/iconos/logobeeinn.png" class="img-fluid mb-3"
+                                        style="max-width: 120px;" alt="BE-INN Logo">
+                                    <h4 class="fw-bold text-primary">Accede a BE-INN</h4>
+                                    <p class="text-muted">Selecciona tu tipo de acceso a la plataforma</p>
                                 </div>
 
                                 <!-- 🔹 Sección de acceso rápido -->
@@ -229,7 +229,7 @@
                                         </form>
 
                                         <button type="button" class="btn btn-outline-success btn-login" id="btnPublico">
-                                            <i class="bi bi-globe me-1"></i> Consulta Pública
+                                            <i class="bi bi-globe me-1"></i> Explorar como invitado
                                         </button>
                                     </div>
                                 </div>
@@ -293,10 +293,10 @@
                                     <div id="infoPublica" style="display: none;">
                                         <div class="login-alert login-alert-info text-center">
                                             <i class="bi bi-info-circle me-2"></i>
-                                            <strong>Acceso Público</strong><br />
-                                            Podrás consultar información general sin necesidad de registro.
+                                            <strong>Acceso como Invitado</strong><br />
+                                            Podrás explorar espacios disponibles sin necesidad de registro.
                                             <br><small class="text-muted mt-2 d-block">
-                                                Algunas funciones avanzadas requieren registro de usuario.
+                                                Para reservar o publicar espacios necesitas crear una cuenta.
                                             </small>
                                         </div>
                                     </div>
@@ -380,513 +380,6 @@
                         <div class="stats-number">24/7</div>
                         <div class="stats-label">Datos actualizados</div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Modules Section -->
-    <section class="modules-section" id="modulos">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="section-title">
-                    <span class="bg-light px-4">Módulos del SNIER</span>
-                </h2>
-                <p class="section-description">Explora las herramientas especializadas del Sistema Nacional de
-                    Información
-                    Energética
-                </p>
-            </div>
-
-            <!-- Módulos Principales -->
-            <div class="mb-5">
-                <h3 class="modules-category-title">📊 Módulos de Información</h3>
-                <div class="row g-4">
-                    <!-- El inventario y el potencial de los recursos renovables -->
-                    <div class="col-lg-4 col-md-6" data-aos="fade-up">
-                        <div class="module-card">
-                            <div class="module-card-video-wrapper">
-                                <video autoplay loop muted class="module-card-video">
-                                    <source src="https://cdn.sassoapps.com/video/Login_snier.mp4" type="video/mp4">
-                                </video>
-                            </div>
-                            <div class="module-icon-wrapper">
-                                <i class="bi bi-sun module-icon"></i>
-                            </div>
-                            <div class="module-card-content">
-                                <h4>Inventario y Potencial de Recursos Renovables</h4>
-                                <p>Atlas de recursos renovables, exploración, extracción, explotación, producción,
-                                    transformación,
-                                    transporte, almacenamiento, distribución y consumo final.</p>
-                                <div class="module-footer">
-                                    <span class="badge badge-success">Disponible</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- El origen y el destino de la energía -->
-                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                        <div class="module-card">
-                            <div class="module-card-video-wrapper">
-                                <img src="https://images.pexels.com/photos/1098518/pexels-photo-1098518.jpeg"
-                                    alt="Placeholder" class="module-card-video">
-                            </div>
-                            <div class="module-icon-wrapper">
-                                <i class="bi bi-diagram-3 module-icon"></i>
-                            </div>
-                            <div class="module-card-content">
-                                <h4>Origen y Destino de la Energía</h4>
-                                <p>Visualiza el flujo energético a lo largo de toda la cadena de valor nacional y
-                                    sectorial.</p>
-                                <div class="module-footer">
-                                    <span class="badge bg-info">Interactivo</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Información sobre el Mercado Eléctrico Mayorista -->
-                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                        <div class="module-card">
-                            <div class="module-card-video-wrapper">
-                                <img src="https://images.pexels.com/photos/207489/pexels-photo-207489.jpeg"
-                                    alt="Placeholder" class="module-card-video">
-                            </div>
-                            <div class="module-icon-wrapper">
-                                <i class="bi bi-lightning-charge module-icon"></i>
-                            </div>
-                            <div class="module-card-content">
-                                <h4>Mercado Eléctrico Mayorista</h4>
-                                <p>Información estadística sobre precios, ofertas, demanda y operación del mercado
-                                    eléctrico nacional.</p>
-                                <div class="module-footer">
-                                    <span class="badge bg-warning">Tiempo Real</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Seguimiento a instrumentos de planeación energética -->
-                    <div class="col-lg-4 col-md-6" data-aos="fade-up">
-                        <div class="module-card">
-                            <div class="module-card-video-wrapper">
-                                <img src="https://images.pexels.com/photos/3183153/pexels-photo-3183153.jpeg"
-                                    alt="Placeholder" class="module-card-video">
-                            </div>
-                            <div class="module-icon-wrapper">
-                                <i class="bi bi-graph-up-arrow module-icon"></i>
-                            </div>
-                            <div class="module-card-content">
-                                <h4>Planeación Energética y Proyectos Estratégicos</h4>
-                                <p>Seguimiento a instrumentos de planeación energética y avance de proyectos
-                                    estratégicos nacionales.</p>
-                                <div class="module-footer">
-                                    <span class="badge bg-primary">Estratégico</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sistemas Especializados -->
-                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                        <div class="module-card">
-                            <div class="module-card-video-wrapper">
-                                <img src="https://images.pexels.com/photos/12747835/pexels-photo-12747835.jpeg"
-                                    alt="Placeholder" class="module-card-video">
-                            </div>
-                            <div class="module-icon-wrapper">
-                                <i class="bi bi-piggy-bank module-icon"></i>
-                            </div>
-                            <div class="module-card-content">
-                                <h4>FOTEASE</h4>
-                                <h6 class="text-muted small mb-2">Fondo para la Transición Energética y el
-                                    Aprovechamiento Sustentable de la Energía</h6>
-                                <p>Instrumento financiero para promover proyectos de eficiencia energética, energías
-                                    renovables y transición energética nacional.</p>
-                                <div class="module-footer">
-                                    <span class="badge bg-success">Financiero</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                        <div class="module-card">
-                            <div class="module-card-video-wrapper">
-                                <img src="https://images.pexels.com/photos/12319814/pexels-photo-12319814.jpeg"
-                                    alt="Placeholder" class="module-card-video">
-                            </div>
-                            <div class="module-icon-wrapper">
-                                <i class="bi bi-file-earmark-text module-icon"></i>
-                            </div>
-                            <div class="module-card-content">
-                                <h4>FSUE</h4>
-                                <p>Fondo del Servicio Universal de Energía para comunidades rurales y aisladas del país.
-                                </p>
-                                <div class="module-footer">
-                                    <span class="badge bg-success">Social</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6" data-aos="fade-up">
-                        <div class="module-card">
-                            <div class="module-card-video-wrapper">
-                                <img src="https://images.pexels.com/photos/1762815/pexels-photo-1762815.jpeg"
-                                    alt="Placeholder" class="module-card-video">
-                            </div>
-                            <div class="module-icon-wrapper">
-                                <i class="bi bi-lightbulb module-icon"></i>
-                            </div>
-                            <div class="module-card-content">
-                                <h4>Fondos de I+D</h4>
-                                <p>Fondos de Investigación y Desarrollo para innovación tecnológica en el sector
-                                    energético.</p>
-                                <div class="module-footer">
-                                    <span class="badge bg-info">Innovación</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Registros y Certificaciones -->
-            <div class="mb-5">
-                <h3 class="modules-category-title">🏆 Registros y Certificaciones</h3>
-                <div class="row g-4">
-                    <div class="col-lg-4 col-md-6" data-aos="fade-up">
-                        <div class="module-card">
-                            <div class="module-card-video-wrapper">
-                                <img src="https://images.pexels.com/photos/1108572/pexels-photo-1108572.jpeg"
-                                    alt="Placeholder" class="module-card-video">
-                            </div>
-                            <div class="module-icon-wrapper">
-                                <i class="bi bi-award module-icon "></i>
-                            </div>
-                            <div class="module-card-content">
-                                <h4>Certificados de Energías Limpias</h4>
-                                <p>Registro público de CELs, participantes obligados y cumplimiento de metas de energías
-                                    limpias.
-                                </p>
-                                <div class="module-footer">
-                                    <span class="badge bg-success">Oficial</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                        <div class="module-card">
-                            <div class="module-card-video-wrapper">
-                                <img src="@cdn/img_snier/login/innovacion.png" alt="Placeholder"
-                                    class="module-card-video">
-                            </div>
-                            <div class="module-icon-wrapper">
-                                <i class="bi bi-gear-wide-connected module-icon "></i>
-                            </div>
-                            <div class="module-card-content">
-                                <h4>Catálogo de Tecnologías</h4>
-                                <p>Tecnologías para generación de electricidad y habilitadoras del sector energético.
-                                </p>
-                                <div class="module-footer">
-                                    <span class="badge bg-success">Catálogo</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                        <div class="module-card">
-                            <div class="module-card-video-wrapper">
-                                <img src="@cdn/img_snier/login/escenarios.png" alt="Placeholder"
-                                    class="module-card-video">
-                            </div>
-                            <div class="module-icon-wrapper">
-                                <i class="bi bi-bar-chart-steps module-icon "></i>
-                            </div>
-                            <div class="module-card-content">
-                                <h4>Escenarios Energéticos</h4>
-                                <p>Escenarios de referencia a mediano y largo plazo del sector energético nacional.</p>
-                                <div class="module-footer">
-                                    <span class="badge bg-success">Prospectivo</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Eficiencia Energética -->
-            <div class="mb-5">
-                <h3 class="modules-category-title">⚡ Eficiencia Energética</h3>
-                <div class="row g-4">
-                    <div class="col-lg-3 col-md-6" data-aos="fade-up">
-                        <div class="module-card">
-                            <div class="module-card-video-wrapper">
-                                <img src="@cdn/img_snier/login/combustibles.png" alt="Placeholder"
-                                    class="module-card-video">
-                            </div>
-                            <div class="module-icon-wrapper">
-                                <i class="bi bi-fuel-pump module-icon "></i>
-                            </div>
-                            <div class="module-card-content">
-                                <h4>Combustibles y Poderes Caloríficos</h4>
-                                <p>Lista completa con características técnicas y energéticas.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                        <div class="module-card">
-                            <div class="module-card-video-wrapper">
-                                <img src="@cdn/img_snier/login/aparatos.png" alt="Placeholder"
-                                    class="module-card-video">
-                            </div>
-                            <div class="module-icon-wrapper">
-                                <i class="bi bi-tools module-icon "></i>
-                            </div>
-                            <div class="module-card-content">
-                                <h4>Catálogo de Equipos</h4>
-                                <p>Aparatos relevantes para consumo de energía y unidades comercializadas.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                        <div class="module-card">
-                            <div class="module-card-video-wrapper">
-                                <img src="@cdn/img_snier/login/instalaciones.png" alt="Placeholder"
-                                    class="module-card-video">
-                            </div>
-                            <div class="module-icon-wrapper">
-                                <i class="bi bi-building module-icon "></i>
-                            </div>
-                            <div class="module-card-content">
-                                <h4>Registro de Instalaciones</h4>
-                                <p>Edificaciones, empresas y productos de eficiencia energética.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
-                        <div class="module-card">
-                            <div class="module-card-video-wrapper">
-                                <img src="@cdn/img_snier/login/ahorros.png" alt="Placeholder" class="module-card-video">
-                            </div>
-                            <div class="module-icon-wrapper">
-                                <i class="bi bi-arrow-down-circle module-icon "></i>
-                            </div>
-                            <div class="module-card-content">
-                                <h4>Medidas de Reducción</h4>
-                                <p>Ahorros generados por medidas de reducción en intensidad energética.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Funciones del Consejo -->
-            <div class="governance-section">
-                <div class="text-center mb-4">
-                    <h3 class="modules-category-title">🏛️ Funciones del Consejo SNIEr</h3>
-                    <p class="text-muted">En el apartado de consejo del SNIEr se cuenta con funciones que apoyan al
-                        seguimiento en cada una de las etapas del Consejo.</p>
-                </div>
-
-                <!-- Flujo principal del proceso -->
-                <div class="row g-3 mb-4">
-                    <div class="col-lg-2 col-md-4 col-sm-6" data-aos="fade-up">
-                        <div class="governance-card text-dark">
-                            <div class="governance-icon">
-                                <i class="bi bi-calendar-check"></i>
-                            </div>
-                            <h6>Convocatoria y orden del día</h6>
-                            <p class="small">Programación y organización de sesiones del consejo</p>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="100">
-                        <div class="governance-card text-dark">
-                            <div class="governance-icon">
-                                <i class="bi bi-file-earmark-text"></i>
-                            </div>
-                            <h6>Documentación soporte de los temas a tratar</h6>
-                            <p class="small">Preparación de materiales y documentos de apoyo</p>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="200">
-                        <div class="governance-card text-dark">
-                            <div class="governance-icon">
-                                <i class="bi bi-people"></i>
-                            </div>
-                            <h6>Sesión</h6>
-                            <p class="small">Desarrollo de las sesiones ordinarias y extraordinarias</p>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="300">
-                        <div class="governance-card text-dark">
-                            <div class="governance-icon">
-                                <i class="bi bi-clipboard-check"></i>
-                            </div>
-                            <h6>Registro de acuerdos</h6>
-                            <p class="small">Documentación oficial de decisiones y compromisos</p>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="400">
-                        <div class="governance-card text-dark">
-                            <div class="governance-icon">
-                                <i class="bi bi-arrow-repeat"></i>
-                            </div>
-                            <h6>Seguimiento de acuerdos</h6>
-                            <p class="small">Monitoreo del cumplimiento de compromisos</p>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="500">
-                        <div class="governance-card text-dark">
-                            <div class="governance-icon">
-                                <i class="bi bi-file-earmark-bar-graph"></i>
-                            </div>
-                            <h6>Informe anual de actividades</h6>
-                            <p class="small">Reporte consolidado de gestión y resultados</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Funciones específicas del SNIEr -->
-                <div class="text-center mb-4 mt-5">
-                    <h4 class="fw-bold">Funciones del SNIEr</h4>
-                    <p class="text-muted">Herramientas de apoyo para cada etapa del proceso</p>
-                </div>
-
-                <div class="functions-list">
-                    <div class="row g-3">
-                        <div class="col-lg-6">
-                            <div class="function-row" data-aos="fade-right">
-                                <div class="function-badge">
-                                    <i class="bi bi-inbox"></i>
-                                </div>
-                                <div class="function-info">
-                                    <h6>Buzón de asuntos</h6>
-                                    <p>Sistema de recepción y gestión de temas para el consejo</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="function-row" data-aos="fade-left">
-                                <div class="function-badge">
-                                    <i class="bi bi-database"></i>
-                                </div>
-                                <div class="function-info">
-                                    <h6>Repositorio de información</h6>
-                                    <p>Archivo digital de documentos y antecedentes del consejo</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="function-row" data-aos="fade-right" data-aos-delay="100">
-                                <div class="function-badge">
-                                    <i class="bi bi-person-check"></i>
-                                </div>
-                                <div class="function-info">
-                                    <h6>Registro digital de asistencia</h6>
-                                    <p>Control automático de participación y validación del quórum</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="function-row" data-aos="fade-left" data-aos-delay="100">
-                                <div class="function-badge">
-                                    <i class="bi bi-hand-thumbs-up"></i>
-                                </div>
-                                <div class="function-info">
-                                    <h6>Votación digital de acuerdos</h6>
-                                    <p>Sistema electrónico para toma de decisiones del consejo</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="function-row" data-aos="fade-right" data-aos-delay="200">
-                                <div class="function-badge">
-                                    <i class="bi bi-journal-text"></i>
-                                </div>
-                                <div class="function-info">
-                                    <h6>Registro de acuerdos energéticos</h6>
-                                    <p>Base de datos especializada en decisiones del sector energético</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="function-row" data-aos="fade-left" data-aos-delay="200">
-                                <div class="function-badge">
-                                    <i class="bi bi-file-earmark-check"></i>
-                                </div>
-                                <div class="function-info">
-                                    <h6>Acta de seguimiento de acuerdos</h6>
-                                    <p>Documentación formal del progreso de compromisos</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="function-row" data-aos="fade-right" data-aos-delay="300">
-                                <div class="function-badge">
-                                    <i class="bi bi-speedometer2"></i>
-                                </div>
-                                <div class="function-info">
-                                    <h6>Tablero con indicadores de desempeño</h6>
-                                    <p>Métricas y KPIs del funcionamiento del consejo</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="function-row" data-aos="fade-left" data-aos-delay="300">
-                                <div class="function-badge">
-                                    <i class="bi bi-calendar2-week"></i>
-                                </div>
-                                <div class="function-info">
-                                    <h6>Programa anual de trabajo</h6>
-                                    <p>Planificación y programación de actividades anuales</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Función destacada -->
-                        <div class="col-12">
-                            <div class="function-row function-featured" data-aos="zoom-in" data-aos-delay="400">
-                                <div class="function-badge function-badge-large">
-                                    <i class="bi bi-file-earmark-pdf"></i>
-                                </div>
-                                <div class="function-info">
-                                    <h6>Reporte automatizado (Word y PPT)</h6>
-                                    <p>Sistema de generación automática de reportes ejecutivos y presentaciones para el
-                                        consejo
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- Benefits Section -->
-    <section class="benefits-section" id="beneficios">
-        <div class="container">
             <div class="text-center mb-5" data-aos="fade-up">
                 <h2 class="section-title">¿Para quién es útil el SNIER?</h2>
                 <p class="section-description">
@@ -1047,7 +540,7 @@
                 <div class="col-lg-6" data-aos="fade-right">
                     <div class="form-container p-4 p-md-5 bg-white rounded shadow">
                         <div class="text-center mb-4">
-                            <img src="@cdn/img_snier/login/logo_snier.png" alt="SNIER" class="brand-logo mb-3"
+                            <img src="@cdn/be-inn/iconos/logobeeinn.png" alt="SNIER" class="brand-logo mb-3"
                                 style="max-width: 120px;">
                             <h2 class="fw-bold text-primary">Registro de Usuario</h2>
                             <p class="text-muted">Completa los siguientes pasos para crear tu cuenta</p>
@@ -1209,26 +702,39 @@
             <!-- Columna derecha: Información e invitación -->
             <div class="col-lg-5" data-aos="fade-left">
                 <div class="p-4 p-md-5 text-white">
-                    <h4 class="fw-bold mb-4 text-white">¿Primera vez en el SNIER?</h4>
-                    <p class="mb-4 text-white">Regístrate para acceder a todas las funcionalidades del sistema:</p>
+                    <h4 class="fw-bold mb-4 text-white">¿Primera vez en BE-INN?</h4>
+                    <p class="mb-4 text-white">Crea tu cuenta y empieza a descubrir, publicar y rentar espacios únicos con respaldo inteligente:</p>
 
                     <ul class="list-unstyled mb-5">
-                        <li class="mb-3"><i class="bi bi-check-circle-fill text-primary me-2"></i> Acceso completo a
-                            todos los módulos</li>
-                        <li class="mb-3"><i class="bi bi-check-circle-fill text-primary me-2"></i> Descarga de reportes
-                            personalizados</li>
-                        <li class="mb-3"><i class="bi bi-check-circle-fill text-primary me-2"></i> Alertas y
-                            notificaciones personalizadas</li>
-                        <li class="mb-3"><i class="bi bi-check-circle-fill text-primary me-2"></i> Herramientas
-                            avanzadas de análisis</li>
-                        <li><i class="bi bi-check-circle-fill text-primary me-2"></i> Soporte técnico prioritario</li>
+                        <li class="mb-3">
+                            <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                            Acceso a oficinas, estacionamientos, lugares para eventos y espacios especiales
+                        </li>
+                        <li class="mb-3">
+                            <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                            Panel para administrar tus espacios, reservas y ganancias en tiempo real
+                        </li>
+                        <li class="mb-3">
+                            <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                            Alertas de reservas, recordatorios de visitas y mensajes de tus invitados
+                        </li>
+                        <li class="mb-3">
+                            <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                            Recomendaciones inteligentes para fijar precios y mejorar la ocupación
+                        </li>
+                        <li>
+                            <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                            Acompañamiento humano y soporte cuando lo necesites
+                        </li>
                     </ul>
 
                     <div class="bg-white p-4 rounded text-dark">
-                        <h5 class="fw-bold mb-3">¿Eres una institución?</h5>
-                        <p class="mb-3">Solicita una cuenta institucional con privilegios especiales para carga de
-                            datos.</p>
-                        <a href="@Url.Action("Registro", "Acceso")" class="btn btn-primary">Regístrate</a>
+                        <h5 class="fw-bold mb-3">¿Eres una empresa o administrador de varios espacios?</h5>
+                        <p class="mb-3">
+                            Solicita una cuenta Inner Pro y gestiona desde un solo lugar tus oficinas, sucursales,
+                            estacionamientos o espacios para eventos.
+                        </p>
+                        <a href="@Url.Action("Registro", "Acceso")" class="btn btn-primary">Quiero ser Inner Pro</a>
                     </div>
                 </div>
             </div>
@@ -1251,14 +757,14 @@
                             <h3 class="accordion-header" id="headingOne">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapseOne">
-                                    ¿Quién puede acceder al SNIER?
+                                    ¿Quién puede acceder a BE-INN?
                                 </button>
                             </h3>
                             <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                                 <div class="accordion-body">
-                                    El SNIER tiene dos modalidades de acceso: Consulta Pública (acceso libre sin
-                                    registro) y Acceso Registrado (requiere credenciales). Algunos módulos avanzados
-                                    están restringidos a usuarios autorizados.
+                                    Cualquier persona que quiera reservar un espacio y cualquier Inner que desee publicar uno.
+                                    Puedes navegar y explorar sin cuenta, pero para reservar o administrar tus espacios sí
+                                    necesitas registrarte.
                                 </div>
                             </div>
                         </div>
@@ -1268,14 +774,14 @@
                             <h3 class="accordion-header" id="headingTwo">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapseTwo">
-                                    ¿Cómo obtengo una cuenta con privilegios especiales?
+                                    ¿Cómo obtengo una cuenta Inner Pro?
                                 </button>
                             </h3>
                             <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                                 <div class="accordion-body">
-                                    Las cuentas con privilegios especiales (como carga de datos o acceso a información
-                                    sensible) deben solicitarse directamente a la Secretaría de Energía mediante el
-                                    formulario institucional disponible en el portal oficial.
+                                    Si administras varios espacios (oficinas, estacionamientos, salas para eventos o espacios especiales),
+                                    puedes solicitar una cuenta Inner Pro desde este mismo portal. Completa tu registro con tus datos fiscales
+                                    y de contacto, y nuestro equipo revisará tu solicitud para activar los privilegios avanzados.
                                 </div>
                             </div>
                         </div>
@@ -1285,15 +791,14 @@
                             <h3 class="accordion-header" id="headingThree">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapseThree">
-                                    ¿Con qué frecuencia se actualizan los datos?
+                                    ¿Qué hace diferente a BE-INN de otras plataformas?
                                 </button>
                             </h3>
                             <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                                 <div class="accordion-body">
-                                    La frecuencia de actualización varía por módulo. Los datos de precios y tarifas se
-                                    actualizan diariamente, el Balance Energético trimestralmente, y los permisos y
-                                    regulaciones en tiempo real. Cada conjunto de datos muestra claramente su última
-                                    actualización.
+                                    BE-INN no solo publica espacios: te ayuda a diseñar experiencias. Integramos asistentes con IA,
+                                    analítica de ocupación y una comunidad de Inners que cuidan sus espacios como si fueran su casa.
+                                    Nuestra meta es que tanto quien hospeda como quien reserva se sienta seguro, acompañado y en control.
                                 </div>
                             </div>
                         </div>
@@ -1312,9 +817,11 @@
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-4">
-                    <img src="@cdn/img_snier/login/logo_snier.png" alt="SNIER" height="40" class="mb-3">
-                    <p class="small">Sistema Nacional de Información Energética<br>Plataforma oficial de la Secretaría
-                        de Energía</p>
+                    <img src="@cdn/be-inn/iconos/logobeeinn.png" alt="SNIER" height="40" class="mb-3">
+                    <p class="small">
+                        Plataforma BE-INN para conectar personas con espacios únicos.<br>
+                        Encuentra, publica y administra tus espacios de manera segura e inteligente.
+                    </p>
                     <div class="mt-4">
                         <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
                         <a href="#" class="social-icon"><i class="bi bi-twitter"></i></a>
@@ -1351,9 +858,9 @@
                 <div class="col-lg-2">
                     <h5 class="mb-3">Contacto</h5>
                     <ul class="list-unstyled footer-links">
-                        <li class="mb-2"><a href="#">Soporte técnico</a></li>
-                        <li class="mb-2"><a href="#">Cuentas institucionales</a></li>
-                        <li><a href="#">Secretaría de Energía</a></li>
+                        <li class="mb-2"><a href="#">Soporte para Inners</a></li>
+                        <li class="mb-2"><a href="#">Centro de ayuda</a></li>
+                        <li><a href="#">Preguntas frecuentes</a></li>
                     </ul>
                 </div>
             </div>
@@ -1363,7 +870,7 @@
                     <p class="small mb-0">© 2025 SNIER. Todos los derechos reservados.</p>
                 </div>
                 <div class="col-md-6 text-center text-md-end">
-                    <p class="small mb-0">Gobierno de México - Secretaría de Energía</p>
+                    <p class="small mb-0">Una plataforma creada por Inners para Inners e invitados.</p>
                 </div>
             </div>
         </div>
