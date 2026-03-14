@@ -5,7 +5,7 @@
 @inject IHttpContextAccessor HttpContextAccessor
 
 @{
-    ViewData["Title"] = "Sistema Nacional de Información Energética (SNIEr)";
+    ViewData["Title"] = "BEINN";
 
     var perfilJson = HttpContextAccessor.HttpContext.Session.GetString("PerfilUsuario");
     var perfilUsuario = JsonConvert.DeserializeObject<PerfilUsuario>(perfilJson);
@@ -17,13 +17,13 @@
     {
         Title = ViewData["Title"].ToString(),
         IconPath = "sistema.png",
-        Description = "Plataforma de integración, consulta, trazabilidad y análisis de información energética nacional.",
+        Description = "Plataforma BEINN para integración, consulta y evolución de módulos empresariales.",
         Section = "Inicio",
         ModuleInfo = JsonConvert.SerializeObject(new
         {
-            title = "SNIEr",
-            description = "Portal principal del Sistema Nacional de Información Energética.",
-            functionality = "Consulta módulos, indicadores, reportes, trazabilidad y estados del sistema.",
+            title = "BEINN",
+            description = "Portal principal de la plataforma BEINN.",
+            functionality = "Consulta módulos, tableros, reportes, trazabilidad y estados del sistema.",
             stage = "Operación",
             roles = new[] {
 new { icon = "globe", text = "Usuarios Públicos: Consulta general de datos" },
@@ -203,7 +203,7 @@ new { icon = "user-shield", text = "Funcionarios CRE/SENER: Gestión e integraci
                 <h1 class="display-5 fw-bold mb-3 text-white">
                     @if (esConsultaPublica)
                     {
-                        <text>Bienvenido a la Consulta Pública</text>
+                    <text>Bienvenido a BEINN</text>
                     }
                     else
                     {
@@ -211,8 +211,7 @@ new { icon = "user-shield", text = "Funcionarios CRE/SENER: Gestión e integraci
                         <text>Bienvenido, @nombreUsuario</text>
                     }
                 </h1>
-                <p class="lead mb-4 text-white-50">El SNIEr es la fuente oficial de información del sector energético en
-                    México.</p>
+                <p class="lead mb-4 text-white-50">BEINN concentra el acceso a los módulos y tableros del sistema.</p>
             </div>
         </div>
     </div>
@@ -329,34 +328,6 @@ new { icon = "user-shield", text = "Funcionarios CRE/SENER: Gestión e integraci
         </div>
     </div>
 </div>
-
-<div class="container my-4">
-    <div class="dashboard-card full-width" data-aos="fade-up">
-        <div class="card-header">
-            <div class="card-icon"><i class="bi bi-diagram-3"></i></div>
-            <h3 class="card-title">Diagrama Energético</h3>
-        </div>
-        <div class="card-body">
-            <div class="diagram-wrapper">
-                <partial name="_DiagramaSEM_N" />
-            </div>
-        </div>
-    </div>
-</div>
-
-<style>
-    .diagram-wrapper {
-        max-width: 100%;
-        overflow-x: auto;   /* si se sale en pantallas chicas */
-        transform: scale(0.9);   /* más pequeño */
-        transform-origin: top center; /* escala desde arriba y centrado */
-    }
-
-    .diagram {
-        max-width: 1200px; /* o lo que necesites */
-        margin: 0 auto;    /* centrar dentro del wrapper */
-    }
-</style>
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>

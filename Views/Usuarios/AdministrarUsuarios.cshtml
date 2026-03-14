@@ -216,16 +216,25 @@
 <!-- Script para mostrar el modal con el mensaje del usuario -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        var userMessage = document.getElementById("userMessage").value;
-        var isSuccess = document.getElementById("isSuccess").value.toLowerCase() === "true";
+        var userMessageElement = document.getElementById("userMessage");
+        var isSuccessElement = document.getElementById("isSuccess");
+        var modalBody = document.getElementById("modalBody");
+        var userMessageModalElement = document.getElementById("userMessageModal");
+
+        if (!userMessageElement || !isSuccessElement || !modalBody || !userMessageModalElement) {
+            return;
+        }
+
+        var userMessage = userMessageElement.value;
+        var isSuccess = isSuccessElement.value.toLowerCase() === "true";
 
         // Puedes personalizar los colores de los mensajes según el éxito o el fracaso
         var messageColor = isSuccess ? "green" : "red";
 
-        document.getElementById("modalBody").innerText = userMessage;
-        document.getElementById("modalBody").style.color = messageColor;
+        modalBody.innerText = userMessage;
+        modalBody.style.color = messageColor;
 
-        var userMessageModal = new bootstrap.Modal(document.getElementById("userMessageModal"));
+        var userMessageModal = new bootstrap.Modal(userMessageModalElement);
         userMessageModal.show();
     });
 </script>

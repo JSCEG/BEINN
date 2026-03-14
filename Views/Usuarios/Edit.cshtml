@@ -118,13 +118,6 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            $("#Correo").on("focusout", function () {
-                var correoUsuario = $(this).val();
-                if (!correoUsuario.includes("@@")) { // Escapar el "arroba" aquí
-                    $(this).val(correoUsuario + "@@energia.gob.mx"); // Y aquí
-                }
-            });
-
             $('input[type="text"]').blur(function () {
                 var inputValue = $(this).val();
                 $(this).val($.trim(inputValue));

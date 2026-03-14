@@ -138,6 +138,18 @@ namespace BEINN.Servicios
                 {
                     try
                     {
+                        // Elimina notificaciones asociadas
+                        var sqlNotificaciones = "DELETE FROM [Notificaciones] WHERE ID_Usuario = @IdUsuario;";
+                        await connection.ExecuteAsync(sqlNotificaciones, new { IdUsuario = usuarioId }, transaction);
+
+                        // Elimina accesos registrados del usuario
+                        var sqlAccesos = "DELETE FROM [Accesos] WHERE IdUsuario = @IdUsuario;";
+                        await connection.ExecuteAsync(sqlAccesos, new { IdUsuario = usuarioId }, transaction);
+
+                        // Elimina personalizaciones de menú cuando existan
+                        var sqlMenu = "DELETE FROM [Menu] WHERE IdUsuario = @IdUsuario;";
+                        await connection.ExecuteAsync(sqlMenu, new { IdUsuario = usuarioId }, transaction);
+
                         // Elimina roles asociados
                         var sqlRolesUsuario = "DELETE FROM [Roles_Usuarios] WHERE IdUsuario = @IdUsuario;";
                         await connection.ExecuteAsync(sqlRolesUsuario, new { IdUsuario = usuarioId }, transaction);
@@ -150,8 +162,10 @@ namespace BEINN.Servicios
                         var sqlRecuperarContraseña = "DELETE FROM [Recuperar_contrasena] WHERE IdUsuario = @IdUsuario;";
                         await connection.ExecuteAsync(sqlRecuperarContraseña, new { IdUsuario = usuarioId }, transaction);
 
-                        // Elimina comentarios de proyectos estratégicos
-                        var sqlComentariosPE = "DELETE FROM [ComentariosProyectosEstrategicos] WHERE IdUsuario = @IdUsuario;";
+                        // Algunos ambientes no tienen este módulo/tablas cargados todavía.
+                        var sqlComentariosPE = @"
+IF OBJECT_ID(N'dbo.ComentariosProyectosEstrategicos', N'U') IS NOT NULL
+    DELETE FROM [dbo].[ComentariosProyectosEstrategicos] WHERE IDUsuario = @IdUsuario;";
                         await connection.ExecuteAsync(sqlComentariosPE, new { IdUsuario = usuarioId }, transaction);
 
                         // Elimina al usuario
@@ -161,9 +175,10 @@ namespace BEINN.Servicios
                         transaction.Commit();
                         return true;
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         try { transaction.Rollback(); } catch { }
+                        _logger.LogError(ex, "Error al eliminar el usuario {UsuarioId}.", usuarioId);
                         return false;
                     }
                 }

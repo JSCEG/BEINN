@@ -170,11 +170,8 @@ namespace BEINN.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(EditUserViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                //return View(model);
-
-
                 var user = new UserViewModel
                 {
                     IdUsuario = model.IdUsuario,
@@ -554,7 +551,7 @@ namespace BEINN.Controllers
         // 8. VISTAS DE AYUDA Y ENCUESTAS
         // ============================
 
-        public IActionResult Ayuda() => View();
+        public IActionResult Ayuda() => RedirectToAction("Index", "Ayuda");
 
         public async Task<IActionResult> Creditos()
         {
@@ -572,7 +569,7 @@ namespace BEINN.Controllers
             return View(credito);
         }
 
-        public IActionResult Encuesta() => View();
+        public IActionResult Encuesta() => RedirectToAction("Index", "Encuesta");
 
         [ServiceFilter(typeof(ValidacionInputFiltro))]
         [HttpPost]

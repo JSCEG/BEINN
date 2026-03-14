@@ -19,7 +19,6 @@ using Microsoft.AspNetCore.Authentication.Facebook;  // opcional
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-Console.WriteLine("Cadena de conexión en Program.cs: " + builder.Configuration.GetConnectionString("DefaultConnection"));
 
 // Configurar servicios
 builder.Services.AddCors(options =>
@@ -54,30 +53,14 @@ builder.Services.AddControllersWithViews();
 // });
 
 
-builder.Services.AddTransient<IRepositorioIndicadores, RepositorioIndicadores>();
-builder.Services.AddTransient<IRepositorioHidrocarburos, RepositorioHidrocarburos>();
-builder.Services.AddTransient<IRepositorioProyectos, RepositorioProyectos>();
 builder.Services.AddTransient<IRepositorioUsuarios, RepositorioUsuarios>();
 builder.Services.AddTransient<IRepositorioSecciones, RepositorioSecciones>();
 builder.Services.AddTransient<IRepositorioAcceso, RepositorioAcceso>();
-builder.Services.AddTransient<IRepositorioSNIER, RepositorioSNIER>();
 builder.Services.AddTransient<VisitasViewComponent>();
 builder.Services.AddTransient<IRepositorioHome, RepositorioHome>();
-builder.Services.AddTransient<IRepositorioSankey, RepositorioSankey>();
-builder.Services.AddTransient<IRepositorioSankeySener, RepositorioSankeySener>();
-builder.Services.AddTransient<IRepositorioMIM, RepositorioMIM>();
-builder.Services.AddTransient<IRepositorioAtlas, RepositorioAtlas>();
-builder.Services.AddTransient<IRepositorioMap, RepositorioMap>();
-builder.Services.AddTransient<IRepositorioLaboratoriosyUE, RepositorioLaboratoriosyUE>();
-builder.Services.AddTransient<IRepositorioProyEstrategicos, RepositorioProyEstrategicos>();
-builder.Services.AddTransient<IRepositorioPermisosPV, RepositorioPermisosPV>();
-builder.Services.AddTransient<IRepositorioFacturas, RepositorioFacturas>();
-builder.Services.AddTransient<IRepositorioEnergiasLimpias, RepositorioEnergiasLimpias>();
-builder.Services.AddTransient<IRepositorioTarifas, RepositorioTarifas>();
-builder.Services.AddTransient<FacturaExtractorService>();
-builder.Services.AddTransient<IRepositorioInscripcion, RepositorioInscripcion>();
-builder.Services.AddScoped<IRepositorioFinanzas, RepositorioFinanzas>();
-builder.Services.AddScoped<IRepositorioFuentesdeInformacion, RepositorioFuentesdeInformacion>();
+builder.Services.AddScoped<IAyudaService, AyudaService>();
+builder.Services.AddScoped<IEncuestaService, EncuestaService>();
+builder.Services.AddScoped<IChatService, ChatService>();
 
 
 builder.Services.AddTransient<IUserStore<UsuarioApp>, UsuarioStore>();
@@ -198,6 +181,8 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseForwardedHeaders();
+app.UseCors();
 app.UseSession();
 app.UseRouting();
 app.UseAuthentication();

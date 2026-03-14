@@ -9,11 +9,11 @@ namespace BEINN.Controllers
     [AutorizacionFiltro]
     public class ChatController : Controller
     {
-        private readonly IRepositorioChat _repositorioChat;
+        private readonly IChatService _chatService;
 
-        public ChatController(IRepositorioChat repositorioChat)
+        public ChatController(IChatService chatService)
         {
-            _repositorioChat = repositorioChat;
+            _chatService = chatService;
         }
 
         public IActionResult Asistente()
@@ -30,7 +30,7 @@ namespace BEINN.Controllers
                 return View("Asistente", model: "Por favor, ingrese algo para preguntar.");
             }
 
-            var response = await _repositorioChat.AskGPTAsync(prompt);
+            var response = await _chatService.PreguntarAsync(prompt);
             // Enviar la respuesta a la vista
             return View("Asistente", model: response);
         }
@@ -47,7 +47,7 @@ namespace BEINN.Controllers
                 return View("Asistente", model: "Por favor, ingrese algo para preguntar.");
             }
 
-            var response = await _repositorioChat.AskVisitasdeVerificaciónAsync(prompt);
+            var response = await _chatService.PreguntarVisitasAsync(prompt);
             // Enviar la respuesta a la vista
             return View("Asistente", model: response);
         }
@@ -76,7 +76,7 @@ namespace BEINN.Controllers
                 return View("ConsultaBD", model: "Por favor, ingrese una consulta SQL.");
             }
 
-            var resultado = await _repositorioChat.ConsultarBDAsync(prompt);
+            var resultado = await _chatService.EjecutarConsultaAsync(prompt);
             return View("ConsultaBD", model: resultado);
         }
 
@@ -96,7 +96,7 @@ namespace BEINN.Controllers
                 return View("ConsultaNatural", model: "Por favor, ingrese una pregunta.");
             }
 
-            var resultado = await _repositorioChat.GenerarConsultaSQLAsync(prompt);
+            var resultado = await _chatService.EjecutarConsultaNaturalAsync(prompt);
             return View("ConsultaNatural", model: resultado);
         }
 

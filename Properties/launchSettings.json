@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "NSIE": {
+    "BEINN": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
