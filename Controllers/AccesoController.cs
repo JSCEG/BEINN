@@ -320,16 +320,16 @@ namespace BEINN.Controllers
                         HttpContext.Session.SetString("PerfilUsuario", perfilUsuarioJson);
 
                         // Obtener secciones y módulos permitidos agrupados correctamente
-                        var seccionesDict = new Dictionary<int, SeccionSNIER>();
+                        var seccionesDict = new Dictionary<int, SeccionSistema>();
 
-                        cn.Query<SeccionSNIER, ModuloSNIER, VistaSNIER, int>(
+                        cn.Query<SeccionSistema, ModuloSistema, VistaSistema, int>(
                             "sp_ObtenerSeccionesYModulosPorUsuario",
                             (seccion, modulo, vista) =>
                             {
                                 if (!seccionesDict.TryGetValue(seccion.Id, out var seccionExistente))
                                 {
                                     seccionExistente = seccion;
-                                    seccionExistente.Modulos = new List<ModuloSNIER>();
+                                    seccionExistente.Modulos = new List<ModuloSistema>();
                                     seccionesDict[seccion.Id] = seccionExistente;
                                 }
 
@@ -337,7 +337,7 @@ namespace BEINN.Controllers
                                 if (modExistente == null)
                                 {
                                     modExistente = modulo;
-                                    modExistente.Vistas = new List<VistaSNIER>();
+                                    modExistente.Vistas = new List<VistaSistema>();
 
                                     // Si es externo
                                     if (modulo.Controller == "EXTERNA")
@@ -485,16 +485,16 @@ namespace BEINN.Controllers
                         HttpContext.Session.SetString("PerfilUsuario", perfilUsuarioJson);
 
                         // Obtener secciones y módulos permitidos agrupados correctamente
-                        var seccionesDict = new Dictionary<int, SeccionSNIER>();
+                        var seccionesDict = new Dictionary<int, SeccionSistema>();
 
-                        cn.Query<SeccionSNIER, ModuloSNIER, VistaSNIER, int>(
+                        cn.Query<SeccionSistema, ModuloSistema, VistaSistema, int>(
                             "sp_ObtenerSeccionesYModulosPorUsuario",
                             (seccion, modulo, vista) =>
                             {
                                 if (!seccionesDict.TryGetValue(seccion.Id, out var seccionExistente))
                                 {
                                     seccionExistente = seccion;
-                                    seccionExistente.Modulos = new List<ModuloSNIER>();
+                                    seccionExistente.Modulos = new List<ModuloSistema>();
                                     seccionesDict[seccion.Id] = seccionExistente;
                                 }
 
@@ -502,7 +502,7 @@ namespace BEINN.Controllers
                                 if (modExistente == null)
                                 {
                                     modExistente = modulo;
-                                    modExistente.Vistas = new List<VistaSNIER>();
+                                    modExistente.Vistas = new List<VistaSistema>();
 
                                     // Si es externo
                                     if (modulo.Controller == "EXTERNA")
@@ -1124,3 +1124,4 @@ namespace BEINN.Controllers
         }
     }
 }
+

@@ -27,10 +27,10 @@
             stage = "Operación",
             roles = new[] {
 new { icon = "globe", text = "Usuarios Públicos: Consulta general de datos" },
-new { icon = "user-shield", text = "Funcionarios CRE/SENER: Gestión e integración de información" }
+new { icon = "user-shield", text = "Administradores BEINN: Gestión e integración de información" }
 },
             order = new { step = 0, description = "Punto de acceso inicial al ecosistema energético" },
-            manualUrl = "/Documentos/ManualSNIEr.pdf"
+            manualUrl = "/Ayuda"
         })
     };
 
@@ -38,161 +38,13 @@ new { icon = "user-shield", text = "Funcionarios CRE/SENER: Gestión e integraci
     var rolUsuario = perfilUsuario?.Rol;
     var nombreUsuario = perfilUsuario?.Nombre?.ToString();
     var esConsultaPublica = (rolUsuario == "10" || nombreUsuario.Contains("consult"));
+    var modulosDestacados = Model.Secciones
+        .SelectMany(s => s.Modulos.Select(m => new { Seccion = s.Titulo, Modulo = m }))
+        .Take(6)
+        .ToList();
 }
 
 @await Html.PartialAsync("_ViewHeader", header)
-
-<style>
-    /* --- ESTILOS PARA EL NUEVO DASHBOARD --- */
-    .dashboard-container {
-        padding-top: 3rem;
-        padding-bottom: 4rem;
-        background: var(--color-fondo);
-    }
-
-    .dashboard-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-        gap: 2rem;
-    }
-
-    .dashboard-card {
-        background: var(--color-superficie);
-        border-radius: var(--radio-borde-lg);
-        padding: 2rem;
-        box-shadow: var(--sombra-suave);
-        transition: all 0.3s ease;
-        border: 1px solid var(--color-borde);
-        display: flex;
-        flex-direction: column;
-    }
-
-    .dashboard-card:hover {
-        transform: translateY(-8px);
-        box-shadow: var(--sombra-media);
-        border-color: var(--color-primario);
-    }
-
-    .dashboard-card.full-width {
-        grid-column: 1 / -1;
-        /* Ocupa todo el ancho del grid */
-    }
-
-    .dashboard-card .card-header {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid var(--color-borde);
-    }
-
-    .dashboard-card .card-icon {
-        font-size: 1.5rem;
-        color: var(--color-primario);
-        background-color: rgba(139, 195, 74, 0.1);
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .dashboard-card .card-title {
-        font-size: 1.25rem;
-        font-weight: 600;
-        color: var(--texto-principal);
-        margin-bottom: 0;
-    }
-
-    .dashboard-card .card-body {
-        flex-grow: 1;
-    }
-
-    /* Estilos para la tarjeta de Módulos */
-    .module-list a {
-        display: flex;
-        align-items: center;
-        padding: 1rem;
-        border-radius: var(--radio-borde);
-        text-decoration: none;
-        color: var(--texto-principal);
-        transition: background-color 0.2s ease, color 0.2s ease;
-        margin-bottom: 0.5rem;
-    }
-
-    .module-list a:hover {
-        background-color: rgba(139, 195, 74, 0.05);
-        color: var(--color-primario);
-    }
-
-    .module-list .module-icon {
-        font-size: 1.2rem;
-        margin-right: 1rem;
-        width: 24px;
-        text-align: center;
-        color: var(--color-secundario);
-    }
-
-    /* Estilos para la tarjeta de Indicadores */
-    .kpi-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.5rem;
-    }
-
-    .kpi-item {
-        text-align: center;
-    }
-
-    .kpi-label {
-        font-size: 0.9rem;
-        color: var(--texto-secundario);
-        margin-bottom: 0.5rem;
-    }
-
-    .kpi-value {
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--color-primario);
-    }
-
-    .kpi-unit {
-        font-size: 1rem;
-        color: var(--texto-secundario);
-        margin-left: 0.25rem;
-    }
-
-    /* Estilos para la tarjeta de Actividad Reciente */
-    #continuar {
-        padding: 2rem !important;
-        background: var(--color-superficie) !important;
-    }
-
-    /* Hero Section Compacta */
-    #hero-home {
-        padding: 2.5rem 0;
-        /* Altura reducida */
-        position: relative;
-        overflow: hidden;
-        background: var(--color-fondo-oscuro);
-    }
-
-    #particles-js-home {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 0;
-    }
-
-    #hero-home .container {
-        position: relative;
-        z-index: 1;
-    }
-</style>
 
 <!-- HERO SECTION COMPACTO -->
 <section id="hero-home" class="text-center">
@@ -230,22 +82,30 @@ new { icon = "user-shield", text = "Funcionarios CRE/SENER: Gestión e integraci
                 </div>
                 <div class="card-body">
                     <div class="module-list">
-                        <a href="@Url.Action("BalanceNacionalEnergia", "SankeySener")">
-                            <i class="bi bi-diagram-3-fill module-icon"></i>
-                            <span>Balance Nacional de Energía</span>
-                        </a>
-                        <a href="@Url.Action("AZEL_Publico", "Atlas")#7">
-                            <i class="bi bi-wind module-icon"></i>
-                            <span>Atlas de Energías Limpias (AZEL)</span>
-                        </a>
-                        <a href="@Url.Action("Infraestructura_SEM", "Map")">
-                            <i class="bi bi-map-fill module-icon"></i>
-                            <span>Mapa de Infraestructura</span>
-                        </a>
-                        <a href="@Url.Action("Index", "Revistas")">
-                            <i class="bi bi-book-half module-icon"></i>
-                            <span>Publicaciones y Revistas</span>
-                        </a>
+                        @if (modulosDestacados.Any())
+                        {
+                            foreach (var item in modulosDestacados)
+                            {
+                                if (item.Modulo.EsExterno)
+                                {
+                                    <a href="@item.Modulo.Action" target="_blank" rel="noopener noreferrer">
+                                        <i class="bi bi-box-arrow-up-right module-icon"></i>
+                                        <span>@item.Modulo.Title</span>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a asp-controller="@item.Modulo.Controller" asp-action="@item.Modulo.Action">
+                                        <i class="bi bi-grid-3x3-gap-fill module-icon"></i>
+                                        <span>@item.Modulo.Title</span>
+                                    </a>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            <p class="text-muted mb-0">No hay módulos activos disponibles para tu perfil.</p>
+                        }
                     </div>
                 </div>
             </div>
@@ -313,9 +173,8 @@ new { icon = "user-shield", text = "Funcionarios CRE/SENER: Gestión e integraci
                 <div class="card-body">
                     <p class="text-muted mb-4">Consulta nuestras guías o contáctanos para obtener asistencia.</p>
                     <div class="d-flex flex-column gap-2">
-                        <a href="https://cdn.sassoapps.com/Manuales/Manual_Usuario_SNIEr.pdf" class="btn btn-primary"
-                            target="_blank">
-                            <i class="bi bi-file-earmark-pdf me-2"></i>Descargar Manual
+                        <a asp-controller="Ayuda" asp-action="Index" class="btn btn-primary">
+                            <i class="bi bi-life-preserver me-2"></i>Ir al Centro de Ayuda
                         </a>
                         <button class="btn btn-outline-secondary"
                             onclick="mostrarAyudaModulo(@Html.Raw(header.ModuleInfo))">
@@ -463,3 +322,5 @@ new { icon = "user-shield", text = "Funcionarios CRE/SENER: Gestión e integraci
         });
     </script>
 }
+
+

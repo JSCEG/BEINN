@@ -27,7 +27,7 @@ namespace BEINN.Controllers
 
             foreach (var seccion in secciones)
             {
-                var modulosFiltrados = new List<ModuloSNIER>();
+                var modulosFiltrados = new List<ModuloSistema>();
 
                 foreach (var modulo in seccion.Modulos)
                 {
@@ -77,3 +77,4 @@ namespace BEINN.Controllers
         }
     }
 }
+

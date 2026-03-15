@@ -17,17 +17,17 @@
     {
         Title = "Creacion de notificaciones",
         IconPath = "notificaciones.png",
-        Description = "Gestiona la creación de notificaciones para los usuarios del SNIEr.",
+        Description = "Gestiona la creación de notificaciones para los usuarios de BEINN.",
         Section = "Gobernanza y Seguridad",
         ModuleInfo = JsonConvert.SerializeObject(new
         {
             title = "Creación de notificaciones",
-            description = "Gestiona la creación de notificaciones para los usuarios del SNIEr",
+            description = "Gestiona la creación de notificaciones para los usuarios de BEINN",
             functionality = "Crea notificaciones para enviarlas a todos los usuarios, por rol o algún usuario en específico",
             stage = "Inicialización",
             roles = new[] {
                 new { icon = "building", text = "Secretaría de Energía: Administración general" },
-                new { icon = "users-cog", text = "Unidad SNIEr: Gestión de notificaciones" },
+                new { icon = "users-cog", text = "Administración BEINN: Gestión de notificaciones" },
                 new { icon = "user-shield", text = "Dirección TICs: Control técnico" },
                 new { icon = "user-tie", text = "Consejo: Supervisión de accesos" }
             },
@@ -181,4 +181,5 @@
         });
     });
 </script>
+
 

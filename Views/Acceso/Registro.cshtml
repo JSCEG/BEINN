@@ -24,152 +24,27 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap"
         rel="stylesheet">
-
-    <style>
-        :root {
-            --primary-color: #216d92;
-            --primary-light: #81c3c9;
-            --primary-dark: #0d4b6e;
-            --secondary-color: #FF9800;
-            --dark-color: #1A3E4C;
-            --light-color: #F8F9FA;
-        }
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-
-        #video-bg {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            transform: translate(-50%, -50%);
-            object-fit: cover;
-            z-index: -1;
-        }
-
-        .form-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            padding: 2.5rem;
-            max-width: 700px;
-            margin: 2rem auto;
-        }
-
-        .btn-primary {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-            font-weight: 600;
-            padding: 0.75rem 1.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--primary-dark);
-            border-color: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(33, 109, 146, 0.3);
-        }
-
-        .step-title {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-size: 1.3rem;
-            margin-bottom: 1.5rem;
-            color: var(--primary-color);
-            position: relative;
-            padding-bottom: 0.5rem;
-        }
-
-        .step-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 50px;
-            height: 3px;
-            background: var(--primary-light);
-        }
-
-        .barra-carga {
-            height: 8px;
-            background-color: #e9ecef;
-            border-radius: 4px;
-            overflow: hidden;
-            margin-bottom: 1rem;
-        }
-
-        .barra-carga .progreso {
-            height: 100%;
-            width: 0%;
-            background-color: var(--primary-light);
-            transition: width 0.6s ease-in-out;
-        }
-
-        .oculto {
-            display: none;
-        }
-
-        .form-control,
-        .form-select {
-            border-radius: 8px;
-            padding: 0.75rem 1rem;
-            border: 1px solid #ced4da;
-        }
-
-        .form-control:focus,
-        .form-select:focus {
-            border-color: var(--primary-light);
-            box-shadow: 0 0 0 0.25rem rgba(129, 195, 201, 0.25);
-        }
-
-        .input-group-text {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-        }
-
-        .brand-logo {
-            max-width: 120px;
-            margin-bottom: 1.5rem;
-        }
-
-        /* Responsive adjustments */
-        @@media (max-width: 768px) {
-            .form-container {
-                padding: 1.5rem;
-                margin: 1rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="~/css/binn.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/binn-auth.css" asp-append-version="true" />
 </head>
 
-<body>
-    <video autoplay muted loop id="video-bg">
+<body class="binn-auth-page binn-auth-page--register">
+    <video autoplay muted loop id="video-bg" class="binn-auth-video">
         <source src="@cdn/video/Login_snier.mp4" type="video/mp4">
     </video>
 
     <div class="container d-flex justify-content-center align-items-center min-vh-100">
-        <div class="form-container" data-aos="fade-up">
+        <div class="binn-auth-card binn-auth-card--wide" data-aos="fade-up">
             <div class="text-center mb-4">
-                <img src="@cdn/be-inn/iconos/logobeeinn.png" alt="SNIER" class="brand-logo">
-                <h2 class="fw-bold" style="color: var(--primary-color);">Registro de Usuario</h2>
-                <p class="text-muted">Completa los siguientes pasos para crear tu cuenta</p>
+                <img src="@cdn/be-inn/iconos/logobeeinn.png" alt="BEINN" class="binn-auth-logo">
+                <h2 class="binn-auth-title">Registro de Usuario</h2>
+                <p class="binn-auth-subtitle">Completa los siguientes pasos para crear tu cuenta</p>
             </div>
 
             <form id="registroForm">
                 <!-- Paso 1 -->
                 <div id="paso1">
-                    <p class="step-title">Paso 1: Cargar Constancia de Situación Fiscal</p>
+                    <p class="binn-auth-step-title">Paso 1: Cargar Constancia de Situación Fiscal</p>
                     <div class="mb-3">
                         <label for="constanciaFile" class="form-label">Constancia Fiscal (PDF)</label>
                         <div class="input-group">
@@ -180,13 +55,13 @@
                     </div>
 
                     <div class="mb-3">
-                        <div class="barra-carga">
-                            <div class="progreso" id="barraProgreso"></div>
+                        <div class="binn-auth-progress">
+                            <div class="binn-auth-progress-bar" id="barraProgreso"></div>
                         </div>
                         <small id="uploadStatus" class="text-muted">Esperando archivo...</small>
                     </div>
 
-                    <div id="datosFiscales" class="alert alert-info mt-3 oculto">
+                    <div id="datosFiscales" class="alert alert-info mt-3 binn-auth-hidden">
                         <h6 class="fw-bold mb-3"><i class="bi bi-check-circle-fill me-2"></i>Datos fiscales reconocidos
                         </h6>
                         <div class="row">
@@ -209,8 +84,8 @@
                 </div>
 
                 <!-- Paso 2 -->
-                <div id="paso2" class="oculto">
-                    <p class="step-title">Paso 2: Subir Certificados</p>
+                <div id="paso2" class="binn-auth-hidden">
+                    <p class="binn-auth-step-title">Paso 2: Subir Certificados</p>
 
                     <div class="mb-3">
                         <label for="certCer" class="form-label">Certificado (.cer)</label>
@@ -248,8 +123,8 @@
                 </div>
 
                 <!-- Paso 3 -->
-                <div id="paso3" class="oculto">
-                    <p class="step-title">Paso 3: Datos de Contacto</p>
+                <div id="paso3" class="binn-auth-hidden">
+                    <p class="binn-auth-step-title">Paso 3: Datos de Contacto</p>
 
                     <div class="mb-3">
                         <label for="email" class="form-label">Correo electrónico</label>
@@ -324,7 +199,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body py-4">
-                    <p>Tu registro en el Sistema Nacional de Información Energética ha sido completado exitosamente.</p>
+                    <p>Tu registro en BEINN ha sido completado exitosamente.</p>
                     <p class="mb-0">Hemos enviado un correo de confirmación a tu dirección electrónica con instrucciones
                         para activar tu cuenta.</p>
                 </div>
@@ -345,8 +220,8 @@
 
         // Función para volver a pasos anteriores
         function volverPaso(paso) {
-            $('[id^="paso"]').addClass('oculto');
-            $(`#paso${paso}`).removeClass('oculto');
+            $('[id^="paso"]').addClass('binn-auth-hidden');
+            $(`#paso${paso}`).removeClass('binn-auth-hidden');
         }
 
         // Validación de archivo PDF
@@ -381,16 +256,16 @@
                 if (progress >= 100) {
                     clearInterval(interval);
                     $('#uploadStatus').text('Archivo cargado correctamente').addClass('text-success');
-                    $('#datosFiscales').removeClass('oculto');
+                    $('#datosFiscales').removeClass('binn-auth-hidden');
                 }
             }, 100);
         });
 
         // Navegación entre pasos
         $('#btnPaso1').click(function () {
-            if (!$('#datosFiscales').hasClass('oculto')) {
-                $('#paso1').addClass('oculto');
-                $('#paso2').removeClass('oculto');
+            if (!$('#datosFiscales').hasClass('binn-auth-hidden')) {
+                $('#paso1').addClass('binn-auth-hidden');
+                $('#paso2').removeClass('binn-auth-hidden');
             } else {
                 alert('Por favor, carga correctamente tu Constancia de Situación Fiscal antes de continuar.');
             }
@@ -398,8 +273,8 @@
 
         $('#btnPaso2').click(function () {
             if ($('#certCer').val() && $('#certKey').val() && $('#certPass').val()) {
-                $('#paso2').addClass('oculto');
-                $('#paso3').removeClass('oculto');
+                $('#paso2').addClass('binn-auth-hidden');
+                $('#paso3').removeClass('binn-auth-hidden');
             } else {
                 alert('Por favor, completa todos los campos del certificado antes de continuar.');
             }
@@ -429,3 +304,4 @@
 </body>
 
 </html>
+

@@ -215,12 +215,12 @@ public class SeccionesController : Controller
     //Crea y Guarda Nuevas Secciones desde el Index
     public IActionResult CrearSeccion()
     {
-        var nueva = new SeccionSNIER { SeccionActiva = true };
+        var nueva = new SeccionSistema { SeccionActiva = true };
         return PartialView("_CrearSeccionPartial", nueva);
     }
 
     [HttpPost]
-    public async Task<IActionResult> GuardarNuevaSeccion(SeccionSNIER seccionSNIER)
+    public async Task<IActionResult> GuardarNuevaSeccion(SeccionSistema seccionSNIER)
     {
         try
         {
@@ -231,7 +231,7 @@ public class SeccionesController : Controller
                 return BadRequest("El título es obligatorio.");
             }
 
-            // Convertir SeccionSNIER a SeccionConModulos
+            // Convertir SeccionSistema a SeccionConModulos
             var seccion = new SeccionConModulos
             {
                 Titulo = seccionSNIER.Titulo,
@@ -483,8 +483,8 @@ public class SeccionesController : Controller
 
             Console.WriteLine($">>> Sección encontrada: {seccion.Titulo}");
 
-            // Convertir SeccionConModulos a SeccionSNIER para el modal
-            var seccionSNIER = new SeccionSNIER
+            // Convertir SeccionConModulos a SeccionSistema para el modal
+            var seccionSNIER = new SeccionSistema
             {
                 Id = seccion.Id,
                 Titulo = seccion.Titulo,
@@ -510,7 +510,7 @@ public class SeccionesController : Controller
 
     // AGREGAR este método que falta
     [HttpPost]
-    public async Task<IActionResult> GuardarEdicionSeccion(SeccionSNIER seccionSNIER)
+    public async Task<IActionResult> GuardarEdicionSeccion(SeccionSistema seccionSNIER)
     {
         try
         {
@@ -521,7 +521,7 @@ public class SeccionesController : Controller
                 return BadRequest("El título es obligatorio.");
             }
 
-            // Convertir SeccionSNIER a SeccionConModulos
+            // Convertir SeccionSistema a SeccionConModulos
             var seccion = new SeccionConModulos
             {
                 Id = seccionSNIER.Id,

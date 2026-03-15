@@ -1,0 +1,160 @@
+body {
+    background:
+        radial-gradient(circle at top left, rgba(0, 82, 161, 0.08), transparent 28%),
+        linear-gradient(180deg, #f8fbff 0%, #f4f7fb 100%);
+    color: var(--binn-ink);
+}
+
+.header-custom .form-control {
+    border-color: rgba(0, 82, 161, 0.12);
+    background: rgba(245, 247, 251, 0.95);
+}
+
+.header-custom .form-control:focus {
+    border-color: rgba(0, 82, 161, 0.35);
+    box-shadow: 0 0 0 0.18rem rgba(0, 82, 161, 0.12);
+}
+
+.footer-binn {
+    background:
+        radial-gradient(circle at top right, rgba(249, 115, 22, 0.14), transparent 24%),
+        linear-gradient(135deg, #0d2240 0%, #12335f 45%, #0052a1 100%);
+    color: rgba(255, 255, 255, 0.92);
+    clear: both;
+    position: relative;
+    z-index: 2;
+}
+
+.footer-binn .footer-links a,
+.footer-binn .small,
+.footer-binn h5,
+.footer-binn p {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.footer-binn .footer-links a:hover,
+.footer-binn .social-icon:hover {
+    color: #fff !important;
+    transform: translateY(-1px);
+}
+
+.footer-content.footer-binn,
+body.sidebar-collapsed .footer-content.footer-binn {
+    margin-top: 2rem;
+}
+
+.footer-binn .container-fluid {
+    padding-top: 2.25rem;
+    padding-bottom: 1.5rem;
+}
+
+.dashboard-container {
+    padding-top: 3rem;
+    padding-bottom: 4rem;
+    background: transparent;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+.dashboard-card {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    transition: transform var(--binn-transition), box-shadow var(--binn-transition), border-color var(--binn-transition);
+}
+
+.dashboard-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--binn-shadow-medium);
+}
+
+.dashboard-card.full-width {
+    grid-column: 1 / -1;
+}
+
+#continuar {
+    padding: 2rem !important;
+    background: rgba(255, 255, 255, 0.98) !important;
+}
+
+#hero-home {
+    padding: 2.75rem 0;
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 15% 20%, rgba(249, 115, 22, 0.16), transparent 18%),
+        radial-gradient(circle at 85% 25%, rgba(51, 153, 255, 0.16), transparent 22%),
+        linear-gradient(135deg, #08243f 0%, #0d325a 48%, #0052a1 100%);
+}
+
+#particles-js-home {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+#hero-home .container {
+    position: relative;
+    z-index: 1;
+}
+
+#hero-home .lead {
+    max-width: 680px;
+    margin-inline: auto;
+}
+
+#grafico-accesos-por-fecha,
+#grafica-actividad,
+#grafica-actividad-usuario,
+#grafico-accesos-usuario,
+#grafico-accesos-hoy,
+#grafico-accesos-cargo,
+#grafico-accesos-unidad {
+    min-height: 320px;
+    border-radius: 22px;
+}
+
+#usuarios-activos-container .card,
+#usuarios-activos .card {
+    border-radius: 20px;
+}
+
+@media (max-width: 767.98px) {
+    .dashboard-container {
+        padding-top: 2rem;
+        padding-bottom: 3rem;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
+
+    .dashboard-card {
+        padding: 1.35rem;
+    }
+
+    #hero-home {
+        padding: 2.2rem 0;
+    }
+}
+
+#tablaSecciones .btn-group {
+    gap: 0.35rem;
+}
+
+#tablaSecciones .btn-group > .btn {
+    border-radius: 12px !important;
+}
+
+#usuariosTabla td .btn {
+    min-width: 84px;
+}
+
+#usuariosTabla td .d-flex {
+    align-items: center;
+}

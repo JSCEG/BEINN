@@ -22,12 +22,12 @@
         ModuleInfo = JsonConvert.SerializeObject(new
         {
             title = "Seguridad y Auditoría",
-            description = "Sistema de monitoreo y auditoría de actividades del SNIEr.",
+            description = "Sistema de monitoreo y auditoría de actividades de BEINN.",
             functionality = "Monitoriza actividades del sistema con alertas.",
             stage = "Inicialización",
             roles = new[] {
                 new { icon = "building", text = "SENER: Supervisión general" },
-                new { icon = "shield-alt", text = "Unidad SNIEr: Control operativo" },
+                new { icon = "shield-alt", text = "Operación BEINN: Control operativo" },
                 new { icon = "user-shield", text = "TICs: Monitoreo técnico" },
                 new { icon = "user-tie", text = "Secretaría Técnica: Validación" },
                 new { icon = "users-cog", text = "Coordinadores Técnicos: Seguimiento" }
@@ -47,7 +47,7 @@
     @* Aquí va el contenido existente del dashboard *@
 
     <br>
-    <h3 class="subtitulo">Accesos en "SNIER"</h1>
+    <h3 class="subtitulo">Accesos en BEINN</h3>
 
 
         <div class="row g-4 mt-4 mb-4">
@@ -144,7 +144,7 @@
         </div>
 
         <br>
-        <h3 class="subtitulo">Actividad en "SNIER"</h1>
+        <h3 class="subtitulo">Actividad en BEINN</h3>
             <!-- Sección de Usuarios Activos en Tiempo Real -->
             <div class="row mt-4" id="usuarios-activos-container">
                 <!-- Aquí se agregarán las tarjetas de usuarios activos -->
@@ -861,3 +861,4 @@
             </script>
 
         }
+

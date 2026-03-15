@@ -6,8 +6,8 @@ namespace BEINN.Servicios.Interfaces
 {
     public interface IRepositorioHome
     {
-        Task<List<SeccionSNIER>> ObtenerSeccionesConModulos();
-        Task<List<ModuloSNIER>> ObtenerModulosPorSeccion(int seccionId);
-        Task<List<SeccionSNIER>> ObtenerSeccionesConModulosPorRol(string rolUsuario);
+        Task<List<SeccionSistema>> ObtenerSeccionesConModulos();
+        Task<List<ModuloSistema>> ObtenerModulosPorSeccion(int seccionId);
+        Task<List<SeccionSistema>> ObtenerSeccionesConModulosPorRol(string rolUsuario);
     }
 }

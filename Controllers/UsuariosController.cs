@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using BEINN.Models;
@@ -13,12 +12,10 @@ namespace BEINN.Controllers
     public class UsuariosController : Controller
     {
         private readonly IRepositorioUsuarios repositorioUsuarios;
-        private readonly IRepositorioAcceso repositorioAcceso;
 
-        public UsuariosController(IRepositorioUsuarios repositorioUsuarios, IRepositorioAcceso repositorioAcceso)
+        public UsuariosController(IRepositorioUsuarios repositorioUsuarios)
         {
             this.repositorioUsuarios = repositorioUsuarios;
-            this.repositorioAcceso = repositorioAcceso;
         }
 
         // ============================
@@ -206,167 +203,7 @@ namespace BEINN.Controllers
         }
 
         // ============================
-        // 4. MODELO COMPUESTO DE CUENTA
-        // ============================
-
-        // Muestra el modelo compuesto de cuenta
-        public async Task<IActionResult> ModeloCuentaCompuesto(int id)
-        {
-            var user = await repositorioUsuarios.ObtenerUsuarioPorId(id);
-            if (user == null) return NotFound();
-
-            var model = new ModeloCuentaCompuesto
-            {
-                CuentaUsuario = new Cuenta_UsuarioViewModel
-                {
-                    IdUsuario = user.IdUsuario,
-                    Correo = user.Correo,
-                    Clave = user.Clave,
-                    Nombre = user.Nombre,
-                    Unidad_de_Adscripcion = user.Unidad_de_Adscripcion,
-                    Cargo = user.Cargo,
-                    SesionActiva = user.SesionActiva,
-                    UltimaActualizacion = user.UltimaActualizacion,
-                    RFC = user.RFC,
-                    Vigente = user.Vigente,
-                    ClaveEmpleado = user.ClaveEmpleado,
-                    HoraInicioSesion = user.HoraInicioSesion,
-                    Mercado_ID = user.Mercado_ID,
-                    RolUsuario_Vigente = user.RolUsuario_Vigente,
-                    RolUsuario_QuienRegistro = user.RolUsuario_QuienRegistro,
-                    RolUsuario_FechaMod = user.RolUsuario_FechaMod,
-                    RolUsuario_Comentarios = user.RolUsuario_Comentarios,
-                    Rol_ID = user.Rol,
-                    Rol_Nombre = user.Rol_Nombre,
-                    Rol_Vigente = user.Rol_Vigente,
-                    Rol_FechaMod = user.Rol_FechaMod,
-                    Rol_Comentario = user.Rol_Comentario,
-                    Mercado_ID_M = user.Mercado_ID_M,
-                    Mercado_Nombre = user.Mercado_Nombre,
-                    Mercado_Vigente = user.Mercado_Vigente,
-                    Mercado_FechaMod = user.Mercado_FechaMod,
-                    Mercado_Comentario = user.Mercado_Comentario
-                }
-            };
-
-            var roles = await repositorioUsuarios.ObtenerTodosLosRoles();
-            ViewBag.Roles = roles.Select(r => new SelectListItem
-            {
-                Value = r.Rol_ID.ToString(),
-                Text = r.Rol_Nombre,
-                Selected = r.Rol_ID == model.CuentaUsuario.Rol_ID
-            }).ToList();
-
-            var mercados = await repositorioUsuarios.ObtenerTodosLosMercados();
-            ViewBag.Mercados = mercados.Select(m => new SelectListItem
-            {
-                Value = m.Mercado_ID.ToString(),
-                Text = m.Mercado_Nombre,
-                Selected = m.Mercado_ID == model.CuentaUsuario.Mercado_ID_M
-            }).ToList();
-
-            return View(model);
-        }
-
-        // Procesa la edición del modelo compuesto
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ModeloCuentaCompuesto(ModeloCuentaCompuesto model)
-        {
-            if (!ModelState.IsValid)
-                return View(model);
-
-            var user = new UserViewModel
-            {
-                IdUsuario = model.CuentaUsuario.IdUsuario,
-                Nombre = model.CuentaUsuario.Nombre,
-                RFC = model.CuentaUsuario.RFC,
-                Correo = model.CuentaUsuario.Correo,
-                Cargo = model.CuentaUsuario.Cargo,
-                Unidad_de_Adscripcion = model.CuentaUsuario.Unidad_de_Adscripcion,
-                ClaveEmpleado = model.CuentaUsuario.ClaveEmpleado,
-                SesionActiva = model.CuentaUsuario.SesionActiva,
-            };
-
-            var rolUsuario = new RolesUsuarioViewModel
-            {
-                IdUsuario = model.CuentaUsuario.IdUsuario,
-                Rol_ID = model.CuentaUsuario.Rol_ID,
-                Mercado_ID = model.CuentaUsuario.Mercado_ID,
-                RolUsuario_Comentarios = model.CuentaUsuario.RolUsuario_Comentarios
-            };
-
-            var userUpdateSuccess = await repositorioUsuarios.ActualizarUsuario(user);
-            var rolUsuarioUpdateSuccess = await repositorioUsuarios.ActualizarRolUsuario(rolUsuario);
-
-            if (userUpdateSuccess && rolUsuarioUpdateSuccess)
-                return RedirectToAction("AdministrarUsuarios");
-
-            ModelState.AddModelError(string.Empty, "Hubo un error al actualizar la información del usuario.");
-            return View(model);
-        }
-
-        // ============================
-        // 5. MONITOREO DE USUARIO
-        // ============================
-
-        // Devuelve datos de monitoreo de usuario en JSON
-        public async Task<IActionResult> MonitoreoUsuario(int id, string nombre)
-        {
-            var userViewModel = await repositorioUsuarios.ObtenerUsuarioPorId(id);
-            var usuario = ConvertToUsuario(userViewModel);
-            var modeloCompuesto = await ObtenerModeloCompuesto(usuario, nombre);
-            return Json(modeloCompuesto);
-        }
-
-        // Convierte UserViewModel a Usuario
-        private Usuario ConvertToUsuario(UserViewModel userViewModel)
-        {
-            return new Usuario
-            {
-                IdUsuario = userViewModel.IdUsuario,
-                Correo = userViewModel.Correo,
-                // ...otras propiedades si es necesario
-            };
-        }
-
-        // Obtiene el modelo compuesto de monitoreo
-        private async Task<ModeloCuentaCompuesto> ObtenerModeloCompuesto(Usuario usuario, string nombre)
-        {
-            var totalAccesos = await repositorioAcceso.GetTotalAccessCountAsync();
-            var fechaInicio = new DateTime(2023, 1, 1);
-            var fechaFin = new DateTime(2030, 12, 31);
-            var detallesAcceso = await repositorioAcceso.GetDetallesAccesoPorUsuarioAsync(nombre, fechaInicio, fechaFin);
-            var totalAccesosPorTipo = await repositorioAcceso.GetTotalAccessCountByTypeAsync(fechaInicio, fechaFin);
-            var ultimoAccesoPorUsuario = detallesAcceso
-                .GroupBy(da => da.Nombre)
-                .Select(g => new UltimoAccesoUsuario
-                {
-                    Nombre = g.Key,
-                    UltimoAcceso = g.Max(x => x.FechaHoraLocal)
-                })
-                .ToList();
-
-            return new ModeloCuentaCompuesto
-            {
-                CuentaUsuario = new Cuenta_UsuarioViewModel
-                {
-                    IdUsuario = usuario.IdUsuario,
-                    Correo = usuario.Correo,
-                    // ...otras propiedades si es necesario
-                },
-                CuentaMonitoreo = new Cuenta_MonitoreoViewModel
-                {
-                    TotalAccesos = totalAccesos,
-                    DetallesAcceso = detallesAcceso,
-                    TotalAccesosPorTipo = totalAccesosPorTipo,
-                    UltimoAccesoPorUsuario = ultimoAccesoPorUsuario
-                }
-            };
-        }
-
-        // ============================
-        // 6. NOTIFICACIONES
+        // 4. NOTIFICACIONES
         // ============================
 
         [HttpGet]
@@ -512,7 +349,7 @@ namespace BEINN.Controllers
         }
 
         // ============================
-        // 7. UTILIDADES Y AYUDA
+        // 5. UTILIDADES
         // ============================
 
         // Llena los dropdowns de roles y mercados para las vistas
@@ -548,40 +385,11 @@ namespace BEINN.Controllers
         }
 
         // ============================
-        // 8. VISTAS DE AYUDA Y ENCUESTAS
+        // 6. REDIRECCIONES DE COMPATIBILIDAD
         // ============================
 
         public IActionResult Ayuda() => RedirectToAction("Index", "Ayuda");
 
-        public async Task<IActionResult> Creditos()
-        {
-            var creditos = await repositorioUsuarios.ObtenerCreditos();
-            return View(creditos.ToList());
-        }
-
-        public IActionResult Guia_Consulta_Publica() => View();
-
-        public async Task<IActionResult> Resena(int id)
-        {
-            var credito = await repositorioUsuarios.ObtenerCreditoPorId(id);
-            if (credito == null)
-                return NotFound();
-            return View(credito);
-        }
-
         public IActionResult Encuesta() => RedirectToAction("Index", "Encuesta");
-
-        [ServiceFilter(typeof(ValidacionInputFiltro))]
-        [HttpPost]
-        public IActionResult EnviarEncuesta(Encuesta encuesta)
-        {
-            if (!ModelState.IsValid)
-                return View(encuesta);
-
-            repositorioUsuarios.InsertarEncuesta(encuesta);
-            return RedirectToAction("Gracias");
-        }
-
-        public IActionResult Gracias() => View();
     }
 }

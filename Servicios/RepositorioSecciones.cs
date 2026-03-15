@@ -43,7 +43,7 @@ namespace BEINN.Servicios
         Task ActualizarOrdenSeccionAsync(int seccionId, int nuevoOrden);
 
         // ✅ AGREGAR ESTE MÉTODO QUE FALTA
-        Task<List<ModuloSNIER>> ObtenerModulosPorSeccionAsync(int seccionId);
+        Task<List<ModuloSistema>> ObtenerModulosPorSeccionAsync(int seccionId);
     }
     // DTOs para mapeo de Dapper en ObtenerSeccionesConModulosAsync
     public class SeccionDto
@@ -158,7 +158,7 @@ namespace BEINN.Servicios
             await connection.ExecuteAsync(sql, seccion);
         }
 
-        public async Task<List<ModuloSNIER>> ObtenerModulosPorSeccionAsync(int seccionId)
+        public async Task<List<ModuloSistema>> ObtenerModulosPorSeccionAsync(int seccionId)
         {
             Console.WriteLine($">>> ObtenerModulosPorSeccionAsync - SeccionId: {seccionId}");
 
@@ -170,7 +170,7 @@ namespace BEINN.Servicios
                     WHERE SeccionId = @SeccionId 
                     ORDER BY Orden";
 
-                var modulos = await connection.QueryAsync<ModuloSNIER>(sql, new { SeccionId = seccionId });
+                var modulos = await connection.QueryAsync<ModuloSistema>(sql, new { SeccionId = seccionId });
 
                 Console.WriteLine($">>> Módulos encontrados: {modulos.Count()}");
                 return modulos.ToList();
@@ -558,6 +558,7 @@ namespace BEINN.Servicios
     }
 
 }
+
 
 
 

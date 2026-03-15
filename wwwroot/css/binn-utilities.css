@@ -1,0 +1,33 @@
+.footer-binn .social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    transition: transform .2s ease, background-color .2s ease;
+}
+
+.footer-binn .social-icon:hover {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.link-mask {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+}
+
+.item {
+    position: relative;
+    cursor: pointer;
+}
+
+body.binn-no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}

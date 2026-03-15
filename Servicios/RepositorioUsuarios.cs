@@ -34,10 +34,6 @@ namespace BEINN.Servicios
         Task<bool> GuardarNotificacionScriptAsync(Notificacion model);
         Task<bool> DeleteNotificationAsync(int notificationId);
 
-        // Créditos
-        Task<IEnumerable<Credito>> ObtenerCreditos();
-        Task<Credito> ObtenerCreditoPorId(int creditoId);
-
         // Encuestas
         Task InsertarEncuesta(Encuesta encuesta);
 
@@ -378,7 +374,7 @@ IF OBJECT_ID(N'dbo.ComentariosProyectosEstrategicos', N'U') IS NOT NULL
                 await connection.OpenAsync();
                 var script = @"DECLARE @ID_Usuario INT;
                 DECLARE @Titulo_Notificacion NVARCHAR(255) = 'Notificación de prueba';
-                DECLARE @Mensaje NVARCHAR(MAX) = 'Este es un mensaje de prueba para el funcionamiento de las notificaciones en el sistema SNIER (Se anexan documentos e imagen de ejemplo)';
+                DECLARE @Mensaje NVARCHAR(MAX) = 'Este es un mensaje de prueba para el funcionamiento de las notificaciones en BEINN.';
                 DECLARE @Fecha_Notificacion DATETIME = GETDATE();
                 DECLARE @Link NVARCHAR(255) = '/documentos/necesidades/Listado_Necesidades.pdf';
                 DECLARE @Visto BIT = 0;
@@ -524,32 +520,6 @@ IF OBJECT_ID(N'dbo.ComentariosProyectosEstrategicos', N'U') IS NOT NULL
         }
 
         // ============================
-        // CRÉDITOS
-        // ============================
-
-        // Obtiene todos los créditos
-        public async Task<IEnumerable<Credito>> ObtenerCreditos()
-        {
-            using (var connection = new SqlConnection(connectionString))
-            {
-                var query = @"SELECT CreditoID, Nombre, Cargo, ImagenUrl, Seccion, PaginaWeb, Actividades, Resena FROM Creditos";
-                var creditos = await connection.QueryAsync<Credito>(query);
-                return creditos;
-            }
-        }
-
-        // Obtiene un crédito por su ID
-        public async Task<Credito> ObtenerCreditoPorId(int creditoId)
-        {
-            using (var connection = new SqlConnection(connectionString))
-            {
-                var query = "SELECT * FROM Creditos WHERE CreditoID = @CreditoID";
-                var credito = await connection.QuerySingleOrDefaultAsync<Credito>(query, new { CreditoID = creditoId });
-                return credito;
-            }
-        }
-
-        // ============================
         // ENCUESTAS
         // ============================
 
@@ -608,4 +578,5 @@ IF OBJECT_ID(N'dbo.ComentariosProyectosEstrategicos', N'U') IS NOT NULL
         }
     }
 }
+
 

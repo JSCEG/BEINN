@@ -20,126 +20,22 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap"
         rel="stylesheet">
-
-    <style>
-        :root {
-            --primary-color: #216d92;
-            --primary-light: #81c3c9;
-            --primary-dark: #0d4b6e;
-            --danger-color: #e74c3c;
-            --warning-color: #f39c12;
-        }
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            min-height: 100vh;
-        }
-
-        #video-bg {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            transform: translate(-50%, -50%);
-            object-fit: cover;
-            z-index: -1;
-        }
-
-        .expired-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            padding: 2.5rem;
-            width: 100%;
-            max-width: 450px;
-            animation: fadeIn 0.8s ease-out;
-        }
-
-        .brand-logo {
-            max-width: 120px;
-            margin-bottom: 1.5rem;
-        }
-
-        .btn-primary {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-            font-weight: 600;
-            padding: 0.75rem 1.5rem;
-            transition: all 0.3s ease;
-            border-radius: 8px;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--primary-dark);
-            border-color: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(33, 109, 146, 0.3);
-        }
-
-        .alert-danger {
-            background-color: rgba(231, 76, 60, 0.15);
-            color: var(--danger-color);
-            border: none;
-            border-left: 4px solid var(--danger-color);
-        }
-
-        .alert-warning {
-            background-color: rgba(243, 156, 18, 0.15);
-            color: var(--warning-color);
-            border: none;
-            border-left: 4px solid var(--warning-color);
-        }
-
-        .countdown {
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: var(--primary-color);
-        }
-
-        .text-muted {
-            color: #6c757d !important;
-        }
-
-        @@keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Responsive adjustments */
-        @@media (max-width: 576px) {
-            .expired-card {
-                padding: 1.5rem;
-                margin: 0 1rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="~/css/binn.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/binn-auth.css" asp-append-version="true" />
 </head>
 
-<body>
-    <video autoplay muted loop id="video-bg">
+<body class="binn-auth-page binn-auth-page--expired">
+    <video autoplay muted loop id="video-bg" class="binn-auth-video">
         <source src="@cdn/video/Login_snier.mp4" type="video/mp4">
     </video>
 
     <div class="container d-flex justify-content-center align-items-center min-vh-100">
-        <div class="expired-card text-center">
+        <div class="binn-auth-card text-center">
             <div class="mb-4">
-                <img src="@cdn/be-inn/iconos/logobeeinn.png" alt="SNIER" class="brand-logo">
+                <img src="@cdn/be-inn/iconos/logobeeinn.png" alt="BEINN" class="binn-auth-logo">
             </div>
 
-            <h4 class="fw-bold mb-4" style="color: var(--primary-color);">Sesión Expirada</h4>
+            <h4 class="binn-auth-title mb-4">Sesión Expirada</h4>
 
             <div class="alert alert-danger mb-4">
                 <div class="d-flex align-items-center">
@@ -168,7 +64,7 @@
 
             <div class="text-muted small">
                 Serás redirigido automáticamente en
-                <span class="countdown" id="cuentaRegresiva">8</span>
+                <span class="binn-auth-countdown" id="cuentaRegresiva">8</span>
                 segundos...
             </div>
         </div>
@@ -203,3 +99,4 @@
 </body>
 
 </html>
+

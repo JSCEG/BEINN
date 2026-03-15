@@ -22,7 +22,7 @@ namespace BEINN.Models
         public int Orden { get; set; }
         public bool Activo { get; set; }
         // ← NUEVO: para contener las vistas hijas
-        public List<VistaSNIER> Vistas { get; set; } = new List<VistaSNIER>();
+        public List<VistaSistema> Vistas { get; set; } = new List<VistaSistema>();
     }
 
     public class SeccionConModulos
@@ -45,3 +45,4 @@ namespace BEINN.Models
         public int TotalModulos => Modulos?.Count ?? 0;
     }
 }
+

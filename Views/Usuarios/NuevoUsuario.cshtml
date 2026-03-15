@@ -32,12 +32,12 @@
         ModuleInfo = JsonConvert.SerializeObject(new
         {
             title = "Alta de Usuarios y Perfiles",
-            description = "Sistema de alta de usuarios y control de accesos del SNIEr.",
+            description = "Sistema de alta de usuarios y control de accesos de BEINN.",
             functionality = "Permite dar de alta usuarios, asignar roles y mantener la trazabilidad de accesos.",
             stage = "Inicialización",
             roles = new[] {
                 new { icon = "building", text = "Secretaría de Energía: Administración general" },
-                new { icon = "users-cog", text = "Unidad SNIEr: Gestión de perfiles" },
+                new { icon = "users-cog", text = "Administración BEINN: Gestión de perfiles" },
                 new { icon = "user-shield", text = "Dirección TICs: Control técnico" },
                 new { icon = "user-tie", text = "Consejo: Supervisión de accesos" }
             },
@@ -168,13 +168,6 @@
 @section Scripts {
 <script>
     $(document).ready(function(){
-            $("#Correo").on("focusout", function () {
-                var correoUsuario = $(this).val();
-                if (!correoUsuario.includes("@@")) { // Escapar el "arroba" aquí
-                    $(this).val(correoUsuario + "@@cre.gob.mx"); // Y aquí
-                }
-            });
-
             $('input[type="text"]').blur(function () {
                 var inputValue = $(this).val();
                 $(this).val($.trim(inputValue));

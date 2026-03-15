@@ -1,0 +1,21 @@
+:root {
+    --binn-primary: #0052a1;
+    --binn-primary-strong: #0f4c97;
+    --binn-primary-soft: #2567b4;
+    --binn-accent: #f97316;
+    --binn-accent-strong: #ea580c;
+    --binn-ink: #102033;
+    --binn-muted: #62748a;
+    --binn-surface: #ffffff;
+    --binn-surface-alt: #f5f7fb;
+    --binn-border: rgba(15, 76, 151, 0.12);
+    --binn-shadow: 0 18px 45px rgba(16, 32, 51, 0.08);
+    --binn-shadow-soft: 0 8px 24px rgba(16, 32, 51, 0.08);
+    --binn-radius-sm: 10px;
+    --binn-radius-md: 16px;
+    --binn-radius-lg: 24px;
+    --binn-transition: 0.25s ease;
+    --header-height: 76px;
+    --shell-sidebar-width: 280px;
+    --shell-sidebar-collapsed-width: 72px;
+}

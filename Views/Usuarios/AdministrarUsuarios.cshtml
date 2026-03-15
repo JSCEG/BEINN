@@ -25,12 +25,12 @@
         ModuleInfo = JsonConvert.SerializeObject(new
         {
             title = "Gestión de Usuarios y Perfiles",
-            description = "Sistema de administración de usuarios y control de accesos del SNIEr.",
+            description = "Sistema de administración de usuarios y control de accesos de BEINN.",
             functionality = "Permite gestionar usuarios, asignar roles y mantener la trazabilidad de accesos.",
             stage = "Inicialización",
             roles = new[] {
                 new { icon = "building", text = "Secretaría de Energía: Administración general" },
-                new { icon = "users-cog", text = "Unidad SNIEr: Gestión de perfiles" },
+                new { icon = "users-cog", text = "Administración BEINN: Gestión de perfiles" },
                 new { icon = "user-shield", text = "Dirección TICs: Control técnico" },
                 new { icon = "user-tie", text = "Consejo: Supervisión de accesos" }
             },
@@ -48,18 +48,25 @@
 @await Html.PartialAsync("_ViewHeader", header)
 
 <div class="container">
-<div class="row mb-4">
-        <div class="col text-end">
-            <a asp-controller="Usuarios" asp-action="NuevoUsuario" class="btn btn-success shadow-sm">
-                <i class="fas fa-user-plus me-1"></i> Agregar Usuario
-            </a>
+    <div class="app-card p-4 p-lg-4 mb-4">
+        <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3">
+            <div>
+                <h3 class="subtitulo mb-2">Administración de usuarios</h3>
+                <p class="text-muted mb-0">Gestiona cuentas, accesos y notificaciones desde un solo tablero.</p>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+                <a asp-controller="Usuarios" asp-action="NuevoUsuario" class="btn btn-success shadow-sm">
+                    <i class="fas fa-user-plus me-1"></i> Agregar Usuario
+                </a>
 
-            <a asp-controller="Usuarios" asp-action="CrearNotificacion" class="btn btn-warning shadow-sm">
-                <i class="fas fa-bell me-1"></i> Crear Notificación
-            </a>
+                <a asp-controller="Usuarios" asp-action="CrearNotificacion" class="btn btn-warning shadow-sm">
+                    <i class="fas fa-bell me-1"></i> Crear Notificación
+                </a>
+            </div>
         </div>
     </div>
 
+    <div class="app-card p-3 p-lg-4">
     <div class="table-responsive">
         <table id="usuariosTabla" class="table table-hover table-responsive table-bordered">
             <thead   class="table-dark">
@@ -99,8 +106,10 @@
                     <tr>
                         <td>
                             @*Acciones*@
-                            <a class="btn btn-primary" href="@Url.Action("Edit", "Usuarios", new { id = user.IdUsuario })">Editar</a>
-                            <a href="@Url.Action("Eliminar", "Usuarios", new { id = user.IdUsuario })" class="btn btn-danger delete-link">Eliminar</a>
+                            <div class="d-flex flex-wrap gap-2">
+                                <a class="btn btn-primary btn-sm" href="@Url.Action("Edit", "Usuarios", new { id = user.IdUsuario })">Editar</a>
+                                <a href="@Url.Action("Eliminar", "Usuarios", new { id = user.IdUsuario })" class="btn btn-danger btn-sm delete-link">Eliminar</a>
+                            </div>
                         </td>
 
 
@@ -135,6 +144,7 @@
             </tbody>
         </table>
 
+    </div>
     </div>
     @*Modal para Confirmar la Eliminación*@
     <!-- Modal HTML -->
@@ -248,19 +258,19 @@
             buttons: [
                 {
                     extend: 'copyHtml5',
-                    title: 'Energeo Lista de Usuarios de la Plataforma'
+title: 'BEINN Lista de Usuarios de la Plataforma'
                 },
                 {
                     extend: 'excelHtml5',
-                    title: 'Energeo Lista de Usuarios de la Plataforma'
+title: 'BEINN Lista de Usuarios de la Plataforma'
                 },
                 {
                     extend: 'csvHtml5',
-                    title: 'Energeo Lista de Usuarios de la Plataforma'
+title: 'BEINN Lista de Usuarios de la Plataforma'
                 },
                 {
                     extend: 'pdfHtml5',
-                    title: 'Energeo Lista de Usuarios de la Plataforma',
+title: 'BEINN Lista de Usuarios de la Plataforma',
                     customize: function (doc) {
                         // Cambia el color de la línea de encabezado a rojo
                         doc.styles.tableHeader.color = '#9fa1a4';

@@ -8,53 +8,51 @@
     var perfilUsuarioJson = httpContext.Session.GetString("PerfilUsuario");
     var perfilUsuario = JsonConvert.DeserializeObject<PerfilUsuario>(perfilUsuarioJson);
 
-    // Utilizar los datos del usuario para personalizar la vista
     ViewData["NombreUsuario"] = perfilUsuario.Nombre;
     ViewData["RolUsuario"] = perfilUsuario.Rol;
-}
-
-
-
-@{
     ViewData["Title"] = "Asistente";
+
+    var header = new HeaderViewModel
+    {
+        Title = "Asistente",
+        IconPath = "chat.png",
+        Description = "Asistente conversacional para orientación, reservas y soporte dentro de BEINN.",
+        Section = "Soporte",
+        ModuleInfo = JsonConvert.SerializeObject(new
+        {
+            title = "Asistente",
+            description = "Interfaz conversacional para consultas operativas y soporte de usuarios en BEINN.",
+            functionality = "Recibe preguntas abiertas y responde con apoyo contextual del sistema.",
+            stage = "Piloto",
+            roles = new[] {
+                new { icon = "robot", text = "Usuarios BEINN: Consultas y asistencia" },
+                new { icon = "headset", text = "Soporte: Canal complementario de atención" }
+            }
+        })
+    };
 }
 
-<div class="text-center">
-    <h3 class="cp-section cp-grouping-section">
-        <img src="@Cdn.Url/img_snier/vistas/chat.png" alt="Icono personalizado" class="iconomenu">
-        @ViewData["Title"]
-    </h3>
-</div>
-
-
-
-
-
-
-
+@await Html.PartialAsync("_ViewHeader", header)
 
 <div class="container">
-    <h2 class="fw-bold   subtitulo ">Chat con SNIer</h2>
-    <br>
-    <br>
-    <form asp-action="Ask" method="post">
-        <div class="form-group mb-5">
-            <label for="prompt">Por favor Pregunta:</label>
-            <br>
-            <br>
-            <br>
-            <input type="text" class="form-control" id="prompt" name="prompt" placeholder="Escribe aquí tu pregunta...">
-        </div>
+    <div class="app-card p-4 p-lg-5">
+        <h2 class="fw-bold subtitulo mb-3">Asistente BEINN</h2>
+        <p class="text-muted mb-4">Haz una pregunta sobre el uso de la plataforma o el flujo operativo que necesitas resolver.</p>
+        <form asp-action="Ask" method="post">
+            <div class="form-group mb-4">
+                <label for="prompt" class="form-label">Tu pregunta</label>
+                <input type="text" class="form-control form-control-lg" id="prompt" name="prompt" placeholder="Escribe aquí tu pregunta..." required>
+            </div>
 
-        <button type="submit" class="btn btn-cre-rojo">Preguntar</button>
-    </form>
+            <button type="submit" class="btn btn-primary">Preguntar</button>
+        </form>
 
-    <br>
-    @if (Model != null)
-    {
-        <div class="alert alert-info pt-3" role="alert">
-            <p>Respuesta de Energeo:</p>
-            <p>@Model</p>
-        </div>
-    }
+        @if (Model != null)
+        {
+            <div class="alert alert-info pt-3 mt-4" role="alert">
+                <p class="fw-semibold mb-2">Respuesta del asistente</p>
+                <p class="mb-0">@Model</p>
+            </div>
+        }
+    </div>
 </div>
