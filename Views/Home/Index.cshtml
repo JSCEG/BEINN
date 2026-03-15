@@ -15,207 +15,219 @@
 
     var header = new HeaderViewModel
     {
-        Title = ViewData["Title"].ToString(),
+        Title = ViewData["Title"]?.ToString(),
         IconPath = "sistema.png",
-        Description = "Plataforma BEINN para integración, consulta y evolución de módulos empresariales.",
+        Description = "Centro de operación para accesos, módulos y seguimiento diario de la plataforma BEINN.",
         Section = "Inicio",
         ModuleInfo = JsonConvert.SerializeObject(new
         {
-            title = "BEINN",
-            description = "Portal principal de la plataforma BEINN.",
-            functionality = "Consulta módulos, tableros, reportes, trazabilidad y estados del sistema.",
+            title = "Centro de trabajo BEINN",
+            description = "Vista principal para retomar actividad, acceder a módulos clave y ubicar rápidamente las áreas activas de la plataforma.",
+            functionality = "Muestra accesos rápidos, actividad reciente, estado del workspace y accesos de soporte.",
             stage = "Operación",
             roles = new[] {
-new { icon = "globe", text = "Usuarios Públicos: Consulta general de datos" },
-new { icon = "user-shield", text = "Administradores BEINN: Gestión e integración de información" }
-},
-            order = new { step = 0, description = "Punto de acceso inicial al ecosistema energético" },
+                new { icon = "user", text = "Usuarios internos: navegan, consultan y retoman actividad reciente" },
+                new { icon = "user-shield", text = "Administradores: gestionan usuarios, secciones, bitácora y soporte" }
+            },
+            order = new { step = 0, description = "Entrada principal al núcleo operativo de BEINN" },
             manualUrl = "/Ayuda"
         })
     };
 
     var idUsuario = Convert.ToInt32(ViewData["IDUsuario"]);
-    var rolUsuario = perfilUsuario?.Rol;
-    var nombreUsuario = perfilUsuario?.Nombre?.ToString();
-    var esConsultaPublica = (rolUsuario == "10" || nombreUsuario.Contains("consult"));
-    var modulosDestacados = Model.Secciones
-        .SelectMany(s => s.Modulos.Select(m => new { Seccion = s.Titulo, Modulo = m }))
-        .Take(6)
+    var rolUsuario = perfilUsuario?.Rol ?? "Sin asignar";
+    var nombreUsuario = perfilUsuario?.Nombre ?? "Usuario";
+    var mercadoUsuario = perfilUsuario?.Mercado_ID ?? "Todos";
+    var esConsultaPublica = (rolUsuario == "10" || nombreUsuario.Contains("consult", StringComparison.OrdinalIgnoreCase));
+
+    var secciones = Model.Secciones ?? new List<SeccionSistema>();
+    var modulosVisibles = secciones
+        .SelectMany(s => s.Modulos.Select(m => new { Seccion = s, Modulo = m }))
         .ToList();
+    var modulosDestacados = modulosVisibles.Take(6).ToList();
+    var totalSecciones = secciones.Count;
+    var totalModulos = modulosVisibles.Count;
+    var totalSubvistas = modulosVisibles.Sum(x => x.Modulo.Vistas?.Count ?? 0);
+    var saludo = esConsultaPublica ? "Bienvenido a BEINN" : $"Hola, {nombreUsuario}";
 }
 
 @await Html.PartialAsync("_ViewHeader", header)
 
-<!-- HERO SECTION COMPACTO -->
-<section id="hero-home" class="text-center">
-    <div id="particles-js-home"></div>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8" data-aos="zoom-in">
-                <h1 class="display-5 fw-bold mb-3 text-white">
-                    @if (esConsultaPublica)
-                    {
-                    <text>Bienvenido a BEINN</text>
-                    }
-                    else
-                    {
+<section class="inner-home-page">
+    <section class="inner-home-hero app-card" data-aos="fade-up">
+        <div class="inner-home-hero__main">
+            <div class="inner-home-hero__eyebrow">Workspace diario</div>
+            <h1 class="inner-home-hero__title">@saludo</h1>
+            <p class="inner-home-hero__copy">
+                Accede a tus módulos, retoma vistas recientes y mantén el control del entorno desde una sola portada.
+            </p>
 
-                        <text>Bienvenido, @nombreUsuario</text>
-                    }
-                </h1>
-                <p class="lead mb-4 text-white-50">BEINN concentra el acceso a los módulos y tableros del sistema.</p>
+            <div class="inner-home-tabs" role="list" aria-label="Estados del portal">
+                <span class="inner-home-tab is-active"><i class="bi bi-grid"></i> Operación</span>
+                <span class="inner-home-tab"><i class="bi bi-clock-history"></i> Seguimiento</span>
+                <span class="inner-home-tab"><i class="bi bi-life-preserver"></i> Soporte</span>
+            </div>
+
+            <div class="inner-home-actions">
+                <a class="btn btn-primary" asp-controller="Perfil" asp-action="MiPerfil" asp-route-id="@idUsuario">
+                    <i class="bi bi-person-circle me-2"></i>Mi perfil
+                </a>
+                <a class="btn btn-outline-secondary" asp-controller="Chat" asp-action="Asistente">
+                    <i class="bi bi-stars me-2"></i>Asistente
+                </a>
             </div>
         </div>
-    </div>
-</section>
 
-<!-- NUEVO DASHBOARD GRID -->
-<div class="dashboard-container">
-    <div class="container">
-        <div class="dashboard-grid">
+        <aside class="inner-home-hero__stats">
+            <div class="inner-home-stat inner-home-stat--primary">
+                <span class="inner-home-stat__label">Rol</span>
+                <strong>@rolUsuario</strong>
+            </div>
+            <div class="inner-home-stat inner-home-stat--mini">
+                <span class="inner-home-stat__label">Mercado</span>
+                <strong>@mercadoUsuario</strong>
+            </div>
+            <div class="inner-home-stat inner-home-stat--mini">
+                <span class="inner-home-stat__label">Secciones</span>
+                <strong>@totalSecciones activas</strong>
+            </div>
+            <div class="inner-home-stat inner-home-stat--accent">
+                <span class="inner-home-stat__label">Inventario</span>
+                <strong>@totalModulos módulos / @totalSubvistas subvistas</strong>
+            </div>
+        </aside>
+    </section>
 
-            <!-- Card: Módulos Principales -->
-            <div class="dashboard-card" data-aos="fade-up">
-                <div class="card-header">
-                    <div class="card-icon"><i class="bi bi-grid-3x3-gap-fill"></i></div>
-                    <h3 class="card-title">Módulos Principales</h3>
+    <section class="inner-home-banner app-card" data-aos="fade-up" data-aos-delay="40">
+        <div class="inner-home-banner__icon">
+            <i class="bi bi-arrow-repeat"></i>
+        </div>
+        <div class="inner-home-banner__content">
+            <strong>Continúa donde te quedaste</strong>
+            <p id="home-activity-banner">Estamos consultando tu última actividad para proponerte el siguiente paso.</p>
+        </div>
+        <a asp-controller="Bitacora" asp-action="Dashboard" class="inner-home-banner__link">Ver monitoreo</a>
+    </section>
+
+    <section class="inner-home-filters" data-aos="fade-up" data-aos-delay="80">
+        <div class="inner-home-filters__label">Secciones activas</div>
+        <div class="inner-home-filter-chips">
+            @foreach (var seccion in secciones)
+            {
+                <span class="inner-home-chip">@seccion.Titulo</span>
+            }
+        </div>
+    </section>
+
+    <section class="inner-home-grid">
+        <article class="app-card inner-home-panel" data-aos="fade-up" data-aos-delay="120">
+            <div class="inner-home-panel__header">
+                <div>
+                    <span class="inner-home-panel__kicker">Accesos destacados</span>
+                    <h2 class="inner-home-panel__title">Tus módulos principales</h2>
                 </div>
-                <div class="card-body">
-                    <div class="module-list">
-                        @if (modulosDestacados.Any())
+                <span class="inner-home-panel__hint">@totalModulos disponibles</span>
+            </div>
+
+            <div class="inner-home-card-grid">
+                @if (modulosDestacados.Any())
+                {
+                    foreach (var item in modulosDestacados)
+                    {
+                        var modulo = item.Modulo;
+                        var icono = modulo.EsExterno ? "bi-box-arrow-up-right" : "bi-grid-3x3-gap";
+                        if (modulo.EsExterno)
                         {
-                            foreach (var item in modulosDestacados)
-                            {
-                                if (item.Modulo.EsExterno)
-                                {
-                                    <a href="@item.Modulo.Action" target="_blank" rel="noopener noreferrer">
-                                        <i class="bi bi-box-arrow-up-right module-icon"></i>
-                                        <span>@item.Modulo.Title</span>
-                                    </a>
-                                }
-                                else
-                                {
-                                    <a asp-controller="@item.Modulo.Controller" asp-action="@item.Modulo.Action">
-                                        <i class="bi bi-grid-3x3-gap-fill module-icon"></i>
-                                        <span>@item.Modulo.Title</span>
-                                    </a>
-                                }
-                            }
+                            <a class="inner-home-feature-card" href="@modulo.Action" target="_blank" rel="noopener noreferrer">
+                                <div class="inner-home-feature-card__head">
+                                    <span class="inner-home-feature-card__icon"><i class="bi @icono"></i></span>
+                                    <span class="inner-home-feature-card__badge">@item.Seccion.Titulo</span>
+                                </div>
+                                <strong>@modulo.Title</strong>
+                                <p>@(string.IsNullOrWhiteSpace(modulo.Desc) ? "Acceso configurado desde tu menú lateral." : modulo.Desc)</p>
+                                <span class="inner-home-feature-card__cta">Abrir módulo</span>
+                            </a>
                         }
                         else
                         {
-                            <p class="text-muted mb-0">No hay módulos activos disponibles para tu perfil.</p>
+                            <a class="inner-home-feature-card" asp-controller="@modulo.Controller" asp-action="@modulo.Action">
+                                <div class="inner-home-feature-card__head">
+                                    <span class="inner-home-feature-card__icon"><i class="bi @icono"></i></span>
+                                    <span class="inner-home-feature-card__badge">@item.Seccion.Titulo</span>
+                                </div>
+                                <strong>@modulo.Title</strong>
+                                <p>@(string.IsNullOrWhiteSpace(modulo.Desc) ? "Acceso configurado desde tu menú lateral." : modulo.Desc)</p>
+                                <span class="inner-home-feature-card__cta">Abrir módulo</span>
+                            </a>
                         }
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card: Indicadores Clave -->
-            <div class="dashboard-card" data-aos="fade-up" data-aos-delay="100">
-                <div class="card-header">
-                    <div class="card-icon"><i class="bi bi-bar-chart-line-fill"></i></div>
-                    <h3 class="card-title">Indicadores Clave</h3>
-                </div>
-                <div class="card-body">
-                    <div class="kpi-grid">
-                        <div class="kpi-item">
-                            <div class="kpi-label">Producción Nacional</div>
-                            <div class="kpi-value">6,580<span class="kpi-unit">PJ</span></div>
-                        </div>
-                        <div class="kpi-item">
-                            <div class="kpi-label">Demanda Eléctrica</div>
-                            <div class="kpi-value">325<span class="kpi-unit">TWh</span></div>
-                        </div>
-                        <div class="kpi-item">
-                            <div class="kpi-label">Generación Limpia</div>
-                            <div class="kpi-value">28.5<span class="kpi-unit">%</span></div>
-                        </div>
-                        <div class="kpi-item">
-                            <div class="kpi-label">Precio Spot (MEM)</div>
-                            <div class="kpi-value">950.7<span class="kpi-unit">MXN/MWh</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card: Actividad Reciente / Lo Más Consultado (Full Width) -->
-            <div class="dashboard-card full-width" id="continuar" data-aos="fade-up" data-aos-delay="200">
-                @if (esConsultaPublica)
-                {
-                    <div class="card-header">
-                        <div class="card-icon"><i class="bi bi-star-fill"></i></div>
-                        <h3 class="card-title">Lo Más Consultado</h3>
-                    </div>
-                    <div class="card-body">
-                        <p class="text-muted small mb-4">Explora los módulos y secciones más populares de la plataforma.</p>
-                        <div id="tarjetas-acciones"></div>
-                    </div>
+                    }
                 }
                 else
                 {
-                    <div class="card-header">
-                        <div class="card-icon"><i class="bi bi-clock-history"></i></div>
-                        <h3 class="card-title">Continuar Viendo</h3>
-                    </div>
-                    <div class="card-body">
-                        <p class="text-muted small mb-4">Retoma donde te quedaste en tus últimas consultas.</p>
-                        <div id="tarjetas-acciones"></div>
+                    <div class="workspace-empty-state">No hay módulos activos disponibles para tu perfil.</div>
+                }
+            </div>
+        </article>
+
+        <article class="app-card inner-home-panel" data-aos="fade-up" data-aos-delay="160">
+            <div class="inner-home-panel__header">
+                <div>
+                    <span class="inner-home-panel__kicker">Menú lateral</span>
+                    <h2 class="inner-home-panel__title">Mapa del espacio de trabajo</h2>
+                </div>
+            </div>
+
+            <div class="inner-home-section-list">
+                @foreach (var seccion in secciones)
+                {
+                    var palabras = seccion.Titulo.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    var iniciales = string.Concat(palabras.Take(2).Select(p => p[0])).ToUpperInvariant();
+                    <div class="inner-home-section-item">
+                        <span class="inner-home-section-item__badge">@iniciales</span>
+                        <div class="inner-home-section-item__body">
+                            <strong>@seccion.Titulo</strong>
+                            <small>@((seccion.Modulos?.Count ?? 0)) módulos activos</small>
+                        </div>
                     </div>
                 }
             </div>
 
-            <!-- Card: Ayuda y Soporte -->
-            <div class="dashboard-card" data-aos="fade-up" data-aos-delay="300">
-                <div class="card-header">
-                    <div class="card-icon"><i class="bi bi-question-circle-fill"></i></div>
-                    <h3 class="card-title">Ayuda y Soporte</h3>
+            <div class="inner-home-support-stack">
+                <a asp-controller="Ayuda" asp-action="Index" class="inner-home-inline-link">
+                    <i class="bi bi-journal-text"></i>
+                    <span>Centro de ayuda</span>
+                </a>
+                <a asp-controller="Encuesta" asp-action="Index" class="inner-home-inline-link">
+                    <i class="bi bi-chat-square-heart"></i>
+                    <span>Encuesta</span>
+                </a>
+                <a asp-controller="Bitacora" asp-action="Dashboard" class="inner-home-inline-link">
+                    <i class="bi bi-activity"></i>
+                    <span>Bitácora</span>
+                </a>
+            </div>
+        </article>
+
+        <article class="app-card inner-home-panel inner-home-panel--full" data-aos="fade-up" data-aos-delay="200">
+            <div class="inner-home-panel__header">
+                <div>
+                    <span class="inner-home-panel__kicker">Actividad reciente</span>
+                    <h2 class="inner-home-panel__title">Últimos visitados</h2>
                 </div>
-                <div class="card-body">
-                    <p class="text-muted mb-4">Consulta nuestras guías o contáctanos para obtener asistencia.</p>
-                    <div class="d-flex flex-column gap-2">
-                        <a asp-controller="Ayuda" asp-action="Index" class="btn btn-primary">
-                            <i class="bi bi-life-preserver me-2"></i>Ir al Centro de Ayuda
-                        </a>
-                        <button class="btn btn-outline-secondary"
-                            onclick="mostrarAyudaModulo(@Html.Raw(header.ModuleInfo))">
-                            <i class="bi bi-info-circle me-2"></i>Información del Módulo
-                        </button>
-                    </div>
-                </div>
+                <span class="inner-home-panel__hint">Hasta 6 accesos recientes</span>
             </div>
 
-        </div>
-    </div>
-</div>
+            <div id="home-recent-state" class="workspace-empty-state">
+                <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                Cargando actividad reciente...
+            </div>
+            <div id="home-recent-list" class="inner-home-recent-grid d-none"></div>
+        </article>
+    </section>
+</section>
 
 @section Scripts {
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script>
-        // --- SCRIPT DE PARTICLES.JS ---
-        document.addEventListener('DOMContentLoaded', function () {
-            const particlesDiv = document.getElementById('particles-js-home');
-            if (typeof particlesJS !== 'undefined' && particlesDiv) {
-                particlesJS("particles-js-home", {
-                    "particles": {
-                        "number": { "value": 60, "density": { "enable": true, "value_area": 800 } },
-                        "color": { "value": "#ffffff" },
-                        "shape": { "type": "circle" },
-                        "opacity": { "value": 0.4, "random": true },
-                        "size": { "value": 2, "random": true },
-                        "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.2, "width": 1 },
-                        "move": { "enable": true, "speed": 2, "direction": "none", "random": true, "straight": false, "out_mode": "out" }
-                    },
-                    "interactivity": {
-                        "detect_on": "canvas",
-                        "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": false } },
-                        "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 0.5 } } }
-                    },
-                    "retina_detect": true
-                });
-            }
-        });
-
-        // --- SCRIPT PARA FUNCIONALIDAD "CONTINUAR VIENDO" (SIN CAMBIOS) ---
         function irA(elemento) {
             const controller = elemento.getAttribute('data-controller');
             const action = elemento.getAttribute('data-action');
@@ -224,103 +236,55 @@ new { icon = "user-shield", text = "Administradores BEINN: Gestión e integraci�
             }
         }
 
-        function mostrarAyudaModulo(infoJson) {
-            try {
-                const info = typeof infoJson === 'string' ? JSON.parse(infoJson) : infoJson;
-                const html = `
-                        <div class="text-start">
-                            ${info.description ? `<p><strong>${info.description}</strong></p>` : ''}
-                            ${info.functionality ? `<p><i class='fas fa-cogs me-2'></i> ${info.functionality}</p>` : ''}
-                            ${info.stage ? `<p><i class='fas fa-layer-group me-2'></i> Etapa: ${info.stage}</p>` : ''}
-                            ${info.roles?.length ? `
-                                <ul>
-                                    ${info.roles.map(r => `<li><i class="fas fa-${r.icon} me-2 text-primary"></i> ${r.text}</li>`).join('')}
-                                </ul>` : ''}
-                            ${info.order ? `<p><i class='fas fa-sort-amount-up'></i> Paso ${info.order.step}: ${info.order.description}</p>` : ''}
-                        </div>`;
-
-                Swal.fire({
-                    title: info.title || 'Ayuda del módulo',
-                    html: html,
-                    confirmButtonText: 'Cerrar',
-                    confirmButtonColor: '#6c757d',
-                    backdrop: true
-                });
-            } catch (e) {
-                console.error("Error al parsear o mostrar la ayuda del módulo:", e);
-                Swal.fire('Error', 'No se pudo mostrar la información de ayuda.', 'error');
-            }
-        }
-
         $(function () {
-            const $seccion = $('#continuar');
-            const $contenedor = $('#tarjetas-acciones');
-            const $loader = $('<div id="loader-continua" class="text-center py-3"><div class="spinner-border spinner-border-sm text-primary" role="status"><span class="visually-hidden">Cargando...</span></div></div>');
-
-            $contenedor.html($loader);
+            const $banner = $('#home-activity-banner');
+            const $state = $('#home-recent-state');
+            const $list = $('#home-recent-list');
 
             $.ajax({
                 url: '@Url.Action("GetUltimasAcciones", "Bitacora")',
-                data: { top: 5 },
+                data: { top: 6 },
                 dataType: 'json',
                 success: acciones => {
                     if (!acciones || !acciones.length) {
-                        $contenedor.html('<p class="text-muted text-center">Sin actividad reciente.</p>');
+                        $banner.text('Todavía no hay actividad registrada. Puedes comenzar desde los módulos destacados.');
+                        $state.html('<i class="bi bi-clock-history me-2"></i>No hay actividad reciente todavía.');
                         return;
                     }
-                    const filaId = 'fila-acciones';
-                    const filaHtml = `
-                            <div class="position-relative netflix-carousel">
-                                <button class="nf-nav-btn nf-prev" type="button" aria-label="Anterior" data-target="#${filaId}">❮</button>
-                                <button class="nf-nav-btn nf-next" type="button" aria-label="Siguiente" data-target="#${filaId}">❯</button>
-                                <div id="${filaId}" class="netflix-card-container" role="list" aria-label="Continuar viendo">
-                                ${acciones.map(a => {
-                        const img = `@Cdn.Url/img_snier/vistas/${(a.pagina || 'default').toLowerCase().replace(/\s+/g, '_')}.png`;
+
+                    const primera = acciones[0];
+                    $banner.text(`Última vista detectada: ${primera.pagina || 'Vista reciente'}${primera.fecha ? ' · ' + primera.fecha : ''}.`);
+
+                    const html = acciones.map(a => {
+                        const titulo = a.pagina || 'Vista reciente';
+                        const fecha = a.fecha || 'Sin fecha registrada';
+                        const controller = a.controller || '';
+                        const action = a.action || '';
+                        const badge = titulo.charAt(0).toUpperCase();
+                        const image = `@Cdn.Url/img_snier/vistas/${titulo.toLowerCase().replace(/\\s+/g, '_')}.png`;
+
                         return `
-                                        <article class="netflix-card" role="listitem" tabindex="0" onclick="irA(this)" data-controller="${a.controller}" data-action="${a.action}">
-                                            <div class="card-img"><img src="${img}" alt="${a.pagina || 'Vista'}" loading="lazy" onerror="this.src='@Cdn.Url/img_snier/vistas/default.png'"></div>
-                                            <div class="card-overlay">
-                                                <h6 title="${a.pagina || ''}">${a.pagina || ''}</h6>
-                                                <p class="text-muted small">${a.fecha || ''}</p>
-                                                <button class="btn btn-primary btn-sm" type="button">Reanudar</button>
-                                            </div>
-                                        </article>`;
-                    }).join('')}
+                            <article class="inner-home-recent-card" tabindex="0" onclick="irA(this)" data-controller="${controller}" data-action="${action}">
+                                <div class="inner-home-recent-card__media">
+                                    <span class="inner-home-recent-card__badge">${badge}</span>
+                                    <img src="${image}" alt="${titulo}" loading="lazy" onerror="this.style.display='none'">
                                 </div>
-                            </div>`;
-                    $contenedor.html(filaHtml);
+                                <div class="inner-home-recent-card__body">
+                                    <strong>${titulo}</strong>
+                                    <small>${fecha}</small>
+                                    <span class="inner-home-recent-card__cta">Abrir vista <i class="bi bi-arrow-right"></i></span>
+                                </div>
+                            </article>`;
+                    }).join('');
 
-                    // Lógica de navegación del carrusel (sin cambios)
-                    const $fila = $('#' + filaId);
-                    const $prev = $seccion.find('.nf-prev');
-                    const $next = $seccion.find('.nf-next');
-
-                    function updateNavButtons() {
-                        const el = $fila[0];
-                        if (!el) return;
-                        const maxScroll = el.scrollWidth - el.clientWidth;
-                        $prev.prop('disabled', el.scrollLeft <= 1);
-                        $next.prop('disabled', el.scrollLeft >= maxScroll - 1);
-                    }
-                    function scrollByPage(dir) {
-                        const el = $fila[0];
-                        if (!el) return;
-                        const page = el.clientWidth * 0.9;
-                        el.scrollBy({ left: dir * page, behavior: 'smooth' });
-                        setTimeout(updateNavButtons, 400);
-                    }
-                    $prev.on('click', () => scrollByPage(-1));
-                    $next.on('click', () => scrollByPage(1));
-                    $fila.on('scroll', updateNavButtons);
-                    requestAnimationFrame(updateNavButtons);
+                    $state.addClass('d-none');
+                    $list.html(html).removeClass('d-none');
                 },
-                error: (xhr, status, err) => {
-                    console.error('Error al cargar últimas acciones:', err);
-                    $contenedor.html('<p class="text-danger text-center">No fue posible cargar la actividad.</p>');
+                error: () => {
+                    $banner.text('No se pudo consultar la actividad reciente en este momento.');
+                    $state.html('<i class="bi bi-exclamation-circle me-2"></i>No fue posible cargar la actividad reciente.');
                 }
             });
         });
     </script>
 }
-
-

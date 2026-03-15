@@ -1,1489 +1,581 @@
+@using BEINN.Models
+@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json
+@inject IHttpContextAccessor HttpContextAccessor
+
 @{
-    ViewData["Title"] = "Be-Inn - Plataforma de Espacios Inteligentes";
+    ViewData["Title"] = "Be-Inn - Encuentra y publica espacios inteligentes";
     Layout = null;
     var cdn = "https://cdn.sassoapps.com";
-}
+    var httpContext = HttpContextAccessor.HttpContext;
+    var perfilUsuarioJson = httpContext?.Session.GetString("PerfilUsuario");
+    PerfilUsuario perfilUsuario = null;
 
+    if (!string.IsNullOrWhiteSpace(perfilUsuarioJson))
+    {
+        try
+        {
+            perfilUsuario = JsonConvert.DeserializeObject<PerfilUsuario>(perfilUsuarioJson);
+        }
+        catch
+        {
+            perfilUsuario = null;
+        }
+    }
+
+    var usuarioAutenticado = perfilUsuario != null && !string.IsNullOrWhiteSpace(perfilUsuario.IdUsuario);
+    var nombreUsuario = perfilUsuario?.Nombre ?? "Usuario BEINN";
+    var rolUsuario = string.IsNullOrWhiteSpace(perfilUsuario?.Rol) ? "Miembro" : perfilUsuario.Rol;
+    var nombrePartes = nombreUsuario.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+    var inicialesUsuario = string.Concat(nombrePartes.Take(2).Select(parte => char.ToUpperInvariant(parte[0])));
+
+    if (string.IsNullOrWhiteSpace(inicialesUsuario))
+    {
+        inicialesUsuario = "B";
+    }
+}
 
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
-    <meta name="description"
-        content="Be-Inn: Plataforma inteligente para rentar y monetizar espacios. Oficinas, estacionamientos, lugares para eventos con asistente de IA">
-
-    <!-- Bootstrap 5.3 + Icons -->
+    <meta name="description" content="Be-Inn: renta estacionamientos, oficinas, coworks, casas y salones para eventos desde una sola plataforma." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
-    <!-- AOS Animation -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
-    <!-- Particles.js for modern background effects -->
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-
-    <!-- Google Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap"
-        rel="stylesheet">
     <link rel="stylesheet" href="~/css/binn.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/binn-auth.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/binn-login.css" asp-append-version="true" />
-
+    <link rel="stylesheet" href="~/css/binn-public-landing.css" asp-append-version="true" />
 </head>
-
-<body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <img src="@cdn/be-inn/iconos/logobeeinn.png" alt="Be-Inn" class="navbar-logo">
+<body class="binn-public-page">
+    <header class="binn-public-topbar">
+        <div class="binn-public-topbar__inner">
+            <a class="binn-public-brand" href="@Url.Action("Login", "Acceso")">
+                <span class="binn-public-brand__mark">
+                    <img src="@cdn/be-inn/iconos/logobeeinn.png" alt="BEINN">
+                </span>
+                <span class="binn-public-brand__copy">
+                    <strong>BEINN</strong>
+                    <small>Espacios inteligentes</small>
+                </span>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#inicio">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#categorias">Espacios</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#como-funciona">Cómo funciona</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#registro">Registro</a>
-                    </li>
-                </ul>
-                <a href="#inicio" class="btn btn-primary ms-lg-3">Iniciar sesión</a>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <section class="hero-section" id="inicio">
-        <div id="particles-js"></div>
-        <div class="container-fluid px-4">
-            <div class="row align-items-start g-5">
-                <!-- Columna izquierda: título, descripción y video -->
-                <div class="col-lg-6 d-flex justify-content-center align-items-center text-start order-2 order-lg-1">
-                    <div class="hero-content" data-aos="fade-right" data-aos-duration="1000"
-                        style="max-width: 600px; width: 100%;">
-                        <div class="hero-title-container">
-                            <img src="@cdn/be-inn/iconos/logobeeinn.png" alt="Be-Inn Logo" class="hero-logo"
-                                data-aos="zoom-in" data-aos-delay="100">
-                            <h1 class="hero-title text-white" data-aos="fade-up" data-aos-delay="200">
-                                Be-Inn
-                                <span class="text-gradient">Espacios Inteligentes</span>
-                            </h1>
-                        </div>
+            <div class="binn-public-topbar__actions">
+                <button type="button" class="binn-public-link" data-open-offer-modal>
+                    Hazte socio BE-INN
+                </button>
+                @if (usuarioAutenticado)
+                {
+                    <div class="binn-public-accountmenu" data-user-menu>
+                        <button type="button" class="binn-public-accountmenu__trigger" data-user-menu-trigger aria-expanded="false">
+                            <span class="binn-public-accountmenu__host">Panel activo</span>
+                            <span class="binn-public-accountmenu__avatar">@inicialesUsuario</span>
+                            <span class="binn-public-accountmenu__meta">
+                                <strong>@nombreUsuario</strong>
+                                <small>@rolUsuario</small>
+                            </span>
+                            <span class="binn-public-accountmenu__icon">
+                                <i class="bi bi-list"></i>
+                            </span>
+                        </button>
 
-                        <p class="hero-description" data-aos="fade-up" data-aos-delay="400">
-                            Plataforma inteligente para rentar oficinas, estacionamientos y espacios para eventos.
-                            Tu asistente de IA encuentra el espacio perfecto para ti.
-                        </p>
-
-                        <div class="hero-actions" data-aos="fade-up" data-aos-delay="600">
-                            <a href="#registro" class="login-btn-primary">
-                                <i class="bi bi-building"></i>Buscar espacios
-                            </a>
-                            <a href="#categorias" class="login-btn-outline">
-                                <i class="bi bi-grid-3x3-gap"></i>Ver categorías
-                            </a>
-                        </div>
-
-                        <!-- Video demo Be-Inn -->
-                        <div class="login-video-container mt-4" data-aos="fade-up" data-aos-duration="1000"
-                            data-aos-delay="300">
-                            <video class="login-video w-100 rounded shadow" controls autoplay muted loop
-                                poster="@cdn/be-inn/iconos/logobeeinn.png" preload="auto">
-                                <source src="https://cdn.sassoapps.com/videos/BE-INN.mp4" type="video/mp4">
-                                <p>Tu navegador no soporta videos HTML5.
-                                    <a href="https://cdn.sassoapps.com/videos/BE-INN.mp4">Descarga el video</a>.
-                                </p>
-                            </video>
-                            <div class="login-video-description mt-2">
-                                <small class="text-shadow">
-                                    <i class="bi bi-camera-video me-2"></i>
-                                    <strong>Be-Inn - Espacios Inteligentes</strong>
-                                    <span class="mx-2">•</span>
-                                    <em>Demo del Asistente IA</em>
-                                    <span class="mx-2">•</span>
-                                    <span class="badge bg-success">HD</span>
-                                </small>
+                        <div class="binn-public-accountmenu__dropdown" data-user-menu-dropdown hidden>
+                            <div class="binn-public-accountmenu__section">
+                                <a href="@Url.Action("Index", "Home")">
+                                    <i class="bi bi-grid"></i>
+                                    <span>Ir a mi panel</span>
+                                </a>
+                                <a href="@Url.Action("MiPerfil", "Perfil", new { id = perfilUsuario?.IdUsuario })">
+                                    <i class="bi bi-person-circle"></i>
+                                    <span>Mi perfil</span>
+                                </a>
+                                <a href="@Url.Action("Dashboard", "Bitacora")">
+                                    <i class="bi bi-clock-history"></i>
+                                    <span>Actividad reciente</span>
+                                </a>
                             </div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Columna derecha: espacio disponible para tu nuevo contenido -->
-                <div class="col-lg-6 d-flex flex-column justify-content-center align-items-center order-1 order-lg-2"
-                    data-aos="fade-left" data-aos-duration="1000" data-aos-delay="400">
-                    <div class="row justify-content-center w-100">
-                        <div class="col-lg-8 text-center mb-5" data-aos="fade-down">
-                            <h2 class="text-white mb-3">Accede a Be-Inn</h2>
-                            <p class="lead text-white-50">Tu plataforma inteligente para espacios flexibles</p>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center w-100">
-                        <div class="col-lg-10 col-xl-8" data-aos="fade-right">
-                            <div class="login-card p-4 p-md-5 mb-4 mb-lg-0 w-100">
-                                <div class="text-center mb-4">
-                                    <img src="@cdn/be-inn/iconos/logobeeinn.png" class="img-fluid mb-3"
-                                        style="max-width: 120px;" alt="Be-Inn Logo">
-                                    <h4 class="fw-bold text-primary">Accede a Be-Inn</h4>
-                                    <p class="text-muted">Inicia sesión para buscar o publicar espacios</p>
-                                </div>
-
-                                <!-- 🔹 Sección de acceso rápido -->
-                                <div class="text-center mb-4">
-                                    <h6 class="text-muted mb-3">Accede por:</h6>
-
-                                    <div class="d-flex justify-content-center flex-wrap gap-2">
-
-                                        <form asp-controller="Acceso" asp-action="LoginGoogle" method="post"
-                                            class="d-none">
-                                            <button type="submit" class="btn btn-outline-danger me-2">
-                                                <i class="bi bi-google me-1"></i> Google
-                                            </button>
-                                        </form>
-                                        <form asp-controller="Acceso" asp-action="LoginGoogle" method="post"
-                                            class="d-inline z-10000">
-                                            <button type="submit" class="btn btn-outline-danger btn-login">
-                                                <i class="bi bi-google me-1"></i> Google
-                                            </button>
-                                        </form>
-                                        <form asp-controller="Acceso" asp-action="LoginFacebook" method="post">
-                                            <button type="submit" class="btn btn-outline-facebook btn-login">
-                                                <i class="bi bi-facebook me-1"></i> Facebook
-                                            </button>
-                                        </form>
-
-                                        <button type="button" class="btn btn-outline-success btn-login" id="btnPublico">
-                                            <i class="bi bi-globe me-1"></i> Consulta Pública
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- 🔹 Separador visual -->
-                                <div class="text-center my-4">
-                                    <span class="text-muted" style="font-size: 0.9rem;">
-                                        — o bien —
-                                    </span>
-                                </div>
-
-                                <!-- 🔹 Sección de login tradicional -->
-                                <h6 class="text-muted text-center mb-3">¿Ya tienes cuenta? Ingresa:</h6>
-
-                                <form id="loginForm" action="@Url.Action("Login", "Acceso")" method="post" class="mt-3">
-
-                                    <!-- Campos para usuario registrado -->
-                                    <div id="camposRegistradoLogin">
-                                        <div class="login-form-group">
-                                            <div class="input-group">
-                                                <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
-                                                <input type="text" class="form-control" id="Correo" name="Correo"
-                                                    placeholder="Correo electrónico o RFC" />
-                                            </div>
-                                        </div>
-
-                                        <div class="login-form-group">
-                                            <div class="input-group">
-                                                <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
-                                                <input type="password" class="form-control" id="claveInput" name="Clave"
-                                                    placeholder="Contraseña" />
-                                                <span class="input-group-text" onclick="togglePassword()"
-                                                    style="cursor: pointer;">
-                                                    <i class="bi bi-eye-fill" id="iconoClave"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Información para consulta pública -->
-                                    <div id="infoPublica" style="display: none;">
-                                        <div class="login-alert login-alert-info text-center">
-                                            <i class="bi bi-info-circle me-2"></i>
-                                            <strong>Acceso Público</strong><br />
-                                            Podrás consultar información general sin necesidad de registro.
-                                            <br><small class="text-muted mt-2 d-block">
-                                                Algunas funciones avanzadas requieren registro de usuario.
-                                            </small>
-                                        </div>
-                                    </div>
-
-                                    @if (ViewData["Mensaje"] != null)
-                                    {
-                                        <div class="login-alert login-alert-danger text-center">
-                                            <i class="bi bi-exclamation-circle me-2"></i>@ViewData["Mensaje"]
-                                        </div>
-                                    }
-
-                                    <div class="d-grid mb-3">
-                                        <button type="submit" id="btnAcceso" class="login-btn-primary">
-                                            <i class="bi bi-box-arrow-in-right me-2"></i> Iniciar sesión
-                                        </button>
-                                    </div>
-
-                                    <div class="text-center" id="enlacesAdicionalesLogin">
-                                        <small>
-                                            <a href="@Url.Action("ForgotPassword", "Acceso")" class="me-2">
-                                                <i class="bi bi-key me-1"></i>¿Olvidaste tu contraseña?
-                                            </a>
-                                            <span class="text-muted">|</span>
-                                            <a href="#registro" class="ms-2">
-                                                <i class="bi bi-person-plus me-1"></i>¿No tienes cuenta? Regístrate
-                                            </a>
-                                        </small>
-                                    </div>
-                                </form>
+                            <div class="binn-public-accountmenu__section">
+                                <a href="@Url.Action("AllNotifications", "Usuarios", new { userId = perfilUsuario?.IdUsuario })">
+                                    <i class="bi bi-bell"></i>
+                                    <span>Notificaciones</span>
+                                </a>
+                                <a href="@Url.Action("Index", "Encuesta")">
+                                    <i class="bi bi-ui-checks-grid"></i>
+                                    <span>Encuestas y feedback</span>
+                                </a>
+                                <a href="@Url.Action("Index", "Ayuda")">
+                                    <i class="bi bi-question-circle"></i>
+                                    <span>Centro de ayuda</span>
+                                </a>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <script>
-        document.getElementById("btnPublico").addEventListener("click", function () {
-            // Redirigir directamente a la acción AccesoPublico
-            window.location.href = "@Url.Action("AccesoComoInvitado", "Acceso")";
-        });
-    </script>
-
-    <!-- ¿Qué es Be-Inn? Section -->
-    <section class="py-5 bg-light">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-10">
-                    <div class="text-center mb-5" data-aos="fade-up">
-                        <h2 class="fw-bold mb-3">¿Qué es Be-Inn?</h2>
-                        <p class="lead text-muted">
-                            Plataforma de espacios inteligentes con IA: oficinas, estacionamientos, eventos y lugares
-                            especiales
-                        </p>
-                    </div>
-
-                    <div class="row g-4 mb-4">
-                        <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                            <div class="text-center p-4 bg-white rounded shadow-sm h-100">
-                                <div class="mb-3">
-                                    <i class="bi bi-search text-primary" style="font-size: 2.5rem;"></i>
-                                </div>
-                                <h5 class="fw-bold mb-3">Encuentra tu espacio ideal</h5>
-                                <p class="text-muted">
-                                    Busca por ubicación, fecha y tipo: oficinas, estacionamientos, lugares para eventos
-                                    y espacios especiales.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                            <div class="text-center p-4 bg-white rounded shadow-sm h-100">
-                                <div class="mb-3">
-                                    <i class="bi bi-cash-coin text-success" style="font-size: 2.5rem;"></i>
-                                </div>
-                                <h5 class="fw-bold mb-3">Monetiza tus espacios</h5>
-                                <p class="text-muted">
-                                    Conviértete en Inner y renta tus espacios vacíos: oficinas, consultorios,
-                                    estacionamientos o salones.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                            <div class="text-center p-4 bg-white rounded shadow-sm h-100">
-                                <div class="mb-3">
-                                    <i class="bi bi-robot text-info" style="font-size: 2.5rem;"></i>
-                                </div>
-                                <h5 class="fw-bold mb-3">Asistente con IA</h5>
-                                <p class="text-muted">
-                                    Describe lo que necesitas y nuestra IA te ayudará a encontrar las mejores opciones
-                                    disponibles.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="stats-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-6" data-aos="fade-up">
-                    <div class="stats-item">
-                        <i class="bi bi-building stats-icon"></i>
-                        <div class="stats-number">15,420+</div>
-                        <div class="stats-label">Outers activos</div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="stats-item">
-                        <i class="bi bi-geo-alt-fill stats-icon"></i>
-                        <div class="stats-number">2,500+</div>
-                        <div class="stats-label">Espacios disponibles</div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="stats-item">
-                        <i class="bi bi-cash-stack stats-icon"></i>
-                        <div class="stats-number">$2.8M</div>
-                        <div class="stats-label">Generados este mes</div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
-                    <div class="stats-item">
-                        <i class="bi bi-star-fill stats-icon"></i>
-                        <div class="stats-number">4.9</div>
-                        <div class="stats-label">Calificación promedio</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Para quién es Be-Inn Section -->
-    <section class="py-5"">
-        <div class=" container">
-        <div class="text-center mb-5" data-aos="fade-up">
-            <h2 class="fw-bold mb-3">¿Para quién es Be-Inn?</h2>
-            <p class="lead text-muted">Dos formas de aprovechar la plataforma</p>
-        </div>
-
-        <div class="row g-4">
-            <div class="col-lg-6" data-aos="fade-right">
-                <div class="p-5 bg-primary text-white rounded shadow h-100">
-                    <div class="text-center mb-4">
-                        <i class="bi bi-search-heart" style="font-size: 3.5rem;"></i>
-                    </div>
-                    <h3 class="fw-bold text-center mb-4">Quiero un espacio</h3>
-                    <ul class="list-unstyled">
-                        <li class="mb-3">
-                            <i class="bi bi-check-circle-fill me-2"></i>
-                            Reservar oficina por día, hora o mes
-                        </li>
-                        <li class="mb-3">
-                            <i class="bi bi-check-circle-fill me-2"></i>
-                            Buscar estacionamiento cerca de tu destino
-                        </li>
-                        <li class="mb-3">
-                            <i class="bi bi-check-circle-fill me-2"></i>
-                            Rentar un lugar para tu evento, curso o reunión
-                        </li>
-                        <li>
-                            <i class="bi bi-check-circle-fill me-2"></i>
-                            Acceder a espacios únicos y especiales
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="col-lg-6" data-aos="fade-left">
-                <div class="p-5 bg-success text-white rounded shadow h-100">
-                    <div class="text-center mb-4">
-                        <i class="bi bi-house-add" style="font-size: 3.5rem;"></i>
-                    </div>
-                    <h3 class="fw-bold text-center mb-4">Tengo un espacio</h3>
-                    <ul class="list-unstyled">
-                        <li class="mb-3">
-                            <i class="bi bi-check-circle-fill me-2"></i>
-                            Publicar oficinas, consultorios, estudios, salas
-                        </li>
-                        <li class="mb-3">
-                            <i class="bi bi-check-circle-fill me-2"></i>
-                            Subir tu estacionamiento particular o empresarial
-                        </li>
-                        <li class="mb-3">
-                            <i class="bi bi-check-circle-fill me-2"></i>
-                            Monetizar tu roof garden, jardín o salón
-                        </li>
-                        <li>
-                            <i class="bi bi-check-circle-fill me-2"></i>
-                            Generar ingresos pasivos con tus espacios vacíos
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        </div>
-    </section>
-
-    <!-- Categories Section -->
-    <section class="modules-section" id="categorias">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="section-title">
-                    <span class="bg-light px-4">Categorías de Espacios</span>
-                </h2>
-                <p class="section-description">Descubre los diferentes tipos de espacios disponibles en Be-Inn
-                </p>
-            </div>
-
-            <!-- Categorías Principales -->
-            <div class="mb-5">
-                <div class="row g-4">
-                    <!-- Oficinas -->
-                    <div class="col-lg-3 col-md-6" data-aos="fade-up">
-                        <div class="module-card">
-                            <div class="module-card-video-wrapper">
-                                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1200&auto=format&fit=crop"
-                                    alt="Oficinas" class="module-card-video">
-                            </div>
-                            <div class="module-icon-wrapper">
-                                <i class="bi bi-building module-icon"></i>
-                            </div>
-                            <div class="module-card-content">
-                                <h4>Oficinas</h4>
-                                <p>Espacios profesionales equipados para trabajar solo o en equipo. Desde $500/día</p>
-                                <div class="module-footer">
-                                    <span class="badge badge-success">2,500+ ubicaciones</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Estacionamientos -->
-                    <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                        <div class="module-card">
-                            <div class="module-card-video-wrapper">
-                                <img src="https://images.unsplash.com/photo-1590674899484-d5640e854abe?q=80&w=1200&auto=format&fit=crop"
-                                    alt="Estacionamientos" class="module-card-video">
-                            </div>
-                            <div class="module-icon-wrapper">
-                                <i class="bi bi-car-front-fill module-icon"></i>
-                            </div>
-                            <div class="module-card-content">
-                                <h4>Estacionamientos</h4>
-                                <p>Cajones seguros por hora, día o mes en las mejores zonas. Desde $50/hora</p>
-                                <div class="module-footer">
-                                    <span class="badge bg-info">1,800+ cajones</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Lugares para eventos -->
-                    <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                        <div class="module-card">
-                            <div class="module-card-video-wrapper">
-                                <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=1200&auto=format&fit=crop"
-                                    alt="Eventos" class="module-card-video">
-                            </div>
-                            <div class="module-icon-wrapper">
-                                <i class="bi bi-people-fill module-icon"></i>
-                            </div>
-                            <div class="module-card-content">
-                                <h4>Lugares para eventos</h4>
-                                <p>Salones, terrazas y espacios para reuniones y celebraciones. Desde $2,000/evento</p>
-                                <div class="module-footer">
-                                    <span class="badge bg-warning">900+ espacios</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Espacios especiales -->
-                    <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
-                        <div class="module-card">
-                            <div class="module-card-video-wrapper">
-                                <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=1200&auto=format&fit=crop"
-                                    alt="Espacios Especiales" class="module-card-video">
-                            </div>
-                            <div class="module-icon-wrapper">
-                                <i class="bi bi-star-fill module-icon"></i>
-                            </div>
-                            <div class="module-card-content">
-                                <h4>Espacios especiales</h4>
-                                <p>Lugares únicos para experiencias distintas: roof gardens, estudios, lofts. Desde
-                                    $1,500/día</p>
-                                <div class="module-footer">
-                                    <span class="badge bg-primary">500+ exclusivos</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- Cómo funciona Section -->
-    <section class="py-5 bg-light" id="como-funciona">
-        <div class="container">
-            <div class="text-center mb-5" data-aos="fade-up">
-                <h2 class="fw-bold mb-3">¿Cómo funciona Be-Inn?</h2>
-                <p class="lead text-muted">Dos flujos simples según tu necesidad</p>
-            </div>
-
-            <div class="row g-5">
-                <!-- Flujo: Buscar espacio -->
-                <div class="col-lg-6" data-aos="fade-right">
-                    <div class="bg-white p-4 p-md-5 rounded shadow h-100">
-                        <div class="text-center mb-4">
-                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center"
-                                style="width: 70px; height: 70px;">
-                                <i class="bi bi-search" style="font-size: 2rem;"></i>
-                            </div>
-                        </div>
-                        <h3 class="fw-bold text-center mb-4 text-primary">Quiero reservar un espacio</h3>
-
-                        <div class="d-flex mb-4">
-                            <div class="flex-shrink-0">
-                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
-                                    style="width: 40px; height: 40px;">
-                                    <strong>1</strong>
-                                </div>
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                                <h5 class="fw-bold">Describe tu necesidad</h5>
-                                <p class="text-muted mb-0">Escribe o dile a la IA qué tipo de espacio necesitas, en qué
-                                    zona y para cuándo.</p>
-                            </div>
-                        </div>
-
-                        <div class="d-flex mb-4">
-                            <div class="flex-shrink-0">
-                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
-                                    style="width: 40px; height: 40px;">
-                                    <strong>2</strong>
-                                </div>
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                                <h5 class="fw-bold">Explora opciones</h5>
-                                <p class="text-muted mb-0">Compara espacios según precio, servicios disponibles y
-                                    reseñas de otros usuarios.</p>
-                            </div>
-                        </div>
-
-                        <div class="d-flex">
-                            <div class="flex-shrink-0">
-                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
-                                    style="width: 40px; height: 40px;">
-                                    <strong>3</strong>
-                                </div>
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                                <h5 class="fw-bold">Reserva y paga seguro</h5>
-                                <p class="text-muted mb-0">Confirma tu reserva y recibe toda la información en tu perfil
-                                    y por correo.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Flujo: Publicar espacio -->
-                <div class="col-lg-6" data-aos="fade-left">
-                    <div class="bg-white p-4 p-md-5 rounded shadow h-100">
-                        <div class="text-center mb-4">
-                            <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center"
-                                style="width: 70px; height: 70px;">
-                                <i class="bi bi-house-add" style="font-size: 2rem;"></i>
-                            </div>
-                        </div>
-                        <h3 class="fw-bold text-center mb-4 text-success">Quiero publicar un espacio</h3>
-
-                        <div class="d-flex mb-4">
-                            <div class="flex-shrink-0">
-                                <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center"
-                                    style="width: 40px; height: 40px;">
-                                    <strong>1</strong>
-                                </div>
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                                <h5 class="fw-bold">Crea tu perfil como Inner</h5>
-                                <p class="text-muted mb-0">Completa tus datos, verifica tu identidad y configura tus
-                                    métodos de pago.</p>
-                            </div>
-                        </div>
-
-                        <div class="d-flex mb-4">
-                            <div class="flex-shrink-0">
-                                <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center"
-                                    style="width: 40px; height: 40px;">
-                                    <strong>2</strong>
-                                </div>
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                                <h5 class="fw-bold">Publica tu espacio</h5>
-                                <p class="text-muted mb-0">Sube fotos, describe tu espacio, define horarios disponibles
-                                    y establece el precio.</p>
-                            </div>
-                        </div>
-
-                        <div class="d-flex">
-                            <div class="flex-shrink-0">
-                                <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center"
-                                    style="width: 40px; height: 40px;">
-                                    <strong>3</strong>
-                                </div>
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                                <h5 class="fw-bold">Recibe reservas y cobra</h5>
-                                <p class="text-muted mb-0">Aprueba reservas, recibe pagos automáticamente y construye tu
-                                    reputación.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Confianza y beneficios -->
-            <div class="mt-5">
-                <div class="bg-white p-4 p-md-5 rounded shadow" data-aos="fade-up">
-                    <h3 class="fw-bold text-center mb-4">Beneficios de usar Be-Inn</h3>
-                    <div class="row g-4">
-                        <div class="col-md-6 col-lg-3">
-                            <div class="text-center">
-                                <i class="bi bi-shield-check text-success mb-3" style="font-size: 2.5rem;"></i>
-                                <h5 class="fw-bold">Pagos seguros</h5>
-                                <p class="text-muted mb-0">Transacciones centralizadas y trazables</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-3">
-                            <div class="text-center">
-                                <i class="bi bi-funnel text-primary mb-3" style="font-size: 2.5rem;"></i>
-                                <h5 class="fw-bold">Filtros inteligentes</h5>
-                                <p class="text-muted mb-0">Búsqueda por ubicación, horario y tipo</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-3">
-                            <div class="text-center">
-                                <i class="bi bi-robot text-info mb-3" style="font-size: 2.5rem;"></i>
-                                <h5 class="fw-bold">Asistente IA</h5>
-                                <p class="text-muted mb-0">Reduce el tiempo de búsqueda</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-3">
-                            <div class="text-center">
-                                <i class="bi bi-star text-warning mb-3" style="font-size: 2.5rem;"></i>
-                                <h5 class="fw-bold">Reputación</h5>
-                                <p class="text-muted mb-0">Reseñas reales para elegir mejor</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- Benefits Section (Success Stories) -->
-    <section class="py-5" id="beneficios">
-        <div class="container">
-            <div class="text-center mb-5" data-aos="fade-up">
-                <h2 class="fw-bold mb-3">Muchos de nuestros Outers han crecido económicamente</h2>
-                <p class="lead text-muted">Descubre cómo propietarios como tú están generando ingresos extra con Be-Inn
-                </p>
-            </div>
-
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6" data-aos="fade-up">
-                    <div class="card h-100 shadow-sm border-0">
-                        <div class="card-body p-4">
-                            <div class="d-flex align-items-center mb-3">
-                                <img src="https://ui-avatars.com/api/?name=Maria+Gonzalez&background=0066cc&color=fff&size=60"
-                                    class="rounded-circle me-3" alt="María González">
+                            <div class="binn-public-accountmenu__promo">
                                 <div>
-                                    <h5 class="mb-0 fw-bold">María González</h5>
-                                    <small class="text-muted"><i class="bi bi-geo-alt"></i> Ciudad de México</small>
-                                    <div><span class="badge bg-warning text-dark">SUPER OUTER</span></div>
+                                    <strong>Convierte tu espacio en ingreso</strong>
+                                    <span>Publica estacionamientos, oficinas, coworks o salones.</span>
                                 </div>
+                                <button type="button" class="binn-public-accountmenu__promocta" data-open-offer-modal>
+                                    Ofrecer ahora
+                                </button>
                             </div>
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between mb-2">
-                                    <div>
-                                        <h4 class="fw-bold text-primary mb-0">45K+</h4>
-                                        <small class="text-muted">MXN MENSUALES</small>
-                                    </div>
-                                    <div>
-                                        <h4 class="fw-bold text-success mb-0">3</h4>
-                                        <small class="text-muted">ESPACIOS ACTIVOS</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <p class="fst-italic text-muted">"Convertí mi oficina extra en una fuente de ingresos
-                                constante. En 6 meses ya había recuperado la inversión inicial."</p>
-                            <div class="progress" style="height: 8px;">
-                                <div class="progress-bar bg-warning" style="width: 285%;"></div>
-                            </div>
-                            <small class="text-success fw-bold">+285% crecimiento en ingresos</small>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="card h-100 shadow-sm border-0">
-                        <div class="card-body p-4">
-                            <div class="d-flex align-items-center mb-3">
-                                <img src="https://ui-avatars.com/api/?name=Carlos+Mendoza&background=28a745&color=fff&size=60"
-                                    class="rounded-circle me-3" alt="Carlos Mendoza">
-                                <div>
-                                    <h5 class="mb-0 fw-bold">Carlos Mendoza</h5>
-                                    <small class="text-muted"><i class="bi bi-geo-alt"></i> Guadalajara</small>
-                                    <div><span class="badge bg-success">ESTACIONAMIENTOS</span></div>
-                                </div>
+                            <div class="binn-public-accountmenu__section">
+                                <a class="binn-public-accountmenu__logout" href="@Url.Action("CerrarSesion", "Acceso")">
+                                    <i class="bi bi-box-arrow-right"></i>
+                                    <span>Cerrar sesión</span>
+                                </a>
                             </div>
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between mb-2">
-                                    <div>
-                                        <h4 class="fw-bold text-primary mb-0">28K+</h4>
-                                        <small class="text-muted">MXN MENSUALES</small>
-                                    </div>
-                                    <div>
-                                        <h4 class="fw-bold text-success mb-0">12</h4>
-                                        <small class="text-muted">ESPACIOS DE PARKING</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <p class="fst-italic text-muted">"Mis espacios de estacionamiento ahora generan más que mi
-                                trabajo de medio tiempo."</p>
-                            <div class="progress" style="height: 8px;">
-                                <div class="progress-bar bg-success" style="width: 190%;"></div>
-                            </div>
-                            <small class="text-success fw-bold">+190% crecimiento en ingresos</small>
                         </div>
                     </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="card h-100 shadow-sm border-0">
-                        <div class="card-body p-4">
-                            <div class="d-flex align-items-center mb-3">
-                                <img src="https://ui-avatars.com/api/?name=Ana+Rodriguez&background=d63384&color=fff&size=60"
-                                    class="rounded-circle me-3" alt="Ana Rodríguez">
-                                <div>
-                                    <h5 class="mb-0 fw-bold">Ana Rodríguez</h5>
-                                    <small class="text-muted"><i class="bi bi-geo-alt"></i> Monterrey</small>
-                                    <div><span class="badge" style="background-color: #d63384;">EVENTOS</span></div>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between mb-2">
-                                    <div>
-                                        <h4 class="fw-bold text-primary mb-0">65K+</h4>
-                                        <small class="text-muted">MXN MENSUALES</small>
-                                    </div>
-                                    <div>
-                                        <h4 class="fw-bold text-success mb-0">2</h4>
-                                        <small class="text-muted">SALONES DE EVENTOS</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <p class="fst-italic text-muted">"Mi salón de eventos se reserva casi todos los fines de
-                                semana. ¡Es increíble!"</p>
-                            <div class="progress" style="height: 8px;">
-                                <div class="progress-bar" style="width: 340%; background-color: #d63384;"></div>
-                            </div>
-                            <small class="text-success fw-bold">+340% crecimiento en ingresos</small>
-                        </div>
-                    </div>
-                </div>
+                }
+                else
+                {
+                    <a class="binn-public-userpill" href="@Url.Action("AccesoComoInvitado", "Acceso")">
+                        <i class="bi bi-compass"></i>
+                        <span>Explorar sin cuenta</span>
+                    </a>
+                    <button type="button" class="binn-public-ghost-link binn-public-ghost-link--button" data-open-login-panel>
+                        Iniciar sesión
+                    </button>
+                }
             </div>
+        </div>
+    </header>
 
-            <!-- Calculadora de ingresos -->
-            <div class="mt-5" data-aos="fade-up">
-                <div class="bg-primary text-white p-5 rounded shadow">
-                    <div class="row align-items-center">
-                        <div class="col-lg-6 mb-4 mb-lg-0">
-                            <h3 class="fw-bold mb-3">¿Cuánto podrías ganar como Outer?</h3>
-                            <p class="lead mb-0">Calcula tus ingresos potenciales basado en tu tipo de espacio y
-                                ubicación</p>
+    <main class="binn-public-main">
+        <section class="binn-public-hero">
+            <div class="binn-public-hero__backdrop"></div>
+            <div class="binn-public-shell">
+                <section class="binn-public-searchstage">
+                    <div class="binn-public-searchstage__top">
+                        <div class="binn-public-searchstage__intro">
+                            <div class="binn-public-kicker">Plataforma corporativa</div>
+                            <h1>Encuentra el espacio ideal para estacionarte, trabajar o reunirte.</h1>
+                            <p>
+                                Accede a la red más exclusiva de estacionamientos, oficinas privadas, coworks y
+                                salones de eventos en un solo lugar.
+                            </p>
                         </div>
-                        <div class="col-lg-6">
-                            <select class="form-select form-select-lg mb-3">
-                                <option>Tipo de espacio</option>
-                                <option>Oficina</option>
-                                <option>Estacionamiento</option>
-                                <option>Lugar para eventos</option>
-                                <option>Espacio especial</option>
-                            </select>
-                            <select class="form-select form-select-lg mb-3">
-                                <option>Ubicación</option>
-                                <option>CDMX</option>
-                                <option>Guadalajara</option>
-                                <option>Monterrey</option>
-                                <option>Otras ciudades</option>
-                            </select>
-                            <button class="btn btn-warning btn-lg w-100">
-                                <i class="bi bi-calculator me-2"></i>Calcular mis ingresos
+
+                        <aside class="binn-public-searchstage__actions">
+                            <button type="button" class="binn-public-topaction">
+                                <i class="bi bi-stars"></i>
+                                <span>Búsqueda con IA</span>
                             </button>
-                        </div>
+                            @if (usuarioAutenticado)
+                            {
+                                <a class="binn-public-topaction binn-public-topaction--solid" href="@Url.Action("Index", "Home")">
+                                    <i class="bi bi-grid"></i>
+                                    <span>Ir a mi panel</span>
+                                </a>
+                            }
+                            else
+                            {
+                                <button type="button" class="binn-public-topaction binn-public-topaction--solid" data-open-login-modal>
+                                    <i class="bi bi-person-circle"></i>
+                                    <span>Iniciar sesión</span>
+                                </button>
+                            }
+                        </aside>
                     </div>
+
+                    <div class="binn-public-searchstage__chips" aria-label="Tipos de espacio">
+                        <button type="button" class="binn-public-searchchip is-active" data-search-chip="estacionamientos">
+                            <i class="bi bi-p-circle-fill"></i>
+                            <span>Estacionamientos</span>
+                        </button>
+                        <button type="button" class="binn-public-searchchip" data-search-chip="oficinas">
+                            <i class="bi bi-building"></i>
+                            <span>Oficinas privadas</span>
+                        </button>
+                        <button type="button" class="binn-public-searchchip" data-search-chip="coworks">
+                            <i class="bi bi-people"></i>
+                            <span>Coworks</span>
+                        </button>
+                        <button type="button" class="binn-public-searchchip" data-search-chip="eventos">
+                            <i class="bi bi-balloon-heart"></i>
+                            <span>Salones y eventos</span>
+                        </button>
+                    </div>
+
+                    <div class="binn-public-searchbar" id="inicio">
+                        <div class="binn-public-searchbar__field">
+                            <label>Destino</label>
+                            <input type="text" id="landingDestination" placeholder="Ciudad, colonia o zona" />
+                        </div>
+                        <div class="binn-public-searchbar__field">
+                            <label>Fechas</label>
+                            <button type="button" class="binn-public-searchbar__select" id="landingDatesTrigger">
+                                <span id="landingDatesLabel">Agregar fechas</span>
+                                <i class="bi bi-chevron-down"></i>
+                            </button>
+                            <input type="hidden" id="landingDates" value="" />
+                        </div>
+                        <div class="binn-public-searchbar__field">
+                            <label>Espacio</label>
+                            <button type="button" class="binn-public-searchbar__select" id="landingTypeTrigger">
+                                <span id="landingTypeLabel">Estacionamiento</span>
+                                <i class="bi bi-chevron-down"></i>
+                            </button>
+                            <input type="hidden" id="landingType" value="Estacionamiento" />
+                        </div>
+                        <button type="button" class="binn-public-searchbar__cta">
+                            <i class="bi bi-search"></i>
+                            <span>Buscar</span>
+                        </button>
+                    </div>
+
+                    <div class="binn-public-searchstage__suggestions">
+                        <span>Sugerencias:</span>
+                        <button type="button" class="binn-public-suggestion">Santa Fe</button>
+                        <button type="button" class="binn-public-suggestion">Reforma</button>
+                        <button type="button" class="binn-public-suggestion">Polanco</button>
+                        <button type="button" class="binn-public-suggestion">Insurgentes Sur</button>
+                    </div>
+                </section>
+
+                <div class="binn-public-hero__grid">
+                    <aside class="binn-public-logincard" id="login-directo" @(usuarioAutenticado ? null : "hidden")>
+                        @if (usuarioAutenticado)
+                        {
+                            <div class="binn-public-logincard__header">
+                                <span class="binn-public-logincard__eyebrow">Sesión activa</span>
+                                <h2>Hola, @nombreUsuario</h2>
+                                <p>Tu cuenta ya está firmada. Puedes seguir explorando espacios o saltar directo a tu operación.</p>
+                            </div>
+
+                            <div class="binn-public-sessioncard">
+                                <div class="binn-public-sessioncard__badge">@inicialesUsuario</div>
+                                <div class="binn-public-sessioncard__content">
+                                    <strong>@rolUsuario</strong>
+                                    <span>Cuenta activa en BEINN Marketplace</span>
+                                </div>
+                            </div>
+
+                            <div class="binn-public-sessioncard__actions">
+                                <a class="binn-public-primarybtn binn-public-primarybtn--inline" href="@Url.Action("Index", "Home")">
+                                    <i class="bi bi-grid"></i>
+                                    <span>Abrir panel</span>
+                                </a>
+                                <a class="binn-public-secondarybtn" href="@Url.Action("MiPerfil", "Perfil", new { id = perfilUsuario?.IdUsuario })">
+                                    <i class="bi bi-person"></i>
+                                    <span>Ver perfil</span>
+                                </a>
+                            </div>
+
+                            <div class="binn-public-logincard__footer">
+                                <a href="@Url.Action("Dashboard", "Bitacora")">Ver actividad</a>
+                                <a href="@Url.Action("Index", "Ayuda")">Centro de ayuda</a>
+                                <a href="@Url.Action("CerrarSesion", "Acceso")">Cerrar sesión</a>
+                            </div>
+                        }
+                        }
+                    </aside>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- CTA Section -->
-    <section class="py-5 text-white" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
-        <div class="container text-center">
-            <div data-aos="zoom-in">
-                <h2 class="fw-bold mb-3">¿Listo para ser el próximo Outer exitoso?</h2>
-                <p class="lead mb-4">Únete a miles de propietarios que ya están generando ingresos extra</p>
-                <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
-                    <div class="d-flex align-items-center">
-                        <i class="bi bi-shield-check me-2" style="color: #ffc107;"></i>
-                        <span>Protección total incluida</span>
+        <section class="binn-public-section">
+            <div class="binn-public-shell">
+                <div class="binn-public-section__heading">
+                    <div>
+                        <span class="binn-public-kicker">Disponibles ahora</span>
+                        <h2>Espacios listos para reservar</h2>
                     </div>
-                    <div class="d-flex align-items-center">
-                        <i class="bi bi-robot me-2" style="color: #81c3c9;"></i>
-                        <span>IA maneja las reservas</span>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <i class="bi bi-credit-card me-2" style="color: #28a745;"></i>
-                        <span>Pagos garantizados</span>
+                    <a href="@Url.Action("AccesoComoInvitado", "Acceso")">Ver inventario completo</a>
+                </div>
+
+                <div class="binn-public-cardrow">
+                    <article class="binn-space-card">
+                        <div class="binn-space-card__media">
+                            <img src="https://images.unsplash.com/photo-1506521781263-d8422e82f27a?w=900&h=700&fit=crop" alt="Estacionamiento corporativo" />
+                            <span class="binn-space-card__favorite-badge">Favorito entre huéspedes</span>
+                            <button type="button" class="binn-space-card__favorite" aria-label="Guardar en favoritos">
+                                <i class="bi bi-heart"></i>
+                            </button>
+                            <span class="binn-space-card__tag">Estacionamiento</span>
+                        </div>
+                        <div class="binn-space-card__body">
+                            <strong>Estacionamiento corporativo Reforma</strong>
+                            <div class="binn-space-card__submeta">20-22 mar</div>
+                            <p>Acceso 24/7 y videovigilancia.</p>
+                            <div class="binn-space-card__meta">
+                                <span>$95 MXN por hora</span>
+                                <b><i class="bi bi-star-fill"></i> 4.9</b>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="binn-space-card">
+                        <div class="binn-space-card__media">
+                            <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=900&h=700&fit=crop" alt="Oficina privada" />
+                            <span class="binn-space-card__favorite-badge">Favorito entre huéspedes</span>
+                            <button type="button" class="binn-space-card__favorite" aria-label="Guardar en favoritos">
+                                <i class="bi bi-heart"></i>
+                            </button>
+                            <span class="binn-space-card__tag">Oficina</span>
+                        </div>
+                        <div class="binn-space-card__body">
+                            <strong>Oficina privada Polanco</strong>
+                            <div class="binn-space-card__submeta">17-19 abr</div>
+                            <p>Internet, sala de juntas y recepción.</p>
+                            <div class="binn-space-card__meta">
+                                <span>$890 MXN por día</span>
+                                <b><i class="bi bi-star-fill"></i> 4.8</b>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="binn-space-card">
+                        <div class="binn-space-card__media">
+                            <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=900&h=700&fit=crop" alt="Cowork flexible" />
+                            <span class="binn-space-card__favorite-badge">Favorito entre huéspedes</span>
+                            <button type="button" class="binn-space-card__favorite" aria-label="Guardar en favoritos">
+                                <i class="bi bi-heart"></i>
+                            </button>
+                            <span class="binn-space-card__tag">Cowork</span>
+                        </div>
+                        <div class="binn-space-card__body">
+                            <strong>Cowork flexible Santa Fe</strong>
+                            <div class="binn-space-card__submeta">24-26 abr</div>
+                            <p>Cabinas privadas y café incluido.</p>
+                            <div class="binn-space-card__meta">
+                                <span>$280 MXN por jornada</span>
+                                <b><i class="bi bi-star-fill"></i> 4.7</b>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="binn-space-card">
+                        <div class="binn-space-card__media">
+                            <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=900&h=700&fit=crop" alt="Salón para eventos" />
+                            <span class="binn-space-card__favorite-badge">Favorito entre huéspedes</span>
+                            <button type="button" class="binn-space-card__favorite" aria-label="Guardar en favoritos">
+                                <i class="bi bi-heart"></i>
+                            </button>
+                            <span class="binn-space-card__tag">Evento</span>
+                        </div>
+                        <div class="binn-space-card__body">
+                            <strong>Salón boutique para eventos</strong>
+                            <div class="binn-space-card__submeta">10-12 may</div>
+                            <p>Talleres, presentaciones y celebraciones.</p>
+                            <div class="binn-space-card__meta">
+                                <span>$4,800 MXN por evento</span>
+                                <b><i class="bi bi-star-fill"></i> 4.9</b>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="binn-public-section binn-public-section--soft">
+            <div class="binn-public-shell">
+                <div class="binn-public-section__heading">
+                    <div>
+                        <span class="binn-public-kicker">Para propietarios</span>
+                        <h2>Monetiza tus espacios sin fricción</h2>
                     </div>
                 </div>
-                <a href="#registro" class="btn btn-lg px-5"
-                    style="background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%); color: #ffffff; border: none; font-weight: 600; box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3); transition: transform 0.3s ease, box-shadow 0.3s ease;"
-                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(255, 107, 53, 0.4)'"
-                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(255, 107, 53, 0.3)'">
-                    <i class="bi bi-rocket-takeoff me-2"></i>Convertirme en Outer
+
+                <div class="binn-public-offergrid">
+                    <article class="binn-offer-card">
+                        <i class="bi bi-p-circle"></i>
+                        <strong>Estacionamientos</strong>
+                        <p>Renta cajones por hora, jornada o mensualidad en zonas de alta demanda.</p>
+                    </article>
+                    <article class="binn-offer-card">
+                        <i class="bi bi-building"></i>
+                        <strong>Oficinas y coworks</strong>
+                        <p>Publica oficinas privadas, salas de juntas o espacios híbridos por día o por bloque.</p>
+                    </article>
+                    <article class="binn-offer-card">
+                        <i class="bi bi-calendar-event"></i>
+                        <strong>Salones y eventos</strong>
+                        <p>Gestiona reservas, disponibilidad y contacto comercial desde una sola operación.</p>
+                    </article>
+                    <article class="binn-offer-card">
+                        <i class="bi bi-house-door"></i>
+                        <strong>Casas y espacios especiales</strong>
+                        <p>Activa propiedades, rooftops o locaciones temporales para renta flexible.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="binn-offer-modal" id="offerModal" aria-hidden="true">
+        <div class="binn-offer-modal__backdrop" data-close-offer-modal></div>
+        <div class="binn-offer-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="offerModalTitle">
+            <button type="button" class="binn-offer-modal__close" data-close-offer-modal aria-label="Cerrar">
+                <i class="bi bi-x-lg"></i>
+            </button>
+            <div class="binn-offer-modal__head">
+                <h3 id="offerModalTitle">¿Qué quieres ofrecer en BEINN?</h3>
+                <p>Selecciona el tipo de espacio que deseas publicar para continuar con tu alta.</p>
+            </div>
+            <div class="binn-offer-modal__options">
+                <button type="button" class="binn-offer-option is-selected" data-offer-type="estacionamiento">
+                    <i class="bi bi-p-circle"></i>
+                    <strong>Estacionamiento</strong>
+                    <span>Cajón, pensión o lote privado</span>
+                </button>
+                <button type="button" class="binn-offer-option" data-offer-type="oficina">
+                    <i class="bi bi-building"></i>
+                    <strong>Oficina o cowork</strong>
+                    <span>Privada, compartida o sala de juntas</span>
+                </button>
+                <button type="button" class="binn-offer-option" data-offer-type="evento">
+                    <i class="bi bi-calendar-event"></i>
+                    <strong>Salón o evento</strong>
+                    <span>Talleres, reuniones o celebraciones</span>
+                </button>
+                <button type="button" class="binn-offer-option" data-offer-type="especial">
+                    <i class="bi bi-house-door"></i>
+                    <strong>Casa o espacio especial</strong>
+                    <span>Propiedades flexibles y locaciones</span>
+                </button>
+            </div>
+            <div class="binn-offer-modal__footer">
+                <p id="offerSelectedLabel">Seleccionado: Estacionamiento</p>
+                <a class="binn-public-primarybtn binn-public-primarybtn--inline" id="offerNextBtn" href="@Url.Action("Registro", "Acceso")">
+                    <i class="bi bi-arrow-right"></i>
+                    <span>Continuar</span>
                 </a>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- FAQ Section -->
-    <section class="py-5 bg-light">
-        <div class="container">
-            <div class="text-center mb-5" data-aos="fade-up">
-                <h2 class="fw-bold mb-3">Preguntas frecuentes</h2>
-                <p class="lead text-muted">Resuelve tus dudas sobre Be-Inn</p>
+    <div class="binn-date-modal" id="dateModal" aria-hidden="true">
+        <div class="binn-date-modal__backdrop" data-close-date-modal></div>
+        <div class="binn-date-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="dateModalTitle">
+            <button type="button" class="binn-date-modal__close" data-close-date-modal aria-label="Cerrar calendario">
+                <i class="bi bi-x-lg"></i>
+            </button>
+            <div class="binn-date-modal__head">
+                <h3 id="dateModalTitle">Selecciona tu intervalo</h3>
+                <p>Elige fecha de inicio y fin para filtrar espacios disponibles.</p>
             </div>
-
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="accordion" id="faqAccordion">
-                        <div class="accordion-item border-0 mb-3 rounded overflow-hidden" data-aos="fade-up">
-                            <h3 class="accordion-header" id="headingOne">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseOne">
-                                    ¿Quién puede usar Be-Inn?
-                                </button>
-                            </h3>
-                            <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    Be-Inn está abierto para cualquier persona o empresa que quiera buscar espacios
-                                    (Outer) o que tenga espacios para rentar (Inner). Solo necesitas crear tu cuenta y
-                                    verificar tu identidad.
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-item border-0 mb-3 rounded overflow-hidden" data-aos="fade-up"
-                            data-aos-delay="100">
-                            <h3 class="accordion-header" id="headingTwo">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseTwo">
-                                    ¿Cómo funciona el asistente de IA?
-                                </button>
-                            </h3>
-                            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    Nuestro asistente con IA te ayuda a describir tus necesidades de espacio de forma
-                                    natural. Solo tienes que decirle qué buscas (ej: "Necesito una oficina para mañana
-                                    en el centro con WiFi y proyector") y te mostrará las mejores opciones.
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-item border-0 mb-3 rounded overflow-hidden" data-aos="fade-up"
-                            data-aos-delay="200">
-                            <h3 class="accordion-header" id="headingThree">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseThree">
-                                    ¿Es seguro pagar desde la plataforma?
-                                </button>
-                            </h3>
-                            <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    Sí, todos los pagos están protegidos y centralizados en Be-Inn. Usamos encriptación
-                                    de grado bancario y solo liberamos el pago al Inner después de que confirmes que
-                                    todo estuvo correcto con tu reserva.
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-item border-0 mb-3 rounded overflow-hidden" data-aos="fade-up"
-                            data-aos-delay="300">
-                            <h3 class="accordion-header" id="headingFour">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseFour">
-                                    ¿Qué pasa si algo sale mal con mi reserva?
-                                </button>
-                            </h3>
-                            <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    Be-Inn cuenta con protección total incluida. Si algo no cumple con lo prometido,
-                                    tienes soporte directo y políticas de reembolso claras. Además, cada espacio tiene
-                                    reseñas reales de otros usuarios.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="text-center mt-5">
-                        <a href="#" class="btn btn-outline-primary">Ver todas las preguntas</a>
-                    </div>
+            <div class="binn-date-modal__summary">
+                <div>
+                    <span>Entrada</span>
+                    <strong id="dateRangeStartLabel">Sin fecha</strong>
+                </div>
+                <div>
+                    <span>Salida</span>
+                    <strong id="dateRangeEndLabel">Sin fecha</strong>
+                </div>
+                <div>
+                    <span>Noches</span>
+                    <strong id="dateRangeNightsLabel">0</strong>
                 </div>
             </div>
+            <div class="binn-date-modal__months" id="dateMonths"></div>
+            <div class="binn-date-modal__presets">
+                <button type="button" class="binn-date-preset" data-range-days="1">+ 1 día</button>
+                <button type="button" class="binn-date-preset" data-range-days="2">+ 2 días</button>
+                <button type="button" class="binn-date-preset" data-range-days="3">+ 3 días</button>
+                <button type="button" class="binn-date-preset" data-range-days="7">+ 7 días</button>
+                <button type="button" class="binn-date-preset" data-range-days="14">+ 14 días</button>
+            </div>
+            <div class="binn-date-modal__footer">
+                <button type="button" class="binn-public-secondarybtn" data-clear-date-range>Limpiar</button>
+                <button type="button" class="binn-public-primarybtn binn-public-primarybtn--inline" data-apply-date-range>
+                    <i class="bi bi-check2"></i>
+                    <span>Aplicar fechas</span>
+                </button>
+            </div>
         </div>
-    </section>
+    </div>
 
+    @if (!usuarioAutenticado)
+    {
+        <div class="binn-login-modal" id="loginModal" aria-hidden="true">
+            <div class="binn-login-modal__backdrop" data-close-login-modal></div>
+            <div class="binn-login-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="loginModalTitle">
+                <button type="button" class="binn-login-modal__close" data-close-login-modal aria-label="Cerrar acceso">
+                    <i class="bi bi-x-lg"></i>
+                </button>
 
+                <div class="binn-public-logincard">
+                    <div class="binn-public-logincard__header">
+                        <span class="binn-public-logincard__eyebrow">Acceso directo</span>
+                        <h2 id="loginModalTitle">Entra a BEINN</h2>
+                        <p>Busca, administra o publica espacios sin salir de esta página.</p>
+                    </div>
 
-    <section class="form-section" id="registro" style="position: relative; overflow: hidden;">
-        <video autoplay muted loop id="video-bg"
-            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
-            <source src="https://cdn.sassoapps.com/videos/BE-INN.mp4" type="video/mp4">
-        </video>
-        <!-- Capa semitransparente para mejorar legibilidad -->
-        <div
-            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(245, 247, 250, 0.88) 100%); z-index: 2;">
-        </div>
-
-        <div class="container" style="position: relative; z-index: 3;">
-            <div class="row justify-content-center align-items-center">
-
-                <div class="text-center mb-5" data-aos="fade-down">
-                    <h2 class="fw-bold mb-3" style="color: #1e3c72;">¿Listo para explorar espacios inteligentes?</h2>
-                    <p class="lead" style="color: #2c3e50;">Regístrate hoy mismo y comienza a rentar o monetizar
-                        espacios.</p>
-                </div>
-
-                <!-- Columna izquierda: Formulario de registro -->
-                <div class="col-lg-6" data-aos="fade-right">
-                    <div class="form-container p-4 p-md-5 bg-white rounded shadow">
-                        <div class="text-center mb-4">
-                            <img src="@cdn/be-inn/iconos/logobeeinn.png" alt="BEINN" class="brand-logo mb-3"
-                                style="max-width: 120px;">
-                            <h2 class="fw-bold text-primary">Registro de Usuario</h2>
-                            <p class="text-muted">Completa los siguientes pasos para crear tu cuenta</p>
-                        </div>
-
-                        <!-- Aquí va TODO el contenido de tu formulario de registro por pasos -->
-                        <form id="registroForm">
-                            <!-- Paso 1 -->
-                            <div id="paso1">
-                                <p class="step-title">Paso 1: Cargar Constancia de Situación Fiscal</p>
-                                <div class="mb-3">
-                                    <label for="constanciaFile" class="form-label">Constancia Fiscal (PDF)</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-file-earmark-pdf"></i></span>
-                                        <input type="file" id="constanciaFile" class="form-control" accept=".pdf"
-                                            required>
-                                    </div>
-                                    <small class="text-muted">Tamaño máximo: 5MB</small>
-                                </div>
-
-                                <div class="mb-3">
-                                    <div class="barra-carga">
-                                        <div class="progreso" id="barraProgreso"></div>
-                                    </div>
-                                    <small id="uploadStatus" class="text-muted">Esperando archivo...</small>
-                                </div>
-
-                                <div id="datosFiscales" class="alert alert-info mt-3 oculto">
-                                    <h6 class="fw-bold mb-3"><i class="bi bi-check-circle-fill me-2"></i>Datos fiscales
-                                        reconocidos
-                                    </h6>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <p class="mb-1"><strong>RFC:</strong> SACJ820506BC5</p>
-                                            <p class="mb-1"><strong>CURP:</strong> SACJ820506HDFSLV02</p>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <p class="mb-1"><strong>Nombre:</strong> Javier Sasso Celaya</p>
-                                            <p class="mb-1"><strong>Régimen:</strong> Sueldos y Salarios</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="d-grid mt-4">
-                                    <button type="button" id="btnPaso1" class="btn btn-primary">
-                                        Continuar <i class="bi bi-arrow-right ms-2"></i>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- Paso 2 -->
-                            <div id="paso2" class="oculto">
-                                <p class="step-title">Paso 2: Subir Certificados</p>
-
-                                <div class="mb-3">
-                                    <label for="certCer" class="form-label">Certificado (.cer)</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-file-earmark-binary"></i></span>
-                                        <input type="file" id="certCer" class="form-control" accept=".cer" required>
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="certKey" class="form-label">Llave Privada (.key)</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-key"></i></span>
-                                        <input type="file" id="certKey" class="form-control" accept=".key" required>
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="certPass" class="form-label">Contraseña del Certificado</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                                        <input type="password" id="certPass" class="form-control"
-                                            placeholder="Ingresa la contraseña" required>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex justify-content-between mt-4">
-                                    <button type="button" class="btn btn-outline-secondary" onclick="volverPaso(1)">
-                                        <i class="bi bi-arrow-left me-2"></i>Regresar
-                                    </button>
-                                    <button type="button" id="btnPaso2" class="btn btn-primary">
-                                        Siguiente <i class="bi bi-arrow-right ms-2"></i>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- Paso 3 -->
-                            <div id="paso3" class="oculto">
-                                <p class="step-title">Paso 3: Datos de Contacto</p>
-
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Correo electrónico</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                                        <input type="email" id="email" class="form-control"
-                                            placeholder="ejemplo@correo.com" required>
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="telefono" class="form-label">Teléfono</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">+52</span>
-                                        <input type="tel" id="telefono" class="form-control" placeholder="55 1234 5678"
-                                            required>
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="pass" class="form-label">Contraseña</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                                        <input type="password" id="pass" class="form-control"
-                                            placeholder="Crea una contraseña segura" required>
-                                    </div>
-                                    <div class="form-text">Mínimo 8 caracteres, incluyendo mayúsculas, números y
-                                        símbolos</div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="confPass" class="form-label">Confirmar Contraseña</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
-                                        <input type="password" id="confPass" class="form-control"
-                                            placeholder="Repite tu contraseña" required>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex justify-content-between mt-4">
-                                    <button type="button" class="btn btn-outline-secondary" onclick="volverPaso(2)">
-                                        <i class="bi bi-arrow-left me-2"></i>Regresar
-                                    </button>
-                                    <button type="submit" class="btn btn-success">
-                                        <i class="bi bi-check-circle me-2"></i>Finalizar Registro
-                                    </button>
-                                </div>
-                            </div>
+                    <div class="binn-public-social">
+                        <form asp-controller="Acceso" asp-action="LoginGoogle" method="post" class="binn-public-social__item">
+                            <button type="submit" class="btn binn-public-socialbtn binn-public-socialbtn--google">
+                                <i class="bi bi-google"></i>
+                                <span>Continuar con Google</span>
+                            </button>
                         </form>
-                        @* <div class="text-center mt-4">
-                            <p class="text-muted">O regístrate con</p>
-                            <form asp-controller="Acceso" asp-action="LoginGoogle" method="post" class="d-inline">
-                                <button type="submit" class="btn btn-outline-danger me-2">
-                                    <i class="bi bi-google me-1"></i> Google
+
+                        <form asp-controller="Acceso" asp-action="LoginFacebook" method="post" class="binn-public-social__item">
+                            <button type="submit" class="btn binn-public-socialbtn binn-public-socialbtn--facebook">
+                                <i class="bi bi-facebook"></i>
+                                <span>Continuar con Facebook</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="binn-public-divider"><span>o entra con tu cuenta</span></div>
+
+                    <form id="loginForm" action="@Url.Action("Login", "Acceso")" method="post" class="binn-public-form">
+                        <div class="binn-public-field">
+                            <label for="Correo">Correo o RFC</label>
+                            <div class="binn-public-inputwrap">
+                                <i class="bi bi-person"></i>
+                                <input type="text" id="Correo" name="Correo" placeholder="correo@empresa.com o RFC" required />
+                            </div>
+                        </div>
+
+                        <div class="binn-public-field">
+                            <label for="claveInput">Contraseña</label>
+                            <div class="binn-public-inputwrap">
+                                <i class="bi bi-lock"></i>
+                                <input type="password" id="claveInput" name="Clave" placeholder="Tu contraseña" required />
+                                <button type="button" class="binn-public-eye" onclick="togglePassword()" aria-label="Mostrar u ocultar contraseña">
+                                    <i class="bi bi-eye-fill" id="iconoClave"></i>
                                 </button>
-                            </form>
+                            </div>
+                        </div>
 
-                            <form asp-controller="Acceso" asp-action="LoginFacebook" method="post" class="d-inline">
-                                <button type="submit" class="btn btn-outline-facebook">
-                                    <i class="bi bi-facebook me-1"></i> Facebook
-                                </button>
-                            </form> *@
-                    </div>
-                </div>
-            </div>
+                        @if (ViewData["Mensaje"] != null)
+                        {
+                            <div class="binn-public-alert binn-public-alert--error">
+                                <i class="bi bi-exclamation-circle"></i>
+                                <span>@ViewData["Mensaje"]</span>
+                            </div>
+                        }
 
-            <!-- Columna derecha: Información e invitación -->
-            <div class="col-lg-5" data-aos="fade-left">
-                <div class="p-4 p-md-5"
-                    style="background: rgba(255, 255, 255, 0.85); border-radius: 15px; backdrop-filter: blur(10px); box-shadow: 0 8px 32px rgba(0,0,0,0.1);">
-                    <h4 class="fw-bold mb-4" style="color: #2c3e50;">¿Primera vez en Be-Inn?</h4>
-                    <p class="mb-4" style="color: #495057;">Regístrate para comenzar a rentar o monetizar espacios:</p>
+                        <button type="submit" id="btnAcceso" class="binn-public-primarybtn">
+                            <i class="bi bi-box-arrow-in-right"></i>
+                            <span>Iniciar sesión</span>
+                        </button>
+                    </form>
 
-                    <ul class="list-unstyled mb-5">
-                        <li class="mb-3" style="color: #495057;"><i
-                                class="bi bi-check-circle-fill text-success me-2"></i> Búsqueda inteligente
-                            con IA</li>
-                        <li class="mb-3" style="color: #495057;"><i
-                                class="bi bi-check-circle-fill text-success me-2"></i> Gestión de reservas
-                            simplificada</li>
-                        <li class="mb-3" style="color: #495057;"><i
-                                class="bi bi-check-circle-fill text-success me-2"></i> Pagos seguros
-                            integrados</li>
-                        <li class="mb-3" style="color: #495057;"><i
-                                class="bi bi-check-circle-fill text-success me-2"></i> Asistente IA 24/7
-                        </li>
-                        <li style="color: #495057;"><i class="bi bi-check-circle-fill text-success me-2"></i> Soporte
-                            prioritario</li>
-                    </ul>
-
-                    <div class="bg-white p-4 rounded text-dark">
-                        <h5 class="fw-bold mb-3">¿Eres dueño de espacios?</h5>
-                        <p class="mb-3">Únete como Outer y comienza a generar ingresos pasivos con tus espacios.</p>
-                        <a href="@Url.Action("Registro", "Acceso")" class="btn btn-warning btn-lg">
-                            <i class="bi bi-rocket-takeoff me-2"></i>Regístrate Gratis
-                        </a>
+                    <div class="binn-public-logincard__footer">
+                        <a href="@Url.Action("ForgotPassword", "Acceso")">¿Olvidaste tu contraseña?</a>
+                        <a href="@Url.Action("Registro", "Acceso")">Crear cuenta</a>
+                        <a href="@Url.Action("AccesoComoInvitado", "Acceso")">Consulta pública</a>
                     </div>
                 </div>
             </div>
         </div>
-        </div>
-    </section>
+    }
 
-
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-3">
-                    <img src="@cdn/be-inn/iconos/logobeeinn.png" alt="Be-Inn" height="40" class="mb-3">
-                    <p class="small">Be-Inn - Plataforma de espacios inteligentes<br>La forma más fácil de rentar y
-                        monetizar espacios</p>
-                    <div class="mt-4">
-                        <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="social-icon"><i class="bi bi-linkedin"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4">
-                    <h5 class="mb-3">Para Inners</h5>
-                    <ul class="list-unstyled footer-links">
-                        <li class="mb-2"><a href="#">Buscar espacios</a></li>
-                        <li class="mb-2"><a href="#">Asistente IA</a></li>
-                        <li class="mb-2"><a href="#">Mis reservas</a></li>
-                        <li><a href="#">Cómo funciona</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-2 col-md-4">
-                    <h5 class="mb-3">Para Outers</h5>
-                    <ul class="list-unstyled footer-links">
-                        <li class="mb-2"><a href="#">Publicar un espacio</a></li>
-                        <li class="mb-2"><a href="#">Panel de control</a></li>
-                        <li class="mb-2"><a href="#">Calculadora de ingresos</a></li>
-                        <li><a href="#">Recursos</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-2 col-md-4">
-                    <h5 class="mb-3">Soporte</h5>
-                    <ul class="list-unstyled footer-links">
-                        <li class="mb-2"><a href="#">Centro de ayuda</a></li>
-                        <li class="mb-2"><a href="#">Preguntas frecuentes</a></li>
-                        <li class="mb-2"><a href="#">Contacto</a></li>
-                        <li><a href="#">Seguridad</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-4">
-                    <h5 class="mb-3">Legal</h5>
-                    <ul class="list-unstyled footer-links">
-                        <li class="mb-2"><a href="#">Términos y condiciones</a></li>
-                        <li class="mb-2"><a href="#">Aviso de privacidad</a></li>
-                        <li class="mb-2"><a href="#">Políticas de cancelación</a></li>
-                        <li><a href="#">Cookies</a></li>
-                    </ul>
-                </div>
-            </div>
-            <hr class="mt-4 mb-3" style="border-color: rgba(255,255,255,0.1);">
-            <div class="row align-items-center">
-                <div class="col-md-6 text-center text-md-start">
-                    <p class="small mb-0">© 2025 Be-Inn. Todos los derechos reservados.</p>
-                </div>
-                <div class="col-md-6 text-center text-md-end">
-                    <p class="small mb-0">Hecho con <i class="bi bi-heart-fill text-danger"></i> en México</p>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // Initialize AOS animation
-        AOS.init({
-            duration: 800,
-            once: true,
-            easing: 'ease-in-out'
-        });
-
-        // Initialize Particles.js with the classic node-link interactive effect
-        if (typeof particlesJS !== 'undefined') {
-            particlesJS('particles-js', {
-                particles: {
-                    number: {
-                        value: 100, // Adjusted for performance with line linking
-                        density: { enable: true, value_area: 800 }
-                    },
-                    color: { value: '#ffffff' },
-                    shape: {
-                        type: 'circle'
-                    },
-                    opacity: {
-                        value: 0.5, // Increased for better visibility
-                        random: false,
-                        anim: { enable: false }
-                    },
-                    size: {
-                        value: 3, // Slightly larger particles
-                        random: true,
-                        anim: { enable: false }
-                    },
-                    line_linked: {
-                        enable: true,
-                        distance: 150,
-                        color: '#ffffff',
-                        opacity: 0.4,
-                        width: 1
-                    },
-                    move: {
-                        enable: true,
-                        speed: 2, // Adjusted speed for a classic feel
-                        direction: 'none',
-                        random: false,
-                        straight: false,
-                        out_mode: 'out',
-                        bounce: false
-                    }
-                },
-                interactivity: {
-                    detect_on: 'canvas',
-                    events: {
-                        onhover: { enable: true, mode: 'grab' }, // Grab mode creates interactive lines
-                        onclick: { enable: true, mode: 'push' },
-                        resize: true
-                    },
-                    modes: {
-                        grab: {
-                            distance: 140,
-                            line_opacity: 1
-                        },
-                        push: { particles_nb: 4 }
-                    }
-                },
-                retina_detect: true
-            });
-        }
-
-        // Toggle password visibility
-        function togglePassword() {
-            const input = document.getElementById("claveInput");
-            const icon = document.getElementById("iconoClave");
-            if (input.type === "password") {
-                input.type = "text";
-                icon.classList.replace("bi-eye-fill", "bi-eye-slash-fill");
-            } else {
-                input.type = "password";
-                icon.classList.replace("bi-eye-slash-fill", "bi-eye-fill");
-            }
-        }
-
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Typing animation for main title
-        function typeWriter(element, text, speed = 100) {
-            let i = 0;
-            element.innerHTML = '';
-            function type() {
-                if (i < text.length) {
-                    element.innerHTML += text.charAt(i);
-                    i++;
-                    setTimeout(type, speed);
-                }
-            }
-            type();
-        }
-
-        // Initialize typing animation on page load
-        window.addEventListener('load', function () {
-            const titleElement = document.querySelector('.text-gradient');
-            if (titleElement) {
-                const originalText = titleElement.textContent;
-                setTimeout(() => {
-                    typeWriter(titleElement, originalText, 80);
-                }, 1000);
-            }
-        });
-
-        // Change navbar style on scroll with modern effect
-        window.addEventListener('scroll', function () {
-            const navbar = document.querySelector('.navbar.fixed-top');
-            if (navbar) { // Asegurarse de que la navbar existe
-                if (window.scrollY > 50) {
-                    navbar.classList.add('scrolled');
-                } else {
-                    navbar.classList.remove('scrolled');
-                }
-            }
-        });
-    </script>
-    <script src="~/js/validacion-formulario.js"></script>
-    <script src="~/js/seguridad.js"></script>
-    <script>
-        // Configurar URLs para el script de login unificado
         window.urlAccesoInvitado = '@Url.Action("AccesoComoInvitado", "Acceso")';
         window.urlLogin = '@Url.Action("Login", "Acceso")';
-        window.tieneErrores = @(ViewData["Mensaje"] != null ? "true" : "false");
+        window.urlRegistro = '@Url.Action("Registro", "Acceso")';
     </script>
-    <script src="~/js/login-unificado.js"></script>
-
-    <script src="https://cdn.botpress.cloud/webchat/v3.0/inject.js" defer></script>
-    <script src="https://files.bpcontent.cloud/2025/07/03/06/20250703065244-GFQSQ0GG.js" defer></script>
-    <script>
-        // Esperamos a que cargue todo el contenido incluido lo inyectado
-        window.addEventListener('load', () => {
-            const ocultarBotpressFooter = () => {
-                const footer = document.querySelector('.bpComposerFooter');
-                if (footer) {
-                    footer.style.display = 'none';
-                }
-            };
-
-            // Ocultamos al cargar
-            ocultarBotpressFooter();
-
-            // Observamos si lo reinyectan y lo ocultamos de nuevo
-            const observer = new MutationObserver(() => ocultarBotpressFooter());
-            observer.observe(document.body, {
-                childList: true,
-                subtree: true
-            });
-        });
-    </script>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <script>
-
-        AOS.init();
-
-        // Función para volver a pasos anteriores
-        function volverPaso(paso) {
-            $('[id^="paso"]').addClass('oculto');
-            $(`#paso${paso}`).removeClass('oculto');
-        }
-
-        // Validación de archivo PDF
-        $('#constanciaFile').on('change', function () {
-            const file = this.files[0];
-            const maxSize = 5 * 1024 * 1024; // 5MB
-
-            if (!file) {
-                $('#uploadStatus').text('Esperando archivo...').removeClass('text-success text-danger');
-                return;
-            }
-
-            if (file.type !== 'application/pdf') {
-                $('#uploadStatus').text('Error: El archivo debe ser PDF').addClass('text-danger');
-                return;
-            }
-
-            if (file.size > maxSize) {
-                $('#uploadStatus').text('Error: El archivo excede 5MB').addClass('text-danger');
-                return;
-            }
-
-            // Simular carga
-            $('#uploadStatus').text('Cargando archivo...').removeClass('text-danger');
-            $('#barraProgreso').css('width', '0%');
-
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += 5;
-                $('#barraProgreso').css('width', `${progress}%`);
-
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    $('#uploadStatus').text('Archivo cargado correctamente').addClass('text-success');
-                    $('#datosFiscales').removeClass('oculto');
-                }
-            }, 100);
-        });
-
-        // Navegación entre pasos
-        $('#btnPaso1').click(function () {
-            if (!$('#datosFiscales').hasClass('oculto')) {
-                $('#paso1').addClass('oculto');
-                $('#paso2').removeClass('oculto');
-            } else {
-                alert('Por favor, carga correctamente tu Constancia de Situación Fiscal antes de continuar.');
-            }
-        });
-
-        $('#btnPaso2').click(function () {
-            if ($('#certCer').val() && $('#certKey').val() && $('#certPass').val()) {
-                $('#paso2').addClass('oculto');
-                $('#paso3').removeClass('oculto');
-            } else {
-                alert('Por favor, completa todos los campos del certificado antes de continuar.');
-            }
-        });
-
-        // Validación del formulario final
-        $('#registroForm').submit(function (e) {
-            e.preventDefault();
-
-            // Validar contraseñas coincidan
-            if ($('#pass').val() !== $('#confPass').val()) {
-                alert('Las contraseñas no coinciden. Por favor verifica.');
-                return;
-            }
-
-            // Validar fortaleza de contraseña
-            const password = $('#pass').val();
-            if (password.length < 8 || !/[A-Z]/.test(password) || !/[0-9]/.test(password) || !/[^A-Za-z0-9]/.test(password)) {
-                alert('La contraseña debe tener al menos 8 caracteres, incluyendo mayúsculas, números y símbolos.');
-                return;
-            }
-
-            // Mostrar modal de éxito
-            $('#modalExito').modal('show');
-        });
-    </script>
-
-
+    <script src="~/js/binn-public-landing.js" asp-append-version="true"></script>
 </body>
-
 </html>
-

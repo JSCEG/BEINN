@@ -16,24 +16,34 @@
     ViewData["MercadoUsuario"] = perfilUsuario.Mercado_ID;
     ViewData["IDUsuario"] = perfilUsuario.IdUsuario;
     ViewData["Title"] = "Editar Usuario";
+    var header = new HeaderViewModel
+    {
+        Title = ViewData["Title"]?.ToString(),
+        IconPath = "mexicoi.png",
+        Description = "Actualiza la información general, roles y mercado asignado de un usuario BEINN.",
+        Section = "Usuarios",
+        ModuleInfo = JsonConvert.SerializeObject(new
+        {
+            title = "Editar Usuario",
+            description = "Formulario de administración para modificar datos y permisos del usuario.",
+            functionality = "Permite actualizar información personal, estado de sesión, rol, mercado y comentarios de control.",
+            stage = "Administración",
+            roles = new[] {
+                new { icon = "user-shield", text = "Administrador: gestiona perfiles, acceso y asignaciones." }
+            },
+            order = new { step = 2, description = "Mantenimiento del catálogo de usuarios" },
+            manualUrl = "/Ayuda"
+        })
+    };
 }
 
-
-
-
-
-<div class="text-center">
-    <h3 class="cp-section cp-grouping-section"> <img src="@Cdn.Url/img_snier/vistas/mexicoi.png" alt="Icono personalizado"
-            class="iconomenu">@ViewData["Title"]</h3>
-</div>
-
-<br />
+@await Html.PartialAsync("_ViewHeader", header)
 
 <div class="container mt-5">
 
     <form asp-action="Edit" method="post" class="mt-4">
         @Html.AntiForgeryToken()
-        <h6 class="display-6 fw-bold subtitulo pl-3%">Información del Usuario</h6>
+        <h6 class="display-6 fw-bold subtitulo">Información del Usuario</h6>
         <input type="hidden" asp-for="IdUsuario" />
         <div class="row p-3">
             <div class="col-md-6 form-group">
@@ -78,7 +88,7 @@
 
 
 
-        <h6 class="display-6 fw-bold subtitulo pl-3%">Roles del Usuario</h6>
+        <h6 class="display-6 fw-bold subtitulo">Roles del Usuario</h6>
         <div class="row p-3">
             @* <input asp-for="Rol_ID" />*@
             <div class="col-md-6 form-group">
@@ -163,3 +173,4 @@
         });
     </script>
 }
+

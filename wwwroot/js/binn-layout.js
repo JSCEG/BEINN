@@ -10,6 +10,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const sidebarToggle = document.getElementById('sidebarToggle');
     const sidebarMobile = document.getElementById('sidebarMobile');
+    const syncSidebarToggleState = function () {
+        if (!sidebarToggle) {
+            return;
+        }
+
+        const isDesktop = window.innerWidth >= 992;
+        const isCollapsed = document.body.classList.contains('sidebar-collapsed');
+        const isMobileOpen = !!(sidebarMobile && sidebarMobile.classList.contains('show'));
+
+        sidebarToggle.classList.toggle('is-active', isDesktop ? isCollapsed : isMobileOpen);
+        sidebarToggle.setAttribute('aria-expanded', isDesktop ? (!isCollapsed).ToString().toLowerCase() : isMobileOpen.ToString().toLowerCase());
+    };
 
     if (sidebarToggle && sidebarMobile && typeof bootstrap !== 'undefined') {
         const offcanvasInstance = new bootstrap.Offcanvas(sidebarMobile, {
@@ -20,13 +32,14 @@ document.addEventListener('DOMContentLoaded', function () {
         sidebarToggle.addEventListener('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
-            this.classList.toggle('is-active');
 
             if (window.innerWidth >= 992) {
                 document.body.classList.toggle('sidebar-collapsed');
             } else {
                 offcanvasInstance.toggle();
             }
+
+            syncSidebarToggleState();
 
             window.setTimeout(function () {
                 if (typeof sankeyChart !== 'undefined' && sankeyChart) {
@@ -38,6 +51,9 @@ document.addEventListener('DOMContentLoaded', function () {
             }, 220);
         });
 
+        sidebarMobile.addEventListener('shown.bs.offcanvas', syncSidebarToggleState);
+        sidebarMobile.addEventListener('hidden.bs.offcanvas', syncSidebarToggleState);
+
         document.querySelectorAll('[data-bs-toggle="collapse"]').forEach(function (button) {
             button.addEventListener('click', function (e) {
                 e.stopPropagation();
@@ -48,7 +64,11 @@ document.addEventListener('DOMContentLoaded', function () {
             if (window.innerWidth >= 992 && sidebarMobile.classList.contains('show')) {
                 offcanvasInstance.hide();
             }
+
+            syncSidebarToggleState();
         });
+
+        syncSidebarToggleState();
     }
 });
 

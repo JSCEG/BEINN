@@ -13,13 +13,29 @@
     ViewData["MercadoUsuario"] = perfilUsuario.Mercado_ID;
     ViewData["IDUsuario"] = perfilUsuario.IdUsuario;
     ViewData["Title"] = "Mi Perfil";
+
+    var header = new HeaderViewModel
+    {
+        Title = ViewData["Title"]?.ToString(),
+        IconPath = "mexicoi.png",
+        Description = "Consulta los datos de tu cuenta, valida tu estado actual y actualiza credenciales personales.",
+        Section = "Perfil",
+        ModuleInfo = JsonConvert.SerializeObject(new
+        {
+            title = "Mi Perfil",
+            description = "Vista personal del usuario dentro de BEINN.",
+            functionality = "Muestra información de cuenta, estado de sesión y acceso al cambio de contraseña.",
+            stage = "Operación",
+            roles = new[] {
+                new { icon = "user", text = "Usuario autenticado: consulta sus datos y gestiona su acceso." }
+            },
+            order = new { step = 1, description = "Administración básica de la cuenta personal" },
+            manualUrl = "/Ayuda"
+        })
+    };
 }
 
-<div class="text-center">
-    <h3 class="cp-section cp-grouping-section">
-        <img src="@Cdn.Url/img_snier/vistas/mexicoi.png" alt="Mi perfil" class="iconomenu" /> @ViewData["Title"]
-    </h3>
-</div>
+@await Html.PartialAsync("_ViewHeader", header)
 
 <div class="container mt-5">
     <div class="row g-4">
@@ -117,4 +133,3 @@
         });
     </script>
 }
-

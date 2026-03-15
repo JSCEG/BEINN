@@ -163,6 +163,24 @@
     font-weight: 800;
 }
 
+#sidebarDesktop .nav-link-text {
+    color: inherit;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+#sidebarDesktop .submenu-arrow,
+#sidebarMobile .bi-chevron-down {
+    color: var(--binn-muted) !important;
+    transition: transform var(--binn-transition), color var(--binn-transition);
+}
+
+#sidebarDesktop .submenu-toggle[aria-expanded="true"] .submenu-arrow,
+#sidebarMobile .nav-item > button.nav-link[aria-expanded="true"] .bi-chevron-down {
+    transform: rotate(180deg);
+    color: #ffffff !important;
+}
+
 #sidebarDesktop .submenu,
 #sidebarDesktop .submenu-list,
 #sidebarMobile .collapse > .nav,
@@ -190,6 +208,10 @@
     font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
+}
+
+#sidebarDesktop .nav-item.has-submenu {
+    margin-bottom: 0.35rem;
 }
 
 #sidebarDesktop hr,

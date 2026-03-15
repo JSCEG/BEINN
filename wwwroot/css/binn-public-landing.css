@@ -1,0 +1,1400 @@
+:root {
+    --binn-public-blue-900: #091f44;
+    --binn-public-blue-800: #0e2d5f;
+    --binn-public-blue-700: #0052a1;
+    --binn-public-blue-600: #1a67ba;
+    --binn-public-orange-500: #f97316;
+    --binn-public-orange-600: #ea580c;
+    --binn-public-ink: #162033;
+    --binn-public-muted: #67758c;
+    --binn-public-border: rgba(18, 47, 96, 0.1);
+    --binn-public-shadow: 0 24px 50px rgba(16, 32, 51, 0.08);
+}
+
+body.binn-public-page {
+    margin: 0;
+    min-height: 100vh;
+    font-family: 'Manrope', sans-serif;
+    color: var(--binn-public-ink);
+    background:
+        radial-gradient(circle at top left, rgba(0, 82, 161, 0.08), transparent 30%),
+        linear-gradient(180deg, #fcfdff 0%, #f4f7fb 100%);
+}
+
+.binn-public-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(18, 47, 96, 0.08);
+}
+
+.binn-public-topbar__inner,
+.binn-public-shell {
+    width: min(1380px, calc(100% - 40px));
+    margin: 0 auto;
+}
+
+.binn-public-topbar__inner {
+    min-height: 94px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.binn-public-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    text-decoration: none;
+    color: inherit;
+}
+
+.binn-public-brand__mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 62px;
+    height: 62px;
+    border-radius: 20px;
+    background: linear-gradient(180deg, #ffffff 0%, #f3f7fd 100%);
+    box-shadow: 0 12px 24px rgba(16, 32, 51, 0.08);
+    border: 1px solid rgba(18, 47, 96, 0.08);
+}
+
+.binn-public-brand__mark img {
+    width: 44px;
+    height: auto;
+}
+
+.binn-public-brand__copy {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.05;
+}
+
+.binn-public-brand__copy strong {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.45rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.binn-public-brand__copy small {
+    color: var(--binn-public-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.68rem;
+    font-weight: 800;
+    margin-top: 0.28rem;
+}
+
+.binn-public-searchchip,
+.binn-public-chip {
+    border: 0;
+    background: transparent;
+    border-radius: 999px;
+    color: var(--binn-public-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 52px;
+    padding: 0.7rem 1rem;
+    font-weight: 700;
+    transition: 0.25s ease;
+}
+
+.binn-public-searchchip:hover,
+.binn-public-chip:hover {
+    background: rgba(0, 82, 161, 0.06);
+    color: var(--binn-public-ink);
+}
+
+.binn-public-searchchip.is-active,
+.binn-public-chip.is-active {
+    background: #fff;
+    color: var(--binn-public-blue-700);
+    box-shadow: inset 0 -3px 0 var(--binn-public-orange-500), 0 10px 22px rgba(16, 32, 51, 0.07);
+}
+
+.binn-public-topbar__actions {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.9rem;
+}
+
+.binn-public-accountmenu {
+    position: relative;
+}
+
+.binn-public-link,
+.binn-public-ghost-link,
+.binn-public-userpill {
+    text-decoration: none;
+    border: 0;
+    background: transparent;
+    color: var(--binn-public-ink);
+    font-weight: 700;
+}
+
+.binn-public-ghost-link {
+    color: var(--binn-public-muted);
+}
+
+.binn-public-ghost-link--button {
+    cursor: pointer;
+}
+
+.binn-public-userpill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 50px;
+    padding: 0 1rem;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid var(--binn-public-border);
+    box-shadow: 0 10px 22px rgba(16, 32, 51, 0.06);
+}
+
+.binn-public-accountmenu__trigger {
+    min-height: 54px;
+    padding: 0.3rem 0.45rem 0.3rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid rgba(18, 47, 96, 0.1);
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 12px 24px rgba(16, 32, 51, 0.08);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    color: var(--binn-public-ink);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.binn-public-accountmenu__trigger:hover,
+.binn-public-accountmenu__trigger[aria-expanded="true"] {
+    border-color: rgba(0, 82, 161, 0.18);
+    box-shadow: 0 18px 32px rgba(16, 32, 51, 0.12);
+}
+
+.binn-public-accountmenu__host {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--binn-public-ink);
+}
+
+.binn-public-accountmenu__avatar,
+.binn-public-sessioncard__badge {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.18), rgba(0, 82, 161, 0.18));
+    color: var(--binn-public-blue-900);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.binn-public-accountmenu__meta {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    line-height: 1.15;
+}
+
+.binn-public-accountmenu__meta strong {
+    font-size: 0.9rem;
+    font-weight: 800;
+}
+
+.binn-public-accountmenu__meta small {
+    color: var(--binn-public-muted);
+    font-weight: 700;
+    font-size: 0.76rem;
+}
+
+.binn-public-accountmenu__icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(18, 47, 96, 0.07);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--binn-public-blue-800);
+    font-size: 1.08rem;
+}
+
+.binn-public-accountmenu__dropdown {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    width: min(344px, calc(100vw - 24px));
+    padding: 0.45rem 0.95rem 0.8rem;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.98);
+    border: 1px solid rgba(18, 47, 96, 0.08);
+    box-shadow: 0 28px 56px rgba(16, 32, 51, 0.16);
+}
+
+.binn-public-accountmenu__section + .binn-public-accountmenu__section,
+.binn-public-accountmenu__promo {
+    margin-top: 0.7rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(18, 47, 96, 0.08);
+}
+
+.binn-public-accountmenu__section a {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    min-height: 46px;
+    padding: 0.42rem 0.1rem;
+    text-decoration: none;
+    color: var(--binn-public-ink);
+    font-weight: 700;
+    border-radius: 14px;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.binn-public-accountmenu__section a:hover,
+.binn-public-accountmenu__promocta:hover {
+    background: rgba(0, 82, 161, 0.05);
+    transform: translateX(2px);
+}
+
+.binn-public-accountmenu__section a i {
+    width: 34px;
+    height: 34px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 82, 161, 0.06);
+    color: var(--binn-public-blue-800);
+    font-size: 0.92rem;
+}
+
+.binn-public-accountmenu__promo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-inline: -0.05rem;
+}
+
+.binn-public-accountmenu__promo strong {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 800;
+}
+
+.binn-public-accountmenu__promo span {
+    display: block;
+    margin-top: 0.25rem;
+    color: var(--binn-public-muted);
+    font-size: 0.84rem;
+    line-height: 1.4;
+}
+
+.binn-public-accountmenu__promocta {
+    border: 0;
+    min-height: 42px;
+    padding: 0 1rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, rgba(0, 82, 161, 0.1), rgba(249, 115, 22, 0.12));
+    color: var(--binn-public-blue-800);
+    font-weight: 800;
+    white-space: nowrap;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.binn-public-accountmenu__promocta:hover {
+    box-shadow: 0 10px 22px rgba(16, 32, 51, 0.08);
+}
+
+.binn-public-accountmenu__logout {
+    color: #bb2b18;
+}
+
+.binn-public-accountmenu__logout i {
+    background: rgba(187, 43, 24, 0.08);
+    color: #bb2b18;
+}
+
+.binn-public-main {
+    padding-bottom: 4rem;
+}
+
+.binn-public-hero {
+    position: relative;
+    padding: 1.5rem 0 2.5rem;
+}
+
+.binn-public-hero__backdrop {
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 540px;
+    background:
+        radial-gradient(circle at 10% 10%, rgba(249, 115, 22, 0.22), transparent 20%),
+        radial-gradient(circle at 100% 0%, rgba(0, 82, 161, 0.2), transparent 28%),
+        linear-gradient(145deg, #fefefe 0%, #f4f8fd 42%, #edf3fb 100%);
+    border-bottom-left-radius: 38px;
+    border-bottom-right-radius: 38px;
+}
+
+.binn-public-searchstage {
+    position: relative;
+    z-index: 2;
+    width: min(1080px, 100%);
+    margin: 0 auto 1.8rem;
+}
+
+.binn-public-searchstage__top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1rem;
+    align-items: end;
+    margin-bottom: 1rem;
+}
+
+.binn-public-searchstage__intro {
+    padding-right: 1rem;
+}
+
+.binn-public-searchstage__intro h1 {
+    margin: 0.7rem 0 0.9rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(2.6rem, 5vw, 4.2rem);
+    line-height: 1.02;
+    letter-spacing: -0.05em;
+    font-weight: 800;
+}
+
+.binn-public-searchstage__intro p {
+    max-width: 760px;
+    color: var(--binn-public-muted);
+    font-size: 1.08rem;
+    line-height: 1.7;
+}
+
+.binn-public-searchstage__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.7rem;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(18, 47, 96, 0.08);
+    box-shadow: 0 18px 36px rgba(16, 32, 51, 0.08);
+}
+
+.binn-public-topaction {
+    min-height: 50px;
+    padding: 0 1.1rem;
+    border-radius: 16px;
+    border: 1px solid rgba(18, 47, 96, 0.08);
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--binn-public-blue-800);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    font-weight: 800;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.binn-public-topaction--solid {
+    background: rgba(0, 82, 161, 0.08);
+    color: var(--binn-public-ink);
+}
+
+.binn-public-searchstage__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+}
+
+.binn-public-searchstage__suggestions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-top: 0.9rem;
+}
+
+.binn-public-searchstage__suggestions > span {
+    color: var(--binn-public-muted);
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+.binn-public-searchbar {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(18, 47, 96, 0.08);
+    border-radius: 999px;
+    box-shadow: var(--binn-public-shadow);
+    overflow: hidden;
+}
+
+.binn-public-searchbar__field {
+    padding: 1rem 1.35rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    border-right: 1px solid rgba(18, 47, 96, 0.08);
+}
+
+.binn-public-searchbar__field label {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--binn-public-ink);
+}
+
+.binn-public-searchbar__select,
+.binn-public-searchbar__field input {
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--binn-public-muted);
+    font-size: 1rem;
+}
+
+.binn-public-searchbar__select {
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+    font-weight: 700;
+}
+
+.binn-public-searchbar__select i {
+    color: var(--binn-public-muted);
+}
+
+.binn-public-searchbar__cta {
+    width: 164px;
+    border: 0;
+    background: linear-gradient(135deg, var(--binn-public-orange-500), var(--binn-public-orange-600));
+    color: #fff;
+    font-size: 1.05rem;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+}
+
+.binn-public-searchchip {
+    min-height: 46px;
+    padding: 0.65rem 1rem;
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(18, 47, 96, 0.08);
+    box-shadow: 0 8px 18px rgba(16, 32, 51, 0.05);
+}
+
+.binn-public-suggestion {
+    min-height: 36px;
+    padding: 0 0.9rem;
+    border-radius: 999px;
+    border: 0;
+    background: rgba(0, 82, 161, 0.08);
+    color: var(--binn-public-blue-800);
+    font-weight: 700;
+}
+
+.binn-public-hero__grid {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: minmax(0, 420px);
+    justify-content: end;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.binn-public-logincard,
+.binn-space-card,
+.binn-offer-card {
+    border-radius: 28px;
+    background: #fff;
+    border: 1px solid rgba(18, 47, 96, 0.08);
+    box-shadow: var(--binn-public-shadow);
+}
+
+.binn-public-kicker {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 0 0.85rem;
+    border-radius: 999px;
+    background: rgba(0, 82, 161, 0.08);
+    color: var(--binn-public-blue-700);
+    font-size: 0.76rem;
+    letter-spacing: 0.14em;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.binn-public-section__heading h2,
+.binn-public-logincard__header h2,
+.binn-offer-modal__head h3 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    letter-spacing: -0.04em;
+    font-weight: 800;
+}
+.binn-public-logincard__header p,
+.binn-public-logincard__header p,
+.binn-space-card__body p,
+.binn-offer-card p,
+.binn-offer-modal__head p {
+    color: var(--binn-public-muted);
+    line-height: 1.7;
+}
+
+.binn-public-logincard__footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem 1rem;
+}
+
+
+.binn-public-chip {
+    background: #fff;
+    border: 1px solid var(--binn-public-border);
+    box-shadow: 0 10px 20px rgba(16, 32, 51, 0.04);
+}
+
+.binn-public-logincard {
+    padding: 1.7rem;
+    background: linear-gradient(155deg, #ffffff 0%, #f7faff 100%);
+}
+
+.binn-public-sessioncard {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.1rem;
+    border-radius: 22px;
+    background: linear-gradient(135deg, rgba(0, 82, 161, 0.08), rgba(249, 115, 22, 0.08));
+    border: 1px solid rgba(18, 47, 96, 0.08);
+}
+
+.binn-public-sessioncard__content {
+    display: flex;
+    flex-direction: column;
+}
+
+.binn-public-sessioncard__content strong {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--binn-public-blue-900);
+}
+
+.binn-public-sessioncard__content span {
+    color: var(--binn-public-muted);
+    font-weight: 700;
+}
+
+.binn-public-sessioncard__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 1rem;
+}
+
+.binn-public-logincard__eyebrow {
+    color: var(--binn-public-orange-600);
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+}
+
+.binn-public-logincard__header h2 {
+    margin: 0.55rem 0 0.45rem;
+}
+
+.binn-public-social,
+.binn-public-form,
+.binn-offer-modal__options {
+    display: grid;
+    gap: 0.95rem;
+}
+
+.binn-public-socialbtn,
+.binn-public-primarybtn {
+    width: 100%;
+    min-height: 54px;
+    border-radius: 16px;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+}
+
+.binn-public-secondarybtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    min-height: 54px;
+    padding: 0 1.2rem;
+    border-radius: 16px;
+    border: 1px solid rgba(18, 47, 96, 0.12);
+    background: #fff;
+    color: var(--binn-public-blue-800);
+    font-weight: 800;
+    text-decoration: none;
+    box-shadow: 0 10px 20px rgba(16, 32, 51, 0.04);
+}
+
+.binn-public-socialbtn--google {
+    background: #fff;
+    border: 1px solid rgba(18, 47, 96, 0.12);
+}
+
+.binn-public-socialbtn--facebook {
+    background: #1877f2;
+    border: 1px solid #1877f2;
+    color: #fff;
+}
+
+.binn-public-divider {
+    position: relative;
+    text-align: center;
+    margin: 1.1rem 0 1.25rem;
+}
+
+.binn-public-divider::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(18, 47, 96, 0.12);
+}
+
+.binn-public-divider span {
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    padding: 0 0.9rem;
+    background: #f9fbfe;
+    color: var(--binn-public-muted);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.binn-public-field label {
+    display: block;
+    margin-bottom: 0.38rem;
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+.binn-public-inputwrap {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    min-height: 56px;
+    padding: 0 1rem;
+    border-radius: 18px;
+    border: 1px solid rgba(18, 47, 96, 0.12);
+    background: #fff;
+}
+
+.binn-public-inputwrap i,
+.binn-offer-card i,
+.binn-offer-option i {
+    color: var(--binn-public-blue-700);
+}
+
+.binn-public-inputwrap input {
+    flex: 1;
+    border: 0;
+    outline: 0;
+    background: transparent;
+}
+
+.binn-public-eye {
+    border: 0;
+    background: transparent;
+    color: var(--binn-public-muted);
+}
+
+.binn-public-alert {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    min-height: 52px;
+    padding: 0.8rem 1rem;
+    border-radius: 16px;
+    font-weight: 700;
+}
+
+.binn-public-alert--error {
+    background: rgba(220, 38, 38, 0.08);
+    color: #b42318;
+}
+
+.binn-public-primarybtn {
+    border: 0;
+    text-decoration: none;
+    background: linear-gradient(135deg, var(--binn-public-blue-700), var(--binn-public-blue-600));
+    color: #fff;
+    box-shadow: 0 18px 28px rgba(0, 82, 161, 0.2);
+}
+
+.binn-public-primarybtn--inline {
+    width: auto;
+    min-width: 178px;
+    padding: 0 1.2rem;
+}
+
+.binn-public-logincard__footer a,
+.binn-public-section__heading a {
+    color: var(--binn-public-blue-700);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.binn-public-section {
+    padding: 2rem 0;
+}
+
+.binn-public-section--soft {
+    background: linear-gradient(180deg, rgba(255,255,255,0.3), rgba(244, 247, 251, 0.7));
+}
+
+.binn-public-section__heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.4rem;
+}
+
+.binn-public-section__heading h2 {
+    margin: 0.35rem 0 0;
+    font-size: clamp(2rem, 3vw, 3rem);
+}
+
+.binn-public-cardrow,
+.binn-public-offergrid {
+    display: grid;
+    gap: 0.9rem;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.binn-space-card__media {
+    position: relative;
+    aspect-ratio: 1 / 0.88;
+    overflow: hidden;
+    border-top-left-radius: 28px;
+    border-top-right-radius: 28px;
+}
+
+.binn-space-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.binn-space-card__tag {
+    position: absolute;
+    bottom: 12px;
+    left: 14px;
+    display: inline-flex;
+    min-height: 30px;
+    align-items: center;
+    padding: 0 0.7rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.92);
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: var(--binn-public-blue-700);
+}
+
+.binn-space-card__favorite-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    min-height: 32px;
+    padding: 0.3rem 0.75rem;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.94);
+    color: var(--binn-public-ink);
+    font-size: 0.74rem;
+    font-weight: 700;
+    line-height: 1.2;
+    z-index: 1;
+    box-shadow: 0 8px 18px rgba(16, 32, 51, 0.12);
+}
+
+.binn-space-card__favorite {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 34px;
+    height: 34px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(22, 32, 51, 0.28);
+    color: #fff;
+    z-index: 1;
+    backdrop-filter: blur(6px);
+}
+
+.binn-space-card__body,
+.binn-offer-card {
+    padding: 0.95rem 1rem 1rem;
+}
+
+.binn-space-card__body strong,
+.binn-offer-card strong {
+    display: block;
+    font-size: 0.98rem;
+    font-weight: 800;
+}
+
+.binn-space-card__submeta {
+    margin: 0.28rem 0 0.12rem;
+    color: var(--binn-public-muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.binn-space-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.45rem;
+    font-size: 0.82rem;
+    margin-top: 0.45rem;
+}
+
+.binn-space-card__meta span {
+    color: var(--binn-public-muted);
+}
+
+.binn-space-card__meta b {
+    color: var(--binn-public-blue-800);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.binn-space-card__meta b i {
+    color: var(--binn-public-orange-500);
+}
+
+.binn-offer-card i {
+    font-size: 1.7rem;
+}
+
+.binn-offer-card strong {
+    margin: 1.1rem 0 0.6rem;
+}
+
+.binn-offer-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1200;
+    display: none;
+}
+
+.binn-login-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1250;
+    display: none;
+}
+
+.binn-login-modal.is-open {
+    display: block;
+}
+
+.binn-login-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(7, 18, 39, 0.52);
+    backdrop-filter: blur(8px);
+}
+
+.binn-login-modal__dialog {
+    position: relative;
+    width: min(520px, calc(100% - 24px));
+    margin: 8vh auto 0;
+}
+
+.binn-login-modal__dialog .binn-public-logincard {
+    border-radius: 32px;
+    box-shadow: 0 34px 72px rgba(7, 18, 39, 0.26);
+}
+
+.binn-login-modal__close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 0;
+    background: rgba(18, 47, 96, 0.06);
+    color: var(--binn-public-ink);
+    z-index: 1;
+}
+
+.binn-date-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1240;
+    display: none;
+}
+
+.binn-date-modal.is-open {
+    display: block;
+}
+
+.binn-date-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(7, 18, 39, 0.42);
+    backdrop-filter: blur(6px);
+}
+
+.binn-date-modal__dialog {
+    position: relative;
+    width: min(960px, calc(100% - 24px));
+    margin: 8vh auto 0;
+    padding: 1.2rem 1.2rem 1rem;
+    border-radius: 34px;
+    background: #fff;
+    box-shadow: 0 34px 72px rgba(7, 18, 39, 0.24);
+}
+
+.binn-date-modal__close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 0;
+    background: rgba(18, 47, 96, 0.06);
+    color: var(--binn-public-ink);
+}
+
+.binn-date-modal__head {
+    text-align: center;
+    padding: 0.2rem 2.4rem 0.8rem;
+}
+
+.binn-date-modal__head h3 {
+    margin: 0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+}
+
+.binn-date-modal__head p {
+    margin: 0.45rem 0 0;
+    color: var(--binn-public-muted);
+}
+
+.binn-date-modal__summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.binn-date-modal__summary div {
+    min-height: 84px;
+    padding: 0.9rem 1rem;
+    border-radius: 22px;
+    background: rgba(0, 82, 161, 0.05);
+    border: 1px solid rgba(18, 47, 96, 0.08);
+}
+
+.binn-date-modal__summary span {
+    display: block;
+    color: var(--binn-public-muted);
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+}
+
+.binn-date-modal__summary strong {
+    display: block;
+    margin-top: 0.5rem;
+    color: var(--binn-public-blue-900);
+    font-size: 1.05rem;
+    font-weight: 800;
+}
+
+.binn-date-modal__months {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.1rem;
+}
+
+.binn-date-month {
+    padding: 0.7rem 0.4rem;
+}
+
+.binn-date-month__title {
+    text-align: center;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--binn-public-blue-900);
+    margin-bottom: 0.7rem;
+}
+
+.binn-date-month__weekdays,
+.binn-date-month__grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 0.35rem;
+}
+
+.binn-date-month__weekdays span {
+    text-align: center;
+    color: var(--binn-public-muted);
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding-bottom: 0.35rem;
+}
+
+.binn-date-day,
+.binn-date-day--empty {
+    aspect-ratio: 1 / 1;
+}
+
+.binn-date-day {
+    border: 0;
+    border-radius: 16px;
+    background: transparent;
+    color: var(--binn-public-ink);
+    font-weight: 700;
+}
+
+.binn-date-day:hover {
+    background: rgba(0, 82, 161, 0.08);
+}
+
+.binn-date-day.is-start,
+.binn-date-day.is-end {
+    background: linear-gradient(135deg, var(--binn-public-orange-500), var(--binn-public-orange-600));
+    color: #fff;
+}
+
+.binn-date-day.is-in-range {
+    background: rgba(0, 82, 161, 0.1);
+    color: var(--binn-public-blue-900);
+}
+
+.binn-date-day--empty {
+    visibility: hidden;
+}
+
+.binn-date-modal__presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.binn-date-preset {
+    min-height: 40px;
+    padding: 0 1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(18, 47, 96, 0.12);
+    background: #fff;
+    color: var(--binn-public-ink);
+    font-weight: 700;
+}
+
+.binn-date-modal__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 1rem;
+}
+
+.binn-offer-modal.is-open {
+    display: block;
+}
+
+.binn-offer-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(7, 18, 39, 0.48);
+    backdrop-filter: blur(6px);
+}
+
+.binn-offer-modal__dialog {
+    position: relative;
+    width: min(1040px, calc(100% - 32px));
+    margin: 8vh auto 0;
+    background: #fff;
+    border-radius: 34px;
+    box-shadow: 0 36px 70px rgba(7, 18, 39, 0.22);
+    padding: 1.6rem 1.6rem 1.4rem;
+}
+
+.binn-offer-modal__close {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 0;
+    background: rgba(18, 47, 96, 0.06);
+    color: var(--binn-public-ink);
+}
+
+.binn-offer-modal__head {
+    text-align: center;
+    padding: 0.3rem 0 1rem;
+}
+
+.binn-offer-modal__head p {
+    margin: 0.7rem auto 0;
+    max-width: 640px;
+}
+
+.binn-offer-modal__options {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin: 1rem 0 1.2rem;
+}
+
+.binn-offer-option {
+    min-height: 250px;
+    border-radius: 28px;
+    border: 1px solid rgba(18, 47, 96, 0.12);
+    background: #fff;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    text-align: center;
+    transition: 0.25s ease;
+}
+
+.binn-offer-option i {
+    font-size: 3rem;
+}
+
+.binn-offer-option strong {
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+.binn-offer-option span,
+.binn-offer-modal__footer p {
+    color: var(--binn-public-muted);
+}
+
+.binn-offer-option.is-selected {
+    border-color: rgba(0, 82, 161, 0.26);
+    background: linear-gradient(180deg, #ffffff 0%, #f4f8fe 100%);
+    box-shadow: inset 0 0 0 2px rgba(0, 82, 161, 0.12);
+}
+
+.binn-offer-modal__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(18, 47, 96, 0.08);
+}
+
+.binn-offer-modal__footer p {
+    margin: 0;
+    font-weight: 700;
+}
+
+@media (max-width: 1199.98px) {
+    .binn-public-topbar__inner {
+        grid-template-columns: 1fr;
+        padding: 1rem 0;
+        justify-items: stretch;
+    }
+
+    .binn-public-topbar__actions {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .binn-public-accountmenu__dropdown {
+        right: 50%;
+        transform: translateX(50%);
+    }
+
+    .binn-public-hero__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .binn-public-searchstage__top {
+        grid-template-columns: 1fr;
+        align-items: stretch;
+    }
+
+    .binn-public-logincard {
+        max-width: 560px;
+        justify-self: center;
+        width: 100%;
+    }
+
+    .binn-public-cardrow,
+    .binn-public-offergrid,
+    .binn-offer-modal__options {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .binn-date-modal__months {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .binn-public-topbar__inner,
+    .binn-public-shell {
+        width: min(100%, calc(100% - 20px));
+    }
+
+    .binn-public-topbar__actions {
+        width: 100%;
+        justify-content: space-between;
+        gap: 0.75rem;
+    }
+
+    .binn-public-accountmenu,
+    .binn-public-accountmenu__trigger {
+        width: 100%;
+    }
+
+    .binn-public-accountmenu__trigger {
+        justify-content: space-between;
+        border-radius: 24px;
+        padding-inline: 0.9rem;
+    }
+
+    .binn-public-accountmenu__host {
+        display: none;
+    }
+
+    .binn-public-accountmenu__dropdown {
+        position: static;
+        width: 100%;
+        margin-top: 0.75rem;
+        transform: none;
+        padding-inline: 0.8rem;
+        border-radius: 20px;
+    }
+
+    .binn-public-searchbar {
+        grid-template-columns: 1fr;
+        border-radius: 28px;
+    }
+
+    .binn-public-searchstage__actions,
+    .binn-public-searchstage__chips,
+    .binn-public-searchstage__suggestions {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 0.2rem;
+    }
+
+    .binn-public-searchbar__field {
+        border-right: 0;
+        border-bottom: 1px solid rgba(18, 47, 96, 0.08);
+    }
+
+    .binn-public-searchbar__cta {
+        width: 100%;
+        min-height: 62px;
+        border-radius: 0 0 28px 28px;
+    }
+
+    .binn-public-hero__intro {
+        padding: 1.5rem;
+    }
+
+    .binn-public-softcta {
+        padding: 0.95rem;
+    }
+
+    .binn-public-hero__highlights,
+    .binn-public-cardrow,
+    .binn-public-offergrid,
+    .binn-offer-modal__options {
+        grid-template-columns: 1fr;
+    }
+
+    .binn-public-section__heading,
+    .binn-offer-modal__footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .binn-public-accountmenu__promo,
+    .binn-public-sessioncard,
+    .binn-public-sessioncard__actions,
+    .binn-date-modal__footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .binn-public-cardrow,
+    .binn-public-offergrid,
+    .binn-offer-modal__options {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .binn-date-modal__summary {
+        grid-template-columns: 1fr;
+    }
+
+    .binn-offer-modal__dialog {
+        margin-top: 4vh;
+        padding: 1rem;
+    }
+
+    .binn-login-modal__dialog {
+        margin-top: 4vh;
+    }
+
+    .binn-date-modal__dialog {
+        margin-top: 4vh;
+        padding: 1rem;
+    }
+
+    .binn-offer-option {
+        min-height: 190px;
+    }
+}
