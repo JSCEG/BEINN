@@ -6,5 +6,4 @@ namespace BEINN.Models
         public string Email { get; set; }
         public string Mensaje { get; set; }
     }
-
 }
